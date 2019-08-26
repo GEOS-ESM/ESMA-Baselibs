@@ -16,3 +16,6 @@
 [submodule "hdf5"]
 	path = hdf5
 	url = https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
+[submodule "netcdf"]
+	path = netcdf
+	url = git@github.com:Unidata/netcdf-c.git
