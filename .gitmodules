@@ -25,3 +25,6 @@
 [submodule "netcdf-cxx4"]
 	path = netcdf-cxx4
 	url = git@github.com:Unidata/netcdf-cxx4.git
+[submodule "udunits2"]
+	path = udunits2
+	url = git@github.com:Unidata/UDUNITS-2.git
