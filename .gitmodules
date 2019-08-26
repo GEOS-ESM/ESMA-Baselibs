@@ -10,3 +10,6 @@
 [submodule "jpeg"]
 	path = jpeg
 	url = git@github.com:libjpeg-turbo/ijg.git
+[submodule "curl"]
+	path = curl
+	url = git@github.com:curl/curl.git
