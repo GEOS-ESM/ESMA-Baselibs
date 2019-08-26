@@ -7,3 +7,6 @@
 [submodule "antlr"]
 	path = antlr
 	url = git@github.com:nco/antlr2.git
+[submodule "jpeg"]
+	path = jpeg
+	url = git@github.com:libjpeg-turbo/ijg.git
