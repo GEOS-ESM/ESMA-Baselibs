@@ -1,0 +1,728 @@
+2019-08-15: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.2.8
+
+         * Import cURL 7.65.3
+         * Import ESMF 8_0_0_beta_snapshot_44
+         * Import CMOR 3.5.0
+         * Import FLAP from git as of 2018-Aug-13
+
+         * Add netCDF-CXX4 4.3.0
+
+      Git Version 5.1.8
+
+         * Same as 5.2.8 but with HDF5 1.8.21 and ESMF 8_0_0_beta_snapshot_14
+
+2019-07-05: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.2.7
+
+         * Import NCO 4.8.1
+         * Import CDO 1.9.7.1
+         * Import ESMF 8_0_0_beta_snapshot_40
+
+2019-06-10: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.2.6
+
+         * Import cURL 7.65.1
+         * Import CDO 1.9.7
+         * Import ESMF 8_0_0_beta_snapshot_38
+
+2019-05-31: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.2.5
+
+         * Import cURL 7.65.0
+         * Import netCDF-C 4.7.0
+         * Import NCO 4.8.0
+
+         * Build all libraries with fPIC
+
+      Git Version 5.1.6
+
+         * Same as 5.2.5 but with HDF5 1.8.21
+
+2019-04-19: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.2.4
+
+         * Import cURL 7.64.1
+         * Import ESMF 8_0_0_beta_snapshot_32
+         * Import gFTL 1.1.3
+         * Import gFTL-shared 1.0.2
+
+2019-03-11: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.2.3
+
+         * Added gFTL-shared 1.0.1
+         * Added fArgParse 0.8.1
+
+         * Import cURL 7.64.0
+         * Import HDF5 1.10.5
+         * Import netCDF-C 4.6.3
+         * Import netCDF-fortran 4.4.5
+         * Import NCO 4.7.9
+         * Import CDO 1.9.6 (with patch)
+         * Import nccmp 1.8.5.0
+         * Import gFTL 1.1.2
+
+2019-02-01: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.2.2
+
+         * Import ESMF 8_0_0_beta_snapshot_28
+         * Import nccmp 1.8.4.1
+         * Import cmor 3.4.0
+
+2018-12-21: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.2.1
+
+         * Added pFlogger 1.2.0
+
+         * Import cURL 7.63.0
+         * Import ESMF 8_0_0_beta_snapshot_27
+
+2018-12-06: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.2.0
+
+         * Import cURL 7.62.0
+         * Import HDF5 1.10.4
+         * Import NCO 4.7.8
+         * Import pFUnit 3.3.2
+         * Import gFTL 1.0.0
+
+2018-08-15: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.1.4
+
+         * Added FLAP from git as of 2018-Aug-13
+
+         * Import cURL 7.61.0
+         * Re-enable netCDF-C 4.6.1
+         * Import NCO 4.7.6
+         * Import CDO 1.9.5
+         * Import nccmp 1.8.3.1
+         * Import ESMF 8_0_0_beta_snapshot_14
+         * Import pFUnit 3.3.0
+         * Import CMOR 3.3.3
+
+2018-07-05: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.1.3
+
+         * Revert to netCDF-C 4.5.0
+           This is due to issues building netCDF-C 4.6.1
+           on macOS 10.13
+
+         * Import gFTL 0.92
+
+2018-07-02: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.1.2
+
+         * Import GSL 2.5
+         * Import JPEG 9c
+         * Import HDF4 4.2.14
+         * Import HDF5 1.8.21
+         * Import netCDF-C 4.6.1
+         * Import NCO 4.7.5
+         * Import ESMF 8_0_0_beta_snapshot_09
+         * Import pFUnit 3.2.10
+         * Import gFTL v0.9.1
+         * Import SDPToolkit 5.2.20v1.01
+
+2018-05-18: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.1.1
+
+         * Import cURL 7.60.0
+         * Import NCO 4.7.4
+         * Import CDO 1.9.4
+         * Import ESMF 8_0_0_beta_snapshot_05
+
+         * Updates to make system for the SLES 12
+           cluster at NCCS (lmod, ESMF_OS)
+
+2018-03-15: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.1.0
+
+         * Import cURL 7.59.0
+         * Import NCO 4.7.3
+         * Import ESMF 7.1.0r
+
+2018-02-09: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.0.11
+
+         * Import ESMF 7_1_0_beta_snapshot_51
+
+2018-02-06: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.0.10
+
+         * Import ESMF 7_1_0_beta_snapshot_50
+
+2018-02-05: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 4.0.11
+
+         * Same as 5.0.9 but with ESMF 5.2.0rp3 patched
+           for Intel 18
+
+2018-01-31: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.0.9
+
+         * Import NCO 4.7.2
+         * Import CDO 1.9.3
+         * Import ESMF 7_1_0_beta_snapshot_49
+
+2018-01-26: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.0.8
+
+         * Import cURL 7.58.0
+         * Import ESMF 7_1_0_beta_snapshot_48
+
+         * Added gFTL 1.0.1
+         * Added nccmp 1.8.2.1
+
+2018-01-18: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.0.7
+
+         * Import cURL 7.57.0
+         * Import HDF5 1.8.20
+         * Import NCO 4.7.1
+         * Import CDO 1.9.2
+         * Import UDUNITS 2.2.26
+         * Import ESMF 7_1_0_beta_snapshot_45
+         * Import HDF-EOS2 2.20v1.00
+         * Import HDF-EOS5 5.1.16
+         * Import SDPToolkit 5.2.20v1.00
+         * Import CMOR 3.3.0
+
+         * Disable CMOR Python as it tries to
+           install into system areas
+
+2017-11-13: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 4.0.10
+
+         * Same as 5.0.6 but with 5.2.0rp3 patched
+           for Intel 18
+
+2017-11-09: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.0.6 
+
+         * Import cURL 7.56.1
+         * Import netCDF-C 4.5.0
+         * Import NCO 4.7.0
+         * Import CDO 1.9.1
+         * Import ESMF 7_1_0_beta_snapshot_38
+         * Import pFUnit 3.2.9
+
+2017-11-07: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 4.0.9
+
+         * Same as 5.0.5 but with 5.2.0rp3 patched
+           for Intel 18
+
+2017-08-14: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.0.5 
+
+         * Import GSL 2.4
+         * Import szlib 2.1.1
+         * Import cURL 7.55.1
+         * Import HDF 4.2.13
+         * Import HDF5 1.8.18
+         * Import NCO 4.6.7
+         * Import CDO 1.9.0
+         * Import UDUNITS 2.2.25
+         * Import ESMF 7_1_0_beta_snapshot_33
+         * Import HDF-EOS2 2.19v1.00
+         * Import HDF-EOS5 5.1.15
+         * Import SDPToolkit 5.2.19v1.00
+
+         * Remove hdfeos.mk and hdfeos5.mk
+
+2017-05-02: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.0.4 
+
+         * Import cURL 7.54.0
+         * Import NCO 4.6.6
+         * Import CDO 1.8.1
+
+      Git Version 5.0.4-beta25-patch1
+         * As above plus
+         * Patch bug debug print in ESMF 7_1_0_beta_snapshot 25
+
+2017-03-22: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.0.4-beta25
+         * Import ESMF 7_1_0_beta_snapshot_25
+
+2017-03-16: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 5.0.3
+
+         * With this version, Baselibs has moved to git. Each
+           component is a git submodule whose version is controlled
+           through the .gitmodules file and some "fake" tags that are
+           actually branch tags.
+
+         * Import zlib 1.2.11
+         * Import cURL 7.53.1
+         * Import HDF5 1.8.18
+         * Import netCDF-C 4.4.1.1
+         * Import udunits 2.2.24
+         * Import NCO 4.6.5
+         * Import CDO 1.8.0
+         * Import pFUnit 3.2.8
+         * Import CMOR2 2.9.3
+
+         * Add antlr 2.7.7
+         * Add GSL 2.3
+
+         * GSL and antlr were added to enable building of ncap2
+           in the NCO package. ncap2 is now built by default
+
+
+2016-08-08: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-5_0_2
+         * Import cURL 7.50.1
+         * Import HDF 4.2.11
+         * Import HDF5 1.8.17
+         * Import netCDF-C 4.4.1
+         * Import netCDF-fortran 4.4.4
+         * Import udunits 2.2.20
+         * Import NCO 4.6.1
+         * Import CDO 1.7.2
+         * Import pFUnit 3.2.7
+
+2016-04-25: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-5_0_1
+         * Added pFUnit 3.2.3
+            * Per Tom Clune, build Serial+OpenMP and MPI+OpenMP
+
+         * Enabled ESMPy building
+
+2016-03-08: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-5_0_0
+         * Import cURL 7.47.1
+         * Import HDF5 1.8.16
+         * Import netCDF-C 4.4.0
+         * Import netCDF-fortran 4.4.3
+         * Import udunits 2.2.20
+         * Import NCO 4.5.5
+         * Import CDO 1.7.1
+         * Import ESMF 7.0.0
+
+2015-11-09: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-4_0_7
+         * ESMF 5.2.0rp3 based version of 4.1.2
+
+2015-06-03: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-4_1_2
+         * Import cURL 7.42.1
+         * Import HDF5 1.8.15
+         * Import udunits 2.2.19
+         * Import NCO 4.4.9
+         * Import CDO 1.6.9
+
+2015-03-30: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-4_1_1
+         * Import cURL 7.41.0
+         * Import HDF 4.2.11
+         * Import HDF5 1.8.14
+         * Import h5edit 1.3.1
+         * Import netCDF-C 4.3.3.1
+         * Import netcdf-fortran 4.4.2
+         * Import udunits 2.2.18
+         * Import NCO 4.4.8
+         * Import CDO 1.6.8
+
+2014-08-20: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-4_1_0
+         * Import ESMF 6.3.0rp1
+         * Import CDO 1.6.4
+
+         * With this version of ESMF, we now build with 
+           netCDF support by *default*. This is specified
+           with ESMF_PIO=internal being the default 
+           setting in esmf_rules.mk. This might have issues
+           if the GMAO-Baselibs-4_1_0 esmf_rules.mk is used
+           for older tags.
+
+         * All else as in GMAO-Baselibs-4_0_6
+
+2014-06-10: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-4_0_6
+         * Import netCDF-C 4.3.2
+         * Import cURL 7.37.0
+         * Import NCO 4.4.4
+
+2014-04-03: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-4_0_5
+         * Import cURL 7.36.0
+         * Import HDF 4.2.10
+         * Import HDF5 1.8.12
+         * Import CDO 1.6.3
+         * Import NCO 4.4.3
+
+         * Added h5edit 1.2.1 (new package)
+
+         * Enabled Fortran 2003 bindings for HDF5
+
+         * All else as in GMAO-Baselibs-4_0_4
+
+2013-12-12: Matt Thompson <matthew.thompson@nasa.gov>
+         * No tag released (changes to head of src/)
+
+         * Added baselibs-config.mk, baselibs-config.bsub
+           and make_versions.sh to HEAD
+         * Changes to GNUmakefile to support new prelim code
+         * Added bridge to Arch.mk
+         * Added VERSIONNUM to Base.mk
+
+2013-11-01: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-4_0_4
+         * Import ESMF 5_2_0rp3 (fixes for Intel MPI
+           and Open MPI 1.7)
+         * Import cURL 7.33.0 (bug fixes)
+
+         * All else as in GMAO-Baselibs-4_0_3
+
+2013-09-09: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-4_0_3
+         * Import NCO 4.3.4 (new features, fixes bug with
+           udunits2 discovered by Anton Darmenov)
+         * Import CDO 1.6.1 (new features)
+
+         * Enabled UDUNITS2 support in NCO
+         
+         * All else as in GMAO-Baselibs-4_0_2
+
+2013-05-28: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-4_0_2
+         * Import cURL 7.30.0 (security update)
+         * Import zlib 1.2.8 (bug found in decompression)
+         * Import CDO 1.6.0 (new features)
+         
+         * All else as in GMAO-Baselibs-4_0_1
+
+2013-02-07: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-4_0_1
+         * Import cURL 7.29.0 (security update)
+         * Import NCO 4.2.5
+         
+         * All else as in GMAO-Baselibs-4_0_0
+
+      CVS Tag GMAO-Baselibs-3_3_3
+         * Import cURL 7.29.0 (security update)
+         * Import NCO 4.2.5
+         
+         * All else as in GMAO-Baselibs-3_3_3
+
+2013-01-11: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-4_0_0
+         * Import ESMF 5.2.0rp2
+         
+         * All else as in GMAO-Baselibs-3_3_2
+
+2013-01-09: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_3_2
+         * Added CDO 1.5.9
+         
+         * All else as in GMAO-Baselibs-3_3_1
+
+2012-11-20: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_3_1
+         * Import NCO 4.2.3
+         
+         * All else as in GMAO-Baselibs-3_3_0
+
+2012-10-16: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_3_0
+         * Import netcdf 4.2.1.1
+         * Added netcdf-fortran 4.2
+         * Added udunits 2.1.24
+
+         * Cleaned up the clean and distclean
+           process in GNUmakefile, esmf_rules.mk,
+           hdfeos.mk, and hdfeos5.mk
+
+         * All else as in GMAO-Baselibs-3_2_5
+
+2012-10-03: Matt Thompson <matthew.thompson@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_2_5
+         * Import zlib 1.2.7
+         * Import curl 7.27.0
+         * Import hdf4 4.2.8
+         * Import hdf5 1.8.9
+
+         * Enabled parallel NetCDF by default
+         * Enabled GPFS on discover
+         * Enabled parallel HDF5
+         * Changes to Arch.mk, esmf_rules.mk and GNUmakefile to 
+           support PGI and Intel builds
+         * Autodetect PYTHON (via which)
+         * Add new ES_CC, ES_CXX, and ES_FC to remove hard-coded
+           reference to ifort in ESMF build
+         * Add make check to GNUmakefile process
+
+         * All else as in GMAO-Baselibs-3_2_4
+
+2012-02-28 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_2_4
+        * Import netcdf4 4.1.2
+        * Import cmor 2.5.0 
+        * Import NCO 4.0.2 
+        * Add SPDToolkit.
+        * All else ase in GMAO-Baselibs-3_2_2
+
+2010-12-14 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_2_2
+        * Import hdf4 4.2.5
+        * Import netcdf4 4.1.2-beta2-snapshot2010121313
+        * Import hdf5 release 1.8.5-patch1
+        * Import cmor 2.4.0  last_log 2010-11-18
+        * All else ase in GMAO-Baselibs-3_2_1
+
+2010-08-10 Arlindo da Silva <arlindo.dasilva@nasa.gov>
+        * No tag released
+   * Arch.mk: replaced mvapich2 with intelmpi on linux for ESMF
+   * esmf_rules.mk: turned off OPENMP when using openmpi.
+   
+2010-05-17 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_2_1
+        * Import esmf_4_0_0rp2
+        * Import zlib 1.2.5
+        * Import szlib 2.1
+        * All else ase in GMAO-Baselibs-3_2_0
+
+2010-05-13 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_1_9
+        * Tag created for non MVAPICH2 users.
+        * use netcdf-4-1-1 (fixing File ID bug)
+        * use hdf5-1.8.4-patch1
+        * All else ase in GMAO-Baselibs-3_1_8
+
+2010-04-13 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_2_0
+        * Import esmf_4_0_0rp1
+        * Import hdf5-1.8.4-patch1
+        * Import nco-4.0.1
+        * Import netcdf-4.1.1
+        * All else as in GMAO-Baselibs-3_1_8
+
+2010-02-17 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_1_8
+        * HDF5 disable parallel IO.
+        * NetCDF 4: Add --with-udunits.
+        * Import  UUID package (for C-More).
+        * Import C-More package
+        * GNUMakefile: Add cmove.config, uuid.install
+        * All else as in GMAO-Baselibs-3_1_7
+
+2009-11-30 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_1_7
+        *  Update to latest netcdf 4.1-rc1 (release)
+        *  Erase everything related to man4 for netcdf.
+        *  All else as in GMAO-Baselibs-3_1_6-netcdf_4_1_rc1
+
+2009-11-23 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_1_6-netcdf_4_1_rc1
+        *  Update to latest netcdf 4.1-rc1 (pre-release)
+        *  All else as in GMAO-Baselibs-3_1_6-snapshot-20091117
+
+2009-11-17 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_1_6-snapshot-20091117
+        *  Update to latest netcdf 4.1-snapshot2009111400
+        *  All else as in GMAO-Baselibs-3_1_6
+
+2009-10-07 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_1_6
+        *  Add HDF4 and OPeNDAP support to netcdf snapshot.
+        *  Add curl library for netCDF using OPeNDAP
+        *  All else as in GMAO-Baselibs-3_1_5
+
+2009-08-17 Arlindo da Silva <arlindo.dasilva@nasa.gov>
+        * No tag released
+        * Added H5_PARALLEL variable so that one can disable parallel
+     HDF-5; perhaps this should be the default until we are 
+     actually doing parallel I/O.
+   * Additional flexiblity when building NetCDF/HDF-5.
+
+2009-08-06 Denis Nadeau <denis.nadeau@nasa.gov>
+        * No tag released
+        * Correct netcdf4 makefile  "man4" installation error
+
+2009-05-28 Arlindo da Silva <arlindo.dasilva@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_1_5-essential
+   * GNUmakefile: added verify target and provisions for building
+     NetCDF without HDF-5
+   * This *essential* tag only includes esmf and netcdf; this is
+     meant for light weight builds on netbooks.
+
+2009-02-05 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Tag GMAO-Baselibs-3_1_5 provides
+        *  Same as GMAO_Baselibs-3_1_4 (2009-02-04)  
+        *  Baselib was retag to avoid confusion with previous
+           GMAO-Baselibs-3-1-4 already running.
+
+2009-02-04 Denis Nadeau <denis.nadeau@nasa.gov>
+      CVS Retag GMAO-Baselibs-3_1_4 provides
+   * NetCDF v4.0.1-beta: 
+        * Arlindo's fix MSZ=512 instead of MSZ=200 in ESMF_Config.F90.
+
+2009-02-02 Denis Nadeau <denis.nadeau@nasa.gov>
+   * GNUmakefile: rules for nco, added to ALLDIRS
+
+2009-01-30 Denis Nadeau <denis.nadeau@nasa.gov>
+       CVS Tag GMAO-Baselibs-3_1_4 provides:
+   * ESMF v3.1.0rp2 from NCAR repository
+   * nco: package (v3.9.6)
+        * All else as in GMAO-Baselibs-3_1_3.
+   ***** UNDER TESTING *****
+
+2009-01-28 Arlindo da Silva <arlindo.dasilva@nasa.gov>
+   * No tag released
+   * nco: added new package (v3.9.6)
+   * GNUmakefile: rules for nco, but not in ALLDIRS yet
+
+2009-01-07 Arlindo da Silva <arlindo.dasilva@nasa.gov>
+      Denis Nadeau <denis.nadeau@nasa.gov>
+       CVS Tag GMAO-Baselibs-3_1_3 provides:
+   * ESMF v3.1.0.beta.snapshot.87 from NCAR repository
+   * NetCDF v4.0.1-beta2: patiall fixes get attribute problem
+        * All else as in GMAO-Baselibs-3_1_2.
+   ***** UNDER TESTING *****
+
+2008-11-22 Arlindo da Silva <arlindo.dasilva@nasa.gov>
+       CVS Tag GMAO-Baselibs-2_1_2 provides: 
+   * ESMF v2.2.2rp3 except for patches to fix ESMF_Config.F90  
+     out of bounds array problem (same ESMF as in GMAO-Baselibs-2_1_1-3)
+   * All else as in GMAO-Baselibs-3_1_2, inclding netcdf-4/hdf-5
+
+2008-11-22 Arlindo da Silva <arlindo.dasilva@nasa.gov>
+       CVS Tag GMAO-Baselibs-3_1_2 provides:
+   * ESMF v3.1.0.beta.snapshot.80 from NCAR repository; this snapshot
+          is needed for MAPL/GEOS-5 to work with ESMF v3. This snapshot
+     came after v3.1.0rp1 but before v3.1.0rp2.
+   * NetCDF v4.0, including Large File support, parallel I/O
+        * HDF-5-1.8.2
+        * HDF-EOS 2.8v1.00 from hdfeos.org
+   * hdf-4 in tag GMAO-Baselibs-2_1_1-3
+
+2008-11-20 Arlindo da Silva <arlindo.dasilva@nasa.gov>
+       CVS Tag GMAO-Baselibs-3_1_1-2/3: please ignore these tags.
+
+2008-11-20 Rahman Syed <rahman.a.syed@nasa.gov>
+
+        IMPORTANT: For internal use by CVS maintenance only
+                   Unsupported tag for end-users, not to be built
+
+        CVS Tag Internal-3_1_0p1 provides:
+        * ESMF v3.1.0r
+        * NetCDF v4.0, including Large File support
+        * HDF-5-1.8.2
+        * HDF-EOS 2.8v1.00 from hdfeos.org
+
+2008-11-19 Rahman Syed <rahman.a.syed@nasa.gov>
+
+        IMPORTANT: For internal use by CVS maintenance only
+                   Unsupported tag for end-users, not to be built
+
+        CVS Tag Internal-3_1_0 provides:
+        * ESMF v3.1.0r
+        * NetCDF v4.0, including Large File support
+        * HDF-4.2r3
+        * HDF-EOS 2.8v1.00 from hdfeos.org
+
+2008-10-20 Arlindo da Silva <arlindo.dasilva@nasa.gov>
+       CVS Tag GMAO-Baselibs-3_1_1-1 provides:
+   * ESMF v3.1.0r through CVS Tag Internal-3_0_1
+   * all else as in tag GMAO-Baselibs-2_1_1-3
+
+2008-10-14 Dan Kokron <Daniel.Kokron@nasa.gov>
+       CVS Tag GMAO-Baselibs-2_1_1-3 provides:
+       * Revert to HDF-4.2r3 as in Baselibs-2_1_1
+       * Revert bug fix 525 by BMR; without this mod data
+         set are written with an extra time record as reported by Larry Takacs
+
+2008-10-14 Dan Kokron <Daniel.Kokron@nasa.gov>
+       CVS Tag GMAO-Baselibs-2_1_1-2 provides:
+       * Backport Bron patch from 4.2r2 to 4.2r1
+         Needed when writing GMAO fields at half-degree 
+       * all else as in GMAO-Baselibs-2_1_1-1
+
+2008-10-03 Arlindo da Silva <arlindo.dasilva@nasa.gov>
+
+        CVS Tag GMAO-Baselibs-2_1_1-1 provides:
+        * Patches ESMF_Config.F90 in ESMF v2.2.2rp3 to fix 
+     out of bounds array problem (bug report sent to Core Team).
+     Similar problem may exist in ESMF-3.x.
+        * Reverts back to HDF-4.2r1 due to bug in MFHDF: unlimited
+     dimensions were being written with (size+1) in HDF-4.2r2
+     and HDF-4.2r3. 
+     NOTE: HDF-4.2r1 was not imported on a vendor branch
+     because later versions had already been imported. Instead,
+     it was checked in on a branch of 4.2r3.
+   * Minor touch ups in top GNUmakefile and esmf.mk
+   * All else as in Baselibs-2_1_1
+   
+2008-09-15 Rahman Syed (rahman.a.syed@nasa.gov)
+
+        CVS Tag Baselibs-2_1_1 provides:
+        * ESMF v2.2.2rp3
+        * NetCDF v3.6.2b6, including Large File support
+        * HDF-4.2r3
+        * HDF-EOS 2.8v1.00 from hdfeos.org
+
+2008-09-12 Rahman Syed (rahman.a.syed@nasa.gov)
+
+        IMPORTANT: For internal use by CVS maintenance only
+                   Unsupported tag for end-users, not to be built
+
+        CVS Tag Internal-3_0_1 provides:
+        * ESMF v3.1.0r
+        * NetCDF v3.6.2b6, including Large File support
+        * HDF-4.2r3
+        * HDF-EOS 2.8v1.00 from hdfeos.org
+
+
+2008-09-12 Rahman Syed (rahman.a.syed@nasa.gov)
+
+        IMPORTANT: For internal use by CVS maintenance only
+                   Unsupported tag for end-users, not to be built
+
+        CVS Tag Internal-3_0_0 provides:
+        * ESMF v3.1.0r
+        * NetCDF v3.6.2b6, including Large File support
+        * HDF-4 pre-release version of Feb 2007, including important fixes
+          in hrepack by the HDF Group, and GMAO's patches adding
+          mantissa shaving
+        * HDF-EOS 2.8v1.00 from hdfeos.org
+
+2008-08-11 Arlindo da Silva (arlindo.dasilva@nasa.gov)
+
+        IMPORTANT: to be used with tag GEOSdas-2_1_6 or later.
+
+   CVS Tag Baselibs-2_1_0 provides:
+   * ESMF v2.2.0rp2 
+        * NetCDF v3.6.2b6, including Large File support
+        * HDF-4 pre-release version of Feb 2007, including important fixes
+          in hrepack by the HDF Group, and GMAO's patches adding
+     mantissa shaving
+        * HDF-EOS 2.4v1.00 from hdfeos.org   
+   Revised top GNUmakefile. Added fragments Base.mk and Arch.mk which
+   should be included by the top GNUmakefile.
+
+   
+2008-01-23  Rahman Syed (rahman.a.syed@nasa.gov)
+
+   CVS Tag Baselibs-2_0_3
+   Added hidden files to empty folders in hdfeos so they would be
+   created upon checkout
+
+
+2008-01-14  Rahman Syed (rahman.a.syed@nasa.gov)
+
+   CVS Tag Baselibs-2_0_2
+   Modified makefile, HDFEOS script, and ESMF build configurations to
+        support AIX with IBM XL compilers, and Darwin with Intel compilers.
+
+
+2007-08-22  Arlindo da Silva (arlindo.dasilva@nasa.gov)
+
+   CVS Tag Baselibs-2_0_1
+   Added all intended packages, grib2c still needs autotools so it is
+   not yet being built. About to move to sourceforge, split
+   esmf/hdfeos from module.
+   
+   
+   
+

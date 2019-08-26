@@ -1,0 +1,11 @@
+CVS/
+
+# Ignore the files created by our make system
+# -------------------------------------------
+*.config
+*.install
+*.check
+
+# Ignore log files
+# ----------------
+*.log

@@ -1,0 +1,209 @@
+#! /bin/sh
+#**************************************************************************
+#
+# First attempt at a Baselibs Config script by Matt Thompson
+#
+###########################################################################
+
+prefix=###prefix###
+bindir=###bindir###
+includedir=###includedir###
+
+usage()
+{
+    cat <<EOF
+Usage: baselibs-config [OPTION]
+
+Available values for OPTION include:
+
+  --all                All values
+
+  --cc                 C compiler
+  --cc_version         C compiler version
+
+  --cxx                C++ compiler
+  --cxx_version        C++ compiler version
+
+  --fc                 Fortran compiler
+  --fc_version         Fortran compiler version
+
+  --mpicc              MPI C compiler
+  --mpicc_compiler     MPI C compiler compiler
+  --mpicc_version      MPI C compiler version
+
+  --mpicxx             MPI C++ compiler
+  --mpicxx_compiler    MPI C++ compiler compiler
+  --mpicxx_version     MPI C++ compiler version
+
+  --mpifc              MPI Fortran compiler
+  --mpifc_compiler     MPI Fortran compiler compiler
+  --mpifc_version      MPI Fortran compiler version
+
+  --help               display this help and exit
+  --prefix             baselibs install prefix
+  --bindir             baselibs binary directory
+  --includedir         baselibs include directory
+
+  --config_setup       value of CONFIG_SETUP
+  --esmf_comm          value of ESMF_COMM
+
+  --version            output version information
+  --vernum             output the version information as a number (hexadecimal)
+EOF
+
+    exit $1
+}
+
+if test $# -eq 0; then
+    usage 1
+fi
+
+while test $# -gt 0; do
+    case "$1" in
+    # this deals with options in the style
+    # --option=value and extracts the value part
+    # [not currently used]
+    -*=*) value=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+    *) value= ;;
+    esac
+
+    case "$1" in
+    --cc)
+        echo "###CC###"
+        ;;
+
+    --cxx)
+        echo "###CXX###"
+        ;;
+
+    --fc)
+        echo "###FC###"
+        ;;
+
+    --mpicc)
+        echo "###MPICC###"
+        ;;
+
+    --mpicxx)
+        echo "###MPICXX###"
+        ;;
+
+    --mpifc)
+        echo "###MPIFC###"
+        ;;
+
+    --cc_version)
+        echo "###CC_VERSION###"
+        ;;
+
+    --cxx_version)
+        echo "###CXX_VERSION###"
+        ;;
+
+    --fc_version)
+        echo "###FC_VERSION###"
+        ;;
+
+    --mpicc_version)
+        echo "###MPICC_VERSION###"
+        ;;
+
+    --mpicxx_version)
+        echo "###MPICXX_VERSION###"
+        ;;
+
+    --mpifc_version)
+        echo "###MPIFC_VERSION###"
+        ;;
+
+    --mpicc_compiler)
+        echo "###MPICC_COMPILER###"
+        ;;
+
+    --mpicxx_compiler)
+        echo "###MPICXX_COMPILER###"
+        ;;
+
+    --mpifc_compiler)
+        echo "###MPIFC_COMPILER###"
+        ;;
+
+    --prefix)
+        echo "$prefix"
+        ;;
+
+    --bindir)
+        echo "$bindir"
+        ;;
+
+    --includedir)
+        echo "$includedir"
+        ;;
+
+    --version)
+        echo GMAO-Baselibs-###VERSIONNUM###
+        exit 0
+        ;;
+
+    --vernum)
+        echo ###VERSIONNUM###
+        exit 0
+        ;;
+
+    --config_setup)
+        echo ###CONFIG_SETUP###
+        exit 0
+        ;;
+
+    --esmf_comm)
+        echo ###ESMF_COMM###
+        exit 0
+        ;;
+
+    --all)
+        echo "   --cc                 => ###CC###"
+        echo "   --cc_version         => ###CC_VERSION###"
+        echo ""
+        echo "   --cxx                => ###CXX###"
+        echo "   --cxx_version        => ###CXX_VERSION###"
+        echo ""
+        echo "   --fc                 => ###FC###"
+        echo "   --fc_version         => ###FC_VERSION###"
+        echo ""
+        echo "   --mpicc              => ###MPICC###"
+        echo "   --mpicc_compiler     => ###MPICC_COMPILER###"
+        echo "   --mpicc_version      => ###MPICC_VERSION###"
+        echo ""
+        echo "   --mpicxx             => ###MPICXX###"
+        echo "   --mpicxx_compiler    => ###MPICXX_COMPILER###"
+        echo "   --mpicxx_version     => ###MPICXX_VERSION###"
+        echo ""
+        echo "   --mpifc              => ###MPIFC###"
+        echo "   --mpifc_compiler     => ###MPIFC_COMPILER###"
+        echo "   --mpifc_version      => ###MPIFC_VERSION###"
+        echo ""
+        echo "   --prefix             => ###prefix###"
+        echo "   --bindir             => ###bindir###"
+        echo "   --includedir         => ###includedir###"
+        echo ""
+        echo "   --config_setup       => ###CONFIG_SETUP###"
+        echo "   --esmf_comm          => ###ESMF_COMM###"
+        echo ""
+        echo "   --version            => GMAO-Baselibs-###VERSIONNUM###"
+        echo "   --vernum             => ###VERSIONNUM###"
+        exit 0
+        ;;
+
+    --help)
+        usage 0
+        ;;
+
+    *)
+        echo "unknown option: $1"
+        usage 1
+        ;;
+    esac
+    shift
+done
+
+exit 0
