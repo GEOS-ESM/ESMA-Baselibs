@@ -28,3 +28,6 @@
 [submodule "udunits2"]
 	path = udunits2
 	url = git@github.com:Unidata/UDUNITS-2.git
+[submodule "nco"]
+	path = nco
+	url = git@github.com:nco/nco.git
