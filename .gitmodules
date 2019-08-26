@@ -4,3 +4,6 @@
 [submodule "gsl"]
 	path = gsl
 	url = https://git.savannah.gnu.org/git/gsl.git
+[submodule "antlr"]
+	path = antlr
+	url = git@github.com:nco/antlr2.git
