@@ -31,3 +31,6 @@
 [submodule "nco"]
 	path = nco
 	url = git@github.com:nco/nco.git
+[submodule "nccmp"]
+	path = nccmp
+	url = https://gitlab.com/remikz/nccmp.git
