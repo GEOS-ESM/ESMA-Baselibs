@@ -22,3 +22,6 @@
 [submodule "netcdf-fortran"]
 	path = netcdf-fortran
 	url = git@github.com:Unidata/netcdf-fortran.git
+[submodule "netcdf-cxx4"]
+	path = netcdf-cxx4
+	url = git@github.com:Unidata/netcdf-cxx4.git
