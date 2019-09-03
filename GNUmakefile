@@ -165,6 +165,8 @@ endif
 
 TARGETS = all lib install
 
+download_szlib:
+	$(shell scripts/download_szlib.bash)
 
 verify: javac-check
 	@echo NC_CC     = $(NC_CC)
@@ -502,7 +504,7 @@ h5edit.config : h5edit/configure
 	@touch $@
 
 
-szlib.config : szlib/configure
+szlib.config : download_szlib szlib/configure
 	@echo "Configuring szlib"
 	@(cd szlib; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -510,7 +512,7 @@ szlib.config : szlib/configure
           export LIBS="-lm";\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/szlib \
-                      --disable-f90 --disable-shared \
+                      --disable-shared \
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 

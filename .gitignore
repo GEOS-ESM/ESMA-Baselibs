@@ -1,5 +1,10 @@
 CVS/
 
+# Ignore downloaded directories
+
+szip-2.1.1/
+szlib
+
 # Ignore the files created by our make system
 # -------------------------------------------
 *.config
