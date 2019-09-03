@@ -37,3 +37,6 @@
 [submodule "hdf4"]
 	path = hdf4
 	url = https://bitbucket.hdfgroup.org/scm/hdffr/hdf4.git
+[submodule "pFUnit"]
+	path = pFUnit
+	url = git@github.com:Goddard-Fortran-Ecosystem/pFUnit.git
