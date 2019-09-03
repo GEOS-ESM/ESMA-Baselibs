@@ -46,3 +46,6 @@
 [submodule "gFTL-shared"]
 	path = gFTL-shared
 	url = git@github.com:Goddard-Fortran-Ecosystem/gFTL-shared.git
+[submodule "pFlogger"]
+	path = pFlogger
+	url = git@github.com:Goddard-Fortran-Ecosystem/pFlogger.git
