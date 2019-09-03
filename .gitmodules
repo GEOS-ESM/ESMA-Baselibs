@@ -40,3 +40,6 @@
 [submodule "pFUnit"]
 	path = pFUnit
 	url = git@github.com:Goddard-Fortran-Ecosystem/pFUnit.git
+[submodule "gFTL"]
+	path = gFTL
+	url = git@github.com:Goddard-Fortran-Ecosystem/gFTL.git
