@@ -55,3 +55,6 @@
 [submodule "cmor"]
 	path = cmor
 	url = git@github.com:PCMDI/cmor.git
+[submodule "esmf"]
+	path = esmf
+	url = https://git.code.sf.net/p/esmf/esmf
