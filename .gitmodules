@@ -52,3 +52,6 @@
 [submodule "fArgParse"]
 	path = fArgParse
 	url = git@github.com:Goddard-Fortran-Ecosystem/fArgParse.git
+[submodule "cmor"]
+	path = cmor
+	url = git@github.com:PCMDI/cmor.git
