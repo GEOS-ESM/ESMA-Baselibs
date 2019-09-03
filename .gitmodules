@@ -49,3 +49,6 @@
 [submodule "pFlogger"]
 	path = pFlogger
 	url = git@github.com:Goddard-Fortran-Ecosystem/pFlogger.git
+[submodule "fArgParse"]
+	path = fArgParse
+	url = git@github.com:Goddard-Fortran-Ecosystem/fArgParse.git
