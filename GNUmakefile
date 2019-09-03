@@ -168,6 +168,18 @@ TARGETS = all lib install
 download_szlib:
 	$(shell scripts/download_szlib.bash)
 
+download_cdo:
+	$(shell scripts/download_cdo.bash)
+
+download_hdfeos:
+	$(shell scripts/download_hdfeos.bash)
+
+download_hdfeos5:
+	$(shell scripts/download_hdfeos5.bash)
+
+download_SDPToolkit:
+	$(shell scripts/download_SDPToolkit.bash)
+
 verify: javac-check
 	@echo NC_CC     = $(NC_CC)
 	@echo NC_CXX    = $(NC_CXX)
@@ -489,21 +501,6 @@ nco.config : nco/configure
                       CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77)  )
 	@touch $@
 
-INC_HDF5 = $(prefix)/include/hdf5
-LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz curl,\
-           $(prefix)/lib/lib$(lib).a) )
-h5edit.config : h5edit/configure
-	@echo "Configuring h5edit $*"
-	@(cd h5edit; \
-          export PATH="$(prefix)/bin:$(PATH)" ;\
-          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF5) -lmfhdf -ldf -lsz  -ljpeg $(LINK_GPFS) -ldl -lm" ;\
-          ./configure --prefix=$(prefix) \
-                      --includedir=$(prefix)/include/h5edit \
-                      CC=$(H5_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77)  )
-	@touch $@
-
-
 szlib.config : download_szlib szlib/configure
 	@echo "Configuring szlib"
 	@(cd szlib; \
@@ -545,7 +542,7 @@ curl.config : curl/configure
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-cdo.config: cdo/configure
+cdo.config: download_cdo cdo/configure
 	@echo "Configuring cdo $*"
 	@(cd cdo; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -655,7 +652,7 @@ gsl.config : gsl/configure
 esmf.config : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
 
-hdfeos.config: hdfeos/configure
+hdfeos.config: download_hdfeos hdfeos/configure
 	@echo "Configuring hdfeos $*"
 	@(cd hdfeos; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -674,7 +671,7 @@ hdfeos.config: hdfeos/configure
 INC_HDF5 = $(prefix)/include/hdf5
 LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz curl,\
            $(prefix)/lib/lib$(lib).a) )
-hdfeos5.config: hdfeos5/configure
+hdfeos5.config: download_hdfeos5 hdfeos5/configure
 	@echo "Configuring hdfeos5 $*"
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -693,7 +690,7 @@ INC_SUPP_SDP :=  $(foreach subdir, \
             / /zlib /szlib /jpeg /hdf5 /hdf /hdfeos /hdfeos5,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 
-SDPToolkit.config: SDPToolkit/configure
+SDPToolkit.config: download_SDPToolkit SDPToolkit/configure
 	@echo "Configuring SDPToolkit $*"
 	@(cd SDPToolkit; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
