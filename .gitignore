@@ -5,6 +5,15 @@ CVS/
 szip-2.1.1/
 szlib
 
+cdo-*/
+cdo
+
+hdfeos/
+hdfeos5/
+TOOLKIT/
+
+SDPToolkit
+
 # Ignore the files created by our make system
 # -------------------------------------------
 *.config
