@@ -39,7 +39,7 @@ case $ARCH in
       checksum='sha512sum -c'
    ;;
 esac
-sumfile=$SCRIPTDIR/sha512.sum
+sumfile=$SCRIPTDIR/${package_name}.sha512
 
 if type wget > /dev/null ; then
   fetch='wget'

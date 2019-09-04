@@ -1,4 +1,4 @@
-#!/bin/bash -f
+#!/bin/bash -fx
 
 # --------------
 # MAIN VARIABLES
@@ -39,7 +39,7 @@ case $ARCH in
       checksum='sha512sum -c'
    ;;
 esac
-sumfile=$SCRIPTDIR/sha512.sum
+sumfile=$SCRIPTDIR/${package_name}.sha512
 
 if type wget > /dev/null ; then
   fetch='wget'
@@ -71,25 +71,12 @@ fi
 # ----------------
 
 # Get the name of the directory the tar command will make
-tar_dir_name=$(tar tzf $SCRIPTDIR/$tarball | head -1 | cut -f1 -d"/")
+tar_dir_name=$(tar tzf $SCRIPTDIR/$tarball | head -1 | cut -f2 -d"/")
 
 # Untar to MAINDIR
 if [[ ! -d $MAINDIR/$tar_dir_name ]]
 then
    tar xf $SCRIPTDIR/$tarball -C $MAINDIR
-fi
-
-# Link untarred source to the name Baselibs expects
-
-if [[ ! -L $MAINDIR/$package_name ]]
-then
-   if [[ ! -e $MAINDIR/$package_name ]]
-   then
-      ln -s $MAINDIR/$tar_dir_name $MAINDIR/$package_name
-   else
-      echo "If you got here, this means you have a broken symlink, I think"
-      exit 1
-   fi
 fi
 
 exit 0
