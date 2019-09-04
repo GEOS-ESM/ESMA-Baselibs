@@ -1,4 +1,4 @@
-#!/bin/bash -fx
+#!/bin/bash -f
 
 # --------------
 # MAIN VARIABLES
