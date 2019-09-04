@@ -165,6 +165,9 @@ endif
 
 TARGETS = all lib install
 
+download_antlr:
+	$(shell scripts/download_antlr.bash)
+
 download_szlib:
 	$(shell scripts/download_szlib.bash)
 
@@ -626,7 +629,7 @@ FLAP.config:
 	@mkdir -p $(prefix)/include/FLAP
 	@touch $@
 
-antlr.config : antlr/configure
+antlr.config : download_antlr antlr/configure
 	@echo "Configuring antlr"
 	@mkdir -p ./antlr/build
 	@(cd antlr/build; \

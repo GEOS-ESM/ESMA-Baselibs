@@ -2,6 +2,9 @@ CVS/
 
 # Ignore downloaded directories
 
+antlr-2.7.7/
+antlr
+
 szip-2.1.1/
 szlib
 
