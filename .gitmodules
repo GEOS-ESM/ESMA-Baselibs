@@ -58,3 +58,6 @@
 [submodule "esmf"]
 	path = esmf
 	url = https://git.code.sf.net/p/esmf/esmf
+[submodule "FLAP"]
+	path = FLAP
+	url = git@github.com:mathomp4/FLAP.git
