@@ -622,9 +622,6 @@ pFlogger.config:
 
 FLAP.config:
 	@echo "Configuring FLAP"
-	@mkdir -p ./FLAP/build
-	@(cd ./FLAP/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/FLAP -DCMAKE_BUILD_TYPE=Release .. )
 	@mkdir -p $(prefix)/lib
 	@mkdir -p $(prefix)/include/FLAP
 	@touch $@
@@ -763,10 +760,11 @@ pFlogger.install: pFlogger.config
 
 FLAP.install: FLAP.config
 	@echo "Installing FLAP with COMPILER=$(FLAP_COMPILER)"
-	@(cd ./FLAP/build; \
-		$(MAKE) all; \
-		cp lib/*.a $(prefix)/lib; \
-		cp modules/*.mod $(prefix)/include/FLAP )
+	@(cd ./FLAP; \
+      $(MAKE) -j 1 STATIC=yes COMPILER=$(FLAP_COMPILER)\
+         CC=$(CC) FC=$(FC) CXX=$(CXX) F77=$(F77); \
+      cp static/libflap.a $(prefix)/lib; \
+      cp static/mod/* $(prefix)/include/FLAP )
 	@touch $@
 
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup
@@ -951,11 +949,15 @@ pFlogger.distclean:
 
 FLAP.clean:
 	@echo "Cleaning FLAP"
-	@rm -rf ./FLAP/build
+	@rm -rf ./FLAP/static
+	@rm -rf ./FLAP/exe
+	@rm -f  ./FLAP/FLAP.1
 
 FLAP.distclean:
 	@echo "Cleaning FLAP"
-	@rm -rf ./FLAP/build
+	@rm -rf ./FLAP/static
+	@rm -rf ./FLAP/exe
+	@rm -f  ./FLAP/FLAP.1
 
 antlr.clean: 
 	@echo "Cleaning antlr"
