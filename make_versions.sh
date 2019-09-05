@@ -122,10 +122,6 @@ UUID_VERSION_LOC="uuid/uuid_vers.h"
 UUID_VERSION=$(uuid/shtool version -l c -d short $UUID_VERSION_LOC)
 echo_version uuid "$UUID_VERSION" "$UUID_VERSION_LOC"
 
-CMOR_VERSION_LOC="cmor/configure"
-CMOR_VERSION=$(awk -F= '/^PACKAGE_VERSION=/ {print $2}' $CMOR_VERSION_LOC | sed "s/'//g")
-echo_version cmor "$CMOR_VERSION" "$CMOR_VERSION_LOC"
-
 HDFEOS_VERSION_LOC="hdfeos/src/EHapi.c"
 HDFEOS_VERSION=$(awk '/HDFEOSVERSION1/ {print $3}' $HDFEOS_VERSION_LOC | sed 's/"//g')
 echo_version hdfeos "$HDFEOS_VERSION" "$HDFEOS_VERSION_LOC"

@@ -336,24 +336,6 @@ Responsible:    mathomp4
 Depends upon:
 Notes:
 
-Package: CMOR
--------------
-Version:        3.5.0
-Current:        3.5.0
-Package URL:    https://pcmdi.github.io/cmor-site/index.html
-Download URL:   https://pcmdi.github.io/cmor-site/download.html
-Archive URL:
-Mailing List:   https://pcmdi.github.io/cmor-site/mailing-list.html
-git repo URL:   git@developer.nasa.gov:mathomp4/ESMA-Baselibs-cmor.git
-Responsible:    mathomp4
-Depends upon:   szlib
-Depends upon:   zlib
-Depends upon:   udunits2
-Depends upon:   netcdf
-Depends upon:   hdf5
-Depends upon:   uuid
-Notes:
-
 Package: HDF-EOS2
 -----------------
 Version:        2.20v1.00

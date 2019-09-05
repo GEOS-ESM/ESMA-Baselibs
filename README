@@ -20,7 +20,6 @@ NASA/GSFC.
    - HDF-EOS5
    - NCO
    - curl
-   - cmor
    - uuid
    - CDO
    - h5edit

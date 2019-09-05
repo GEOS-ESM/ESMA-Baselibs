@@ -146,7 +146,7 @@ MKFILE_DIR := $(dir $(MKFILE_PATH))
 
 ALLDIRS = antlr gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
           udunits2 nco cdo nccmp esmf pFUnit gFTL gFTL-shared fArgParse FLAP uuid \
-          cmor hdfeos hdfeos5 SDPToolkit
+          hdfeos hdfeos5 SDPToolkit
 
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
                  esmf pFUnit gFTL gFTL-shared FLAP
@@ -454,24 +454,6 @@ udunits2.config : udunits2/configure
                       --disable-shared \
                       CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
-
-cmor.config: cmor/configure
-	@echo "Configuring cmor $*"
-	@(cd cmor; \
-          export PATH="$(prefix)/bin:$(PATH)" ;\
-          export CFLAGS="-fPIC $(CPPFLAGS) $(INC_SUPP) -fPIC";\
-          export LIBS="-L$(prefix)/lib -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
-          ./configure --prefix=$(prefix) \
-                      --includedir=$(prefix)/include/cmor \
-                      --enable-fortran \
-                      --enable-color   \
-                      --without-python \
-                      --with-udunits2=$(prefix)  \
-                      --with-netcdf=$(prefix) \
-                      --with-uuid=$(prefix) \
-                      CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
-	@touch $@
-
 
 INC_HDF5 = $(prefix)/include/hdf5
 LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz curl,\
@@ -983,15 +965,6 @@ esmf.check : esmf_rules.mk
 curl.check: curl.install
 	@echo "Checking curl"
 	@echo "We explicitly do not check cURL due to how long it takes"
-
-cmor.check: cmor.install
-	@echo "Checking cmor"
-	@(cd cmor; \
-          export PATH="$(prefix)/bin:$(PATH)" ;\
-          export CFLAGS="-fPIC $(CPPFLAGS) $(INC_SUPP) -fPIC";\
-          export LIBS="-L$(prefix)/lib -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
-			 $(MAKE) test)
-	@touch $@
 
 pFUnit.check: pFUnit.install
 	@echo "Checking pFUnit (Serial)"
