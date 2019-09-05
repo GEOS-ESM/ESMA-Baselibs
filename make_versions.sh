@@ -118,10 +118,6 @@ FLAP_VERSION_LOC="FLAP/README.md"
 FLAP_VERSION=$(grep '^ *version' ${FLAP_VERSION_LOC} | awk '{print $3}' | sed "s/'//g")
 echo_version FLAP "$FLAP_VERSION" "$FLAP_VERSION_LOC"
 
-UUID_VERSION_LOC="uuid/uuid_vers.h"
-UUID_VERSION=$(uuid/shtool version -l c -d short $UUID_VERSION_LOC)
-echo_version uuid "$UUID_VERSION" "$UUID_VERSION_LOC"
-
 HDFEOS_VERSION_LOC="hdfeos/src/EHapi.c"
 HDFEOS_VERSION=$(awk '/HDFEOSVERSION1/ {print $3}' $HDFEOS_VERSION_LOC | sed 's/"//g')
 echo_version hdfeos "$HDFEOS_VERSION" "$HDFEOS_VERSION_LOC"

@@ -145,7 +145,7 @@ MKFILE_DIR := $(dir $(MKFILE_PATH))
 #                  --------------------------------
 
 ALLDIRS = antlr gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp esmf pFUnit gFTL gFTL-shared fArgParse FLAP uuid \
+          udunits2 nco cdo nccmp esmf pFUnit gFTL gFTL-shared fArgParse FLAP \
           hdfeos hdfeos5 SDPToolkit
 
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
@@ -159,7 +159,7 @@ INC_SUPP :=  $(foreach subdir, \
 else
 SUBDIRS = $(wildcard $(ALLDIRS))
 INC_SUPP :=  $(foreach subdir, \
-            / /zlib /szlib /jpeg /hdf5 /hdf /uuid /netcdf /udunits2 /gsl /antlr,\
+            / /zlib /szlib /jpeg /hdf5 /hdf /netcdf /udunits2 /gsl /antlr,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 endif
 
@@ -802,18 +802,6 @@ jpeg.install: jpeg.config
 	@(cd jpeg; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) all ;\
-          $(MAKE) -e install)
-	touch $@
-
-#      Need to call make all before make install for uuid
-#      ...................................................
-
-uuid.install: uuid.config
-	@echo "Installing uuid"
-	@mkdir -p $(prefix)/bin $(prefix)/lib $(prefix)/include/uuid
-	@(cd uuid; \
-          export PATH="$(prefix)/bin:$(PATH)" ;\
-          $(MAKE) all; \
           $(MAKE) -e install)
 	touch $@
 
