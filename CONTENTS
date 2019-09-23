@@ -323,19 +323,6 @@ Depends upon:   pFUnit
 Depends upon:   gFTL
 Notes:
 
-Package: UUID
--------------
-Version:        1.6.2
-Current:        1.6.2
-Package URL:    http://www.ossp.org/pkg/lib/uuid/
-Download URL:   http://www.ossp.org/pkg/lib/uuid/
-Archive URL:    ftp://ftp.ossp.org/pkg/lib/uuid/uuid-1.6.2.tar.gz
-Mailing List:
-git repo URL:   git@developer.nasa.gov:mathomp4/ESMA-Baselibs-uuid.git
-Responsible:    mathomp4
-Depends upon:
-Notes:
-
 Package: HDF-EOS2
 -----------------
 Version:        2.20v1.00
