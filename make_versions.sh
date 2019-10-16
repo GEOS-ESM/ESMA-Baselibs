@@ -62,10 +62,6 @@ HDF5_VERSION_LOC="hdf5/README.txt"
 HDF5_VERSION=$(cat $HDF5_VERSION_LOC | head -1 | awk '{print $3}')
 echo_version hdf5 "$HDF5_VERSION" "$HDF5_VERSION_LOC"
 
-H5EDIT_VERSION_LOC="h5edit/README"
-H5EDIT_VERSION=$(cat $H5EDIT_VERSION_LOC | head -1 | awk '{print $3}')
-echo_version h5edit "$H5EDIT_VERSION" "$H5EDIT_VERSION_LOC"
-
 NETCDF_VERSION_LOC="netcdf/configure"
 NETCDF_VERSION=$(awk -F= '/^PACKAGE_VERSION=/ {print $2}' $NETCDF_VERSION_LOC | sed "s/'//g")
 echo_version netcdf "$NETCDF_VERSION" "$NETCDF_VERSION_LOC"

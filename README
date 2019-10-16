@@ -21,7 +21,6 @@ NASA/GSFC.
    - NCO
    - curl
    - CDO
-   - h5edit
    - pFUnit
    - GSL
    - antlr
