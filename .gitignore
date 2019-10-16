@@ -22,6 +22,7 @@ SDPToolkit
 *.config
 *.install
 *.check
+*.download
 
 # Ignore log files
 # ----------------
