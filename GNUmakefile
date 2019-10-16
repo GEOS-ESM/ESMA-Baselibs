@@ -152,12 +152,12 @@ ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
                  esmf pFUnit gFTL gFTL-shared FLAP
 
 ifeq ('$(BUILD)','ESSENTIALS')
-SUBDIRS = $(wildcard $(ESSENTIAL_DIRS))
+SUBDIRS = $(ESSENTIAL_DIRS)
 INC_SUPP :=  $(foreach subdir, \
             / /zlib /szlib /jpeg /hdf5 /hdf /netcdf,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 else
-SUBDIRS = $(wildcard $(ALLDIRS))
+SUBDIRS = $(ALLDIRS)
 INC_SUPP :=  $(foreach subdir, \
             / /zlib /szlib /jpeg /hdf5 /hdf /netcdf /udunits2 /gsl /antlr,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
@@ -443,12 +443,13 @@ netcdf-cxx4.config : netcdf-cxx4/configure
                       CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
-udunits2.config : udunits2/configure
+udunits2.config : udunits2/configure.ac
 	@echo "Configuring udunits2 $*"
 	@(cd udunits2; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/udunits2 \
                       --disable-shared \
@@ -488,7 +489,12 @@ nco.config : nco/configure
                       CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77)  )
 	@touch $@
 
-szlib.config : download_szlib szlib/configure
+szlib.download : scripts/download_szlib.bash
+	@echo "Downloading szlib"
+	@./scripts/download_szlib.bash
+	@touch $@
+
+szlib.config : szlib.download szlib/configure
 	@echo "Configuring szlib"
 	@(cd szlib; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -510,12 +516,13 @@ zlib.config : zlib/configure
 	touch $@
 
 
-curl.config : curl/configure
+curl.config : curl/buildconf
 	@echo "Configuring curl"
 	@(cd curl; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LIBS="-lm";\
+          ./buildconf;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/ \
                       --libdir=$(prefix)/lib \
@@ -529,7 +536,12 @@ curl.config : curl/configure
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-cdo.config: download_cdo cdo/configure
+cdo.download : scripts/download_cdo.bash
+	@echo "Downloading cdo"
+	@./scripts/download_cdo.bash
+	@touch $@
+
+cdo.config: cdo.download cdo/configure
 	@echo "Configuring cdo $*"
 	@(cd cdo; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -608,7 +620,12 @@ FLAP.config:
 	@mkdir -p $(prefix)/include/FLAP
 	@touch $@
 
-antlr.config : download_antlr antlr/configure
+antlr.download : scripts/download_antlr.bash
+	@echo "Downloading antlr"
+	@./scripts/download_antlr.bash
+	@touch $@
+
+antlr.config : antlr.download antlr/configure
 	@echo "Configuring antlr"
 	@mkdir -p ./antlr/build
 	@(cd antlr/build; \
@@ -621,12 +638,13 @@ antlr.config : download_antlr antlr/configure
                        CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-gsl.config : gsl/configure
+gsl.config : gsl/autogen.sh
 	@echo "Configuring gsl"
 	@(cd gsl; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LIBS="-lm";\
+          ./autogen.sh;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/gsl \
                       --disable-shared \
@@ -636,7 +654,12 @@ gsl.config : gsl/configure
 esmf.config : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
 
-hdfeos.config: download_hdfeos hdfeos/configure
+hdfeos.download : scripts/download_hdfeos.bash
+	@echo "Downloading hdfeos"
+	@./scripts/download_hdfeos.bash
+	@touch $@
+
+hdfeos.config: hdfeos.download hdfeos/configure
 	@echo "Configuring hdfeos $*"
 	@(cd hdfeos; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -652,10 +675,16 @@ hdfeos.config: download_hdfeos hdfeos/configure
                       CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS)" CC="$(H4_CC) -Df2cFortran" FC=$(H4_FC) CXX=$(CXX) F77=$(H4_FC) )
 	@touch $@
 
+hdfeos5.download : scripts/download_hdfeos5.bash
+	@echo "Downloading hdfeos5"
+	@./scripts/download_hdfeos5.bash
+	@touch $@
+
 INC_HDF5 = $(prefix)/include/hdf5
 LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz curl,\
            $(prefix)/lib/lib$(lib).a) )
-hdfeos5.config: download_hdfeos5 hdfeos5/configure
+
+hdfeos5.config: hdfeos5.download hdfeos5/configure
 	@echo "Configuring hdfeos5 $*"
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -674,7 +703,12 @@ INC_SUPP_SDP :=  $(foreach subdir, \
             / /zlib /szlib /jpeg /hdf5 /hdf /hdfeos /hdfeos5,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 
-SDPToolkit.config: download_SDPToolkit SDPToolkit/configure
+SDPToolkit.download : scripts/download_SDPToolkit.bash
+	@echo "Downloading SDPToolkit"
+	@./scripts/download_SDPToolkit.bash
+	@touch $@
+
+SDPToolkit.config: SDPToolkit.download SDPToolkit/configure
 	@echo "Configuring SDPToolkit $*"
 	@(cd SDPToolkit; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
