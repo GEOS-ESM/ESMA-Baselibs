@@ -145,7 +145,7 @@ MKFILE_DIR := $(dir $(MKFILE_PATH))
 #                  --------------------------------
 
 ALLDIRS = antlr gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp esmf pFUnit gFTL gFTL-shared fArgParse FLAP \
+          udunits2 nco cdo nccmp esmf gFTL gFTL-shared fArgParse pFUnit FLAP \
           hdfeos hdfeos5 SDPToolkit
 
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
@@ -358,7 +358,7 @@ jpeg.config: jpeg/configure
 		      CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-hdf4.config: hdf4/README.txt
+hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
 	@echo Configuring hdf4
 	@(cd hdf4; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -374,7 +374,7 @@ hdf4.config: hdf4/README.txt
                       CFLAGS="$(CFLAGS)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
-hdf5.config: hdf5/README.txt
+hdf5.config: hdf5/README.txt hdf4.install szlib.install zlib.install
 	@echo Configuring hdf5
 	@(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -415,7 +415,7 @@ netcdf.config : netcdf/configure
 	@touch $@
 
 LIB_NETCDF = $(shell $(prefix)/bin/nc-config --libs)
-netcdf-fortran.config : netcdf-fortran/configure
+netcdf-fortran.config : netcdf-fortran/configure netcdf.install
 	@echo "Configuring netcdf-fortran $*"
 	@(cd netcdf-fortran; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -430,17 +430,18 @@ netcdf-fortran.config : netcdf-fortran/configure
                       CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
-netcdf-cxx4.config : netcdf-cxx4/configure
+netcdf-cxx4.config : netcdf-cxx4/configure netcdf.install
 	@echo "Configuring netcdf-cxx4 $*"
-	@(cd netcdf-cxx4; \
+	@mkdir -p ./netcdf-cxx4/build
+	@(cd netcdf-cxx4/build; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
-          ./configure --prefix=$(prefix) \
-                      --includedir=$(prefix)/include/netcdf \
-                      --disable-shared \
-                      CXXFLAGS="-fPIC" CFLAGS="-fPIC" \
-                      CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+          ../configure --prefix=$(prefix) \
+                       --includedir=$(prefix)/include/netcdf \
+                       --disable-shared \
+                       CXXFLAGS="-fPIC" CFLAGS="-fPIC" \
+                       CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 udunits2.config : udunits2/configure.ac
@@ -516,7 +517,7 @@ zlib.config : zlib/configure
 	touch $@
 
 
-curl.config : curl/buildconf
+curl.config : curl/buildconf zlib.install
 	@echo "Configuring curl"
 	@(cd curl; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -541,7 +542,7 @@ cdo.download : scripts/download_cdo.bash
 	@./scripts/download_cdo.bash
 	@touch $@
 
-cdo.config: cdo.download cdo/configure
+cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
 	@echo "Configuring cdo $*"
 	@(cd cdo; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -559,7 +560,7 @@ cdo.config: cdo.download cdo/configure
                       FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
-nccmp.config: nccmp/configure
+nccmp.config: nccmp/configure netcdf.install
 	@echo "Configuring nccmp $*"
 	@(cd nccmp; \
           chmod +x configure ;\
@@ -573,51 +574,47 @@ nccmp.config: nccmp/configure
                       FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
-pFUnit.config: 
-	@echo "Configuring pFUnit (Serial)"
-	@mkdir -p ./pFUnit/build-serial
-	@(cd ./pFUnit/build-serial; \
-		cmake -DMPI=NO -DOPENMP=NO -DCMAKE_INSTALL_PREFIX=$(prefix)/pFUnit/pFUnit-serial .. )
-ifneq ($(ESMF_COMM),mpiuni)
-	@echo "Configuring pFUnit (MPI)"
-	@mkdir -p ./pFUnit/build-mpi
-	@(cd ./pFUnit/build-mpi; \
-		cmake -DMPI=YES -DOPENMP=NO -DCMAKE_INSTALL_PREFIX=$(prefix)/pFUnit/pFUnit-mpi .. )
-endif
+pFUnit.config: gFTL.install gFTL-shared.install fArgParse.install
+	@echo "Configuring pFUnit"
+	@mkdir -p ./pFUnit/build
+	@(cd ./pFUnit/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. )
 	@touch $@
 
 gFTL.config:
 	@echo "Configuring gFTL"
 	@mkdir -p ./gFTL/build
 	@(cd ./gFTL/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DPFUNIT_DIR=$(prefix)/pFUnit/pFUnit-serial .. )
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
 	@touch $@
 
-gFTL-shared.config:
+gFTL-shared.config: gFTL.install
 	@echo "Configuring gFTL-shared"
 	@mkdir -p ./gFTL-shared/build
 	@(cd ./gFTL-shared/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DGFTL_DIR=$(prefix) -DPFUNIT_DIR=$(prefix)/pFUnit/pFUnit-serial .. )
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
 	@touch $@
 
-fArgParse.config:
+fArgParse.config: gFTL.install
 	@echo "Configuring fArgParse"
 	@mkdir -p ./fArgParse/build
 	@(cd ./fArgParse/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DGFTL_SHARED_DIR=$(prefix) -DPFUNIT_DIR=$(prefix)/pFUnit/pFUnit-serial .. )
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
 	@touch $@
 
 pFlogger.config:
 	@echo "Configuring pFlogger"
 	@mkdir -p ./pFlogger/build
 	@(cd ./pFlogger/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/pFlogger -DMPI=YES -DPFUNIT=$(prefix)/pFUnit/pFUnit-serial -DFTL=$(prefix)/gFTL .. )
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/pFlogger -DCMAKE_PREFIX_PATH=$(prefix) .. )
 	@touch $@
 
 FLAP.config:
 	@echo "Configuring FLAP"
 	@mkdir -p $(prefix)/lib
-	@mkdir -p $(prefix)/include/FLAP
+	@mkdir -p ./FLAP/build
+	@(cd ./FLAP/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) .. )
 	@touch $@
 
 antlr.download : scripts/download_antlr.bash
@@ -651,7 +648,7 @@ gsl.config : gsl/autogen.sh
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-esmf.config : esmf_rules.mk
+esmf.config : esmf_rules.mk netcdf.install
 	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
 
 hdfeos.download : scripts/download_hdfeos.bash
@@ -659,7 +656,7 @@ hdfeos.download : scripts/download_hdfeos.bash
 	@./scripts/download_hdfeos.bash
 	@touch $@
 
-hdfeos.config: hdfeos.download hdfeos/configure
+hdfeos.config: hdfeos.download hdfeos/configure hdf4.install
 	@echo "Configuring hdfeos $*"
 	@(cd hdfeos; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -684,7 +681,7 @@ INC_HDF5 = $(prefix)/include/hdf5
 LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz curl,\
            $(prefix)/lib/lib$(lib).a) )
 
-hdfeos5.config: hdfeos5.download hdfeos5/configure
+hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
 	@echo "Configuring hdfeos5 $*"
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -708,7 +705,7 @@ SDPToolkit.download : scripts/download_SDPToolkit.bash
 	@./scripts/download_SDPToolkit.bash
 	@touch $@
 
-SDPToolkit.config: SDPToolkit.download SDPToolkit/configure
+SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
 	@echo "Configuring SDPToolkit $*"
 	@(cd SDPToolkit; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -739,15 +736,19 @@ hdf5.install: hdf5.config
           $(MAKE) install)
 	@touch $@
 
+netcdf-cxx4.install : netcdf-cxx4.config
+	@echo "Installing netcdf-cxx4 $*"
+	@(cd netcdf-cxx4/build; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
+          $(MAKE) install)
+	@touch $@
+
 pFUnit.install: pFUnit.config
-	@echo "Installing pFUnit (Serial)"
-	@(cd ./pFUnit/build-serial; \
+	@echo "Installing pFUnit"
+	@(cd ./pFUnit/build; \
 		$(MAKE) install )
-ifneq ($(ESMF_COMM),mpiuni)
-	@echo "Installing pFUnit (MPI)"
-	@(cd ./pFUnit/build-mpi; \
-		$(MAKE) install )
-endif
 	@touch $@
 
 gFTL.install: gFTL.config
@@ -775,12 +776,9 @@ pFlogger.install: pFlogger.config
 	@touch $@
 
 FLAP.install: FLAP.config
-	@echo "Installing FLAP with COMPILER=$(FLAP_COMPILER)"
-	@(cd ./FLAP; \
-      $(MAKE) -j 1 STATIC=yes COMPILER=$(FLAP_COMPILER)\
-         CC=$(CC) FC=$(FC) CXX=$(CXX) F77=$(F77); \
-      cp static/libflap.a $(prefix)/lib; \
-      cp static/mod/* $(prefix)/include/FLAP )
+	@echo "Installing FLAP with CMake"
+	@(cd ./FLAP/build; \
+      $(MAKE) -j1 install )
 	@touch $@
 
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup
@@ -909,15 +907,21 @@ esmf.clean : esmf_rules.mk
 esmf.distclean : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) distclean
 
+netcdf-cxx4.clean: 
+	@echo "Cleaning netcdf-cxx4"
+	@rm -rf ./netcdf-cxx4/build
+
+netcdf-cxx4.distclean: 
+	@echo "Cleaning netcdf-cxx4"
+	@rm -rf ./netcdf-cxx4/build
+
 pFUnit.clean: 
 	@echo "Cleaning pFUnit"
-	@rm -rf ./pFUnit/build-serial
-	@rm -rf ./pFUnit/build-mpi
+	@rm -rf ./pFUnit/build
 
 pFUnit.distclean: 
 	@echo "Cleaning pFUnit"
-	@rm -rf ./pFUnit/build-serial
-	@rm -rf ./pFUnit/build-mpi
+	@rm -rf ./pFUnit/build
 
 gFTL.clean:
 	@echo "Cleaning gFTL"
@@ -953,15 +957,11 @@ pFlogger.distclean:
 
 FLAP.clean:
 	@echo "Cleaning FLAP"
-	@rm -rf ./FLAP/static
-	@rm -rf ./FLAP/exe
-	@rm -f  ./FLAP/FLAP.1
+	@rm -rf ./FLAP/build
 
 FLAP.distclean:
 	@echo "Cleaning FLAP"
-	@rm -rf ./FLAP/static
-	@rm -rf ./FLAP/exe
-	@rm -f  ./FLAP/FLAP.1
+	@rm -rf ./FLAP/build
 
 antlr.clean: 
 	@echo "Cleaning antlr"
@@ -989,45 +989,49 @@ curl.check: curl.install
 	@echo "We explicitly do not check cURL due to how long it takes"
 
 pFUnit.check: pFUnit.install
-	@echo "Checking pFUnit (Serial)"
-	@(cd ./pFUnit/build-serial; \
+	@echo "Checking pFUnit"
+	@(cd ./pFUnit/build; \
 		$(MAKE) tests )
-ifneq ($(ESMF_COMM),mpiuni)
-	@echo "Checking pFUnit (MPI)"
-	@(cd ./pFUnit/build-mpi; \
-		$(MAKE) tests )
-endif
 	@touch $@
 
-gFTL.check: gFTL.install
+gFTL.check: gFTL.install pFUnit.install
 	@echo "Checking gFTL"
+	@echo "This requires a new CMake, so we remove old build"
+	@rm -rf ./gFTL/build
+	@mkdir -p ./gFTL/build
 	@(cd ./gFTL/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
 		$(MAKE) tests )
 	@touch $@
 
-gFTL-shared.check: gFTL-shared.install
+gFTL-shared.check: gFTL-shared.install pFUnit.install
 	@echo "Checking gFTL-shared"
+	@echo "This requires a new CMake, so we remove old build"
+	@rm -rf ./gFTL-shared/build
+	@mkdir -p ./gFTL-shared/build
 	@(cd ./gFTL-shared/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
 		$(MAKE) tests )
 	@touch $@
 
-fArgParse.check: fArgParse.install
+fArgParse.check: fArgParse.install pFUnit.install
 	@echo "Checking fArgParse"
+	@echo "This requires a new CMake, so we remove old build"
+	@rm -rf ./fArgParse/build
+	@mkdir -p ./fArgParse/build
 	@(cd ./fArgParse/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
 		$(MAKE) tests )
 	@touch $@
 
-pFlogger.check: pFlogger.install
+pFlogger.check: pFlogger.install pFUnit.install
 	@echo "Checking pFlogger"
 	@(cd ./pFlogger/build; \
 		$(MAKE) tests )
 	@touch $@
 
 FLAP.check: FLAP.install
-	@echo "Checking FLAP"
-	@(cd ./FLAP; \
-		make -j 1 )
-	@touch $@
+	@echo "Not sure how to check FLAP"
 
 antlr.check: antlr.install
 	@echo "Checking antlr"

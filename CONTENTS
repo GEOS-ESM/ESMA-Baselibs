@@ -19,11 +19,11 @@ Notes:
 
 Package: gsl
 ------------
-Version:        2.5
-Current:        2.5
+Version:        2.6
+Current:        2.6
 Package URL:    https://www.gnu.org/software/gsl/
 Download URL:   ftp://ftp.gnu.org/gnu/gsl/
-Archive URL:    ftp://ftp.gnu.org/gnu/gsl/gsl-2.5.tar.gz
+Archive URL:    ftp://ftp.gnu.org/gnu/gsl/gsl-2.6.tar.gz
 Mailing List:   https://lists.gnu.org/mailman/listinfo/info-gsl
 git repo URL:   git@developer.nasa.gov:mathomp4/ESMA-Baselibs-gsl.git
 Responsible:    mathomp4
@@ -71,11 +71,11 @@ Notes:
 
 Package: cURL
 -------------
-Version:        7.65.3
-Current:        7.65.3
+Version:        7.66.0
+Current:        7.66.0
 Package URL:    http://curl.haxx.se/
 Download URL:   http://curl.haxx.se/download.html
-Archive URL:    http://curl.haxx.se/download/curl-7.65.3.tar.gz
+Archive URL:    http://curl.haxx.se/download/curl-7.66.0.tar.gz
 Mailing List:   http://cool.haxx.se/mailman/listinfo/curl-announce
 git repo URL:   git@developer.nasa.gov:mathomp4/ESMA-Baselibs-curl.git
 Responsible:    mathomp4
@@ -113,11 +113,11 @@ Notes:
 
 Package: netCDF
 ---------------
-Version:        4.7.0
-Current:        4.7.0
+Version:        4.7.1
+Current:        4.7.1
 Package URL:    https://github.com/Unidata/netcdf-c
 Download URL:   https://github.com/Unidata/netcdf-c/releases
-Archive URL:    http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.7.0.tar.gz
+Archive URL:    http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.7.1.tar.gz
 Mailing List:   http://www.unidata.ucar.edu/mailing_lists/archives/netcdfgroup/
 git repo URL:   git@developer.nasa.gov:mathomp4/ESMA-Baselibs-netcdf.git
 Responsible:    mathomp4
@@ -130,8 +130,8 @@ Notes:
 
 Package: netCDF Fortran
 -----------------------
-Version:        4.4.5
-Current:        4.4.5
+Version:        4.5.2
+Current:        4.5.2
 Package URL:    https://github.com/Unidata/netcdf-fortran
 Download URL:   https://github.com/Unidata/netcdf-fortran/releases
 Archive URL:    http://www.unidata.ucar.edu/downloads/netcdf/netcdf-fortran/index.jsp
@@ -217,11 +217,11 @@ Notes:
 
 Package: ESMF
 -------------
-Version:        8.0.0b44
-Current:        7.1.0r
+Version:        8.0.0
+Current:        8.0.0
 Package URL:    http://www.earthsystemmodeling.org/
 Download URL:   http://www.earthsystemmodeling.org/download/releases.shtml
-Archive URL:    http://www.earthsystemmodeling.org/esmf_releases/public/ESMF_7_1_0r/reg/ESMF_Framework_Reg.html
+Archive URL:    http://www.earthsystemmodeling.org/esmf_releases/public/ESMF_8_0_0/reg/ESMF_Framework_Down.html
 Mailing List:   https://list.woc.noaa.gov/cgi-bin/mailman/listinfo/esmf_info
 git repo URL:   git@developer.nasa.gov:mathomp4/ESMA-Baselibs-esmf.git
 Responsible:    mathomp4
@@ -230,8 +230,8 @@ Notes:
 
 Package: pFUnit
 ---------------
-Version:        3.3.3
-Current:        4.0.0
+Version:        4.0.1
+Current:        4.0.1
 Package URL:    https://github.com/Goddard-Fortran-Ecosystem/pFUnit
 Download URL:   https://github.com/Goddard-Fortran-Ecosystem/pFUnit/releases
 Archive URL:    https://github.com/Goddard-Fortran-Ecosystem/pFUnit/releases
@@ -243,8 +243,8 @@ Notes:
 
 Package: gFTL
 -------------
-Version:        1.1.3
-Current:        1.1.3
+Version:        1.2.0
+Current:        1.2.0
 Package URL:    https://github.com/Goddard-Fortran-Ecosystem/gFTL
 Download URL:   https://github.com/Goddard-Fortran-Ecosystem/gFTL/releases
 Archive URL:    https://github.com/Goddard-Fortran-Ecosystem/gFTL/releases
@@ -284,15 +284,15 @@ Notes:
 
 Package: FLAP
 -------------
-Version:        git-2019Aug15
-Current:        git-2019Aug15
-Package URL:    https://github.com/szaghi/FLAP
-Download URL:   https://github.com/szaghi/FLAP/releases
-Archive URL:    https://github.com/szaghi/FLAP/releases
+Version:        geos/v1.1.0
+Current:        geos/v1.1.0
+Package URL:    https://github.com/mathomp4/FLAP
+Download URL:   https://github.com/mathomp4/FLAP/releases
+Archive URL:    https://github.com/mathomp4/FLAP/releases
 Mailing List:
 git repo URL:   git@developer.nasa.gov:mathomp4/ESMA-Baselibs-FLAP.git
 Responsible:    mathomp4
-Notes:
+Notes: Uses the PENF and FACE mathomp4 forks as well
 
 Package: fArgParse
 -------------
