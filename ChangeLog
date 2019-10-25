@@ -3,7 +3,7 @@
 
          * Import GSL 2.6
          * Import cURL 7.66.0
-         * Import netCDF-C 4.7.1
+         * Import netCDF-C 4.7.2
          * Import netCDF-Fortran 4.5.2
          * Import netCDF-CXX4 4.3.1
          * Import ESMF 8.0.0
