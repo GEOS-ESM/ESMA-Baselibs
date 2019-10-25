@@ -648,7 +648,7 @@ gsl.config : gsl/autogen.sh
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-esmf.config : esmf_rules.mk netcdf.install
+esmf.config : esmf_rules.mk netcdf-fortran.install
 	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
 
 hdfeos.download : scripts/download_hdfeos.bash
