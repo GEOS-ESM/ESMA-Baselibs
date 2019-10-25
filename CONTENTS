@@ -113,11 +113,11 @@ Notes:
 
 Package: netCDF
 ---------------
-Version:        4.7.1
-Current:        4.7.1
+Version:        4.7.2
+Current:        4.7.2
 Package URL:    https://github.com/Unidata/netcdf-c
 Download URL:   https://github.com/Unidata/netcdf-c/releases
-Archive URL:    http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.7.1.tar.gz
+Archive URL:    http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.7.2.tar.gz
 Mailing List:   http://www.unidata.ucar.edu/mailing_lists/archives/netcdfgroup/
 git repo URL:   git@developer.nasa.gov:mathomp4/ESMA-Baselibs-netcdf.git
 Responsible:    mathomp4
