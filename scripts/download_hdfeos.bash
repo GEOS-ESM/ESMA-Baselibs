@@ -41,10 +41,10 @@ case $ARCH in
 esac
 sumfile=$SCRIPTDIR/${package_name}.sha512
 
-if type wget > /dev/null ; then
-  fetch='wget'
+if type curl > /dev/null ; then
+  fetch='curl --output'
 else
-  fetch='curl'
+  fetch='wget -O'
 fi
 
 # ---------------
@@ -52,7 +52,7 @@ fi
 # ---------------
 if [[ ! -f ${SCRIPTDIR}/${tarball} ]]
 then
-   $fetch -O $SCRIPTDIR/${tarball} ${base_url}${tarball}
+   $fetch $SCRIPTDIR/${tarball} ${base_url}${tarball}
 fi
 
 # ------------------
