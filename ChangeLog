@@ -9,8 +9,7 @@
          * Import ESMF 8.0.0
          * Import pFUnit 4.0.1
          * Import gFTL 1.2.0
-         * Import FLAP from mathomp4 git fork as of 2018-Oct-22 (LiamBindle
-           CMake fix)
+         * Import FLAP from mathomp4 git fork version geos/v1.2.0
 
          * Remove CMOR, uuid, h5edit
             * CMOR was removed because the package is best installed
