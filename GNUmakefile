@@ -183,7 +183,7 @@ download_hdfeos5:
 download_SDPToolkit:
 	$(shell scripts/download_SDPToolkit.bash)
 
-download_all: download_szlib download_cdo download_hdfeos download_hdfeos5 download_SDPToolkit
+download_all: download_antlr download_szlib download_cdo download_hdfeos download_hdfeos5 download_SDPToolkit
 
 verify: javac-check
 	@echo NC_CC     = $(NC_CC)
