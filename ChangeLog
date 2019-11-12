@@ -1,3 +1,11 @@
+2019-11-12: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 6.0.2
+
+         * Import cURL v7.67.0
+         * Import gFTL v1.2.1
+         * Import pFUnit v4.1.1
+         * Import fArgParse v0.9.1
+
 2019-11-01: Matt Thompson <matthew.thompson@nasa.gov>
       Git Version 6.0.1
 

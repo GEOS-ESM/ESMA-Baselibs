@@ -71,11 +71,11 @@ Notes:
 
 Package: cURL
 -------------
-Version:        7.66.0
-Current:        7.66.0
+Version:        7.67.0
+Current:        7.67.0
 Package URL:    http://curl.haxx.se/
 Download URL:   http://curl.haxx.se/download.html
-Archive URL:    http://curl.haxx.se/download/curl-7.66.0.tar.gz
+Archive URL:    http://curl.haxx.se/download/curl-7.67.0.tar.gz
 Mailing List:   http://cool.haxx.se/mailman/listinfo/curl-announce
 git repo URL:   git@developer.nasa.gov:mathomp4/ESMA-Baselibs-curl.git
 Responsible:    mathomp4
@@ -230,8 +230,8 @@ Notes:
 
 Package: pFUnit
 ---------------
-Version:        4.0.1
-Current:        4.0.1
+Version:        4.1.1
+Current:        4.1.1
 Package URL:    https://github.com/Goddard-Fortran-Ecosystem/pFUnit
 Download URL:   https://github.com/Goddard-Fortran-Ecosystem/pFUnit/releases
 Archive URL:    https://github.com/Goddard-Fortran-Ecosystem/pFUnit/releases
@@ -243,8 +243,8 @@ Notes:
 
 Package: gFTL
 -------------
-Version:        1.2.0
-Current:        1.2.0
+Version:        1.2.1
+Current:        1.2.1
 Package URL:    https://github.com/Goddard-Fortran-Ecosystem/gFTL
 Download URL:   https://github.com/Goddard-Fortran-Ecosystem/gFTL/releases
 Archive URL:    https://github.com/Goddard-Fortran-Ecosystem/gFTL/releases
@@ -296,8 +296,8 @@ Notes: Uses the PENF and FACE mathomp4 forks as well
 
 Package: fArgParse
 -------------
-Version:        0.8.1
-Current:        0.8.1
+Version:        0.9.1
+Current:        0.9.1
 Package URL:    https://github.com/Goddard-Fortran-Ecosystem/fArgParse
 Download URL:   https://github.com/Goddard-Fortran-Ecosystem/fArgParse/releases
 Archive URL:    https://github.com/Goddard-Fortran-Ecosystem/fArgParse/releases
