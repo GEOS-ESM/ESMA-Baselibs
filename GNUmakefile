@@ -420,6 +420,7 @@ netcdf-fortran.config : netcdf-fortran/configure netcdf.install
 	@(cd netcdf-fortran; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
+          export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/netcdf \
@@ -884,9 +885,6 @@ SDPToolkit.install: SDPToolkit.config
 
 esmf.install : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) install
-
-esmf.apps : esmf_rules.mk
-	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) apps
 
 esmf.examples : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) examples

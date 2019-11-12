@@ -185,11 +185,11 @@ Notes:
 
 Package: CDO
 ------------
-Version:        1.9.7.1
-Current:        1.9.7.1
+Version:        1.9.8
+Current:        1.9.8
 Package URL:    https://code.zmaw.de/projects/cdo
 Download URL:   https://code.zmaw.de/projects/list_files/cdo
-Archive URL:    https://code.zmaw.de/attachments/download/8376/cdo-1.9.7.1.tar.gz
+Archive URL:    https://code.zmaw.de/attachments/download/8376/cdo-1.9.8.tar.gz
 Mailing List:   https://lists.zmaw.de/mailman/listinfo/cdo-announce
 git repo URL:   git@developer.nasa.gov:mathomp4/ESMA-Baselibs-cdo.git
 Responsible:    mathomp4
@@ -217,7 +217,7 @@ Notes:
 
 Package: ESMF
 -------------
-Version:        8.0.0
+Version:        8.0.1b02
 Current:        8.0.0
 Package URL:    http://www.earthsystemmodeling.org/
 Download URL:   http://www.earthsystemmodeling.org/download/releases.shtml
@@ -284,8 +284,8 @@ Notes:
 
 Package: FLAP
 -------------
-Version:        geos/v1.2.0
-Current:        geos/v1.2.0
+Version:        geos/v1.3.0
+Current:        geos/v1.3.0
 Package URL:    https://github.com/mathomp4/FLAP
 Download URL:   https://github.com/mathomp4/FLAP/releases
 Archive URL:    https://github.com/mathomp4/FLAP/releases

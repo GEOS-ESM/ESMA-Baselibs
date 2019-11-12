@@ -1,4 +1,11 @@
-2019-10-22: Matt Thompson <matthew.thompson@nasa.gov>
+2019-11-01: Matt Thompson <matthew.thompson@nasa.gov>
+      Git Version 6.0.1
+
+         * Import CDO 1.9.8
+         * Import ESMF 8_0_1_beta_snapshot_02
+         * Import FLAP from mathomp4 git fork version geos/v1.3.0
+
+2019-10-31: Matt Thompson <matthew.thompson@nasa.gov>
       Git Version 6.0.0
 
          * Import GSL 2.6
