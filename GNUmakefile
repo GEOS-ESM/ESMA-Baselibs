@@ -168,6 +168,9 @@ TARGETS = all lib install
 download_antlr:
 	$(shell scripts/download_antlr.bash)
 
+download_gsl:
+	$(shell scripts/download_gsl.bash)
+
 download_szlib:
 	$(shell scripts/download_szlib.bash)
 
@@ -183,7 +186,7 @@ download_hdfeos5:
 download_SDPToolkit:
 	$(shell scripts/download_SDPToolkit.bash)
 
-download_all: download_antlr download_szlib download_cdo download_hdfeos download_hdfeos5 download_SDPToolkit
+download_all: download_antlr download_gsl download_szlib download_cdo download_hdfeos download_hdfeos5 download_SDPToolkit
 
 verify: javac-check
 	@echo NC_CC     = $(NC_CC)
@@ -636,13 +639,17 @@ antlr.config : antlr.download antlr/configure
                        CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-gsl.config : gsl/autogen.sh
+gsl.download : scripts/download_gsl.bash
+	@echo "Downloading gsl"
+	@./scripts/download_gsl.bash
+	@touch $@
+
+gsl.config : gsl.download gsl/configure
 	@echo "Configuring gsl"
 	@(cd gsl; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LIBS="-lm";\
-          ./autogen.sh;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/gsl \
                       --disable-shared \
