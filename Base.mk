@@ -53,20 +53,11 @@
         FC := gfortran
         ES_FC := $(FC)
         EXCEPTIONS := -fexceptions
+        ESMF_COMPILER := gfortran
         FLAP_COMPILER := gnu
-  else
-  ifneq ($(wildcard $(shell which g95 2> /dev/null)),)
-        FC := g95
-        ES_FC := $(FC)
-  else
-  ifneq ($(wildcard $(shell which f90 2> /dev/null)),)
-        FC := f90
-        ES_FC := $(FC)
   else
         FC := UNKNOWN
         ES_FC := $(FC)
-  endif
-  endif
   endif
   endif
   endif
@@ -86,7 +77,7 @@
   ifneq ($(wildcard $(shell which pgcc 2> /dev/null)),)
         CC := pgcc
   else
-        CC  := UNKNOWN
+        CC := UNKNOWN
   endif
   endif
   endif
@@ -103,51 +94,6 @@
         CXX := pgc++
   else
         CXX := UNKNOWN
-  endif
-  endif
-  endif
-
-# MPI CC compiler detection
-# --------------------
-  ifneq ($(wildcard $(shell which mpicc 2> /dev/null)),)
-        MPICC := mpicc
-  else
-  ifneq ($(wildcard $(shell which mpiicc 2> /dev/null)),)
-        MPICC := mpiicc
-  else
-        MPICC := $(CC)
-  endif
-  endif
-
-# MPI CXX compiler detection
-# --------------------
-  ifneq ($(wildcard $(shell which mpiicpc 2> /dev/null)),)
-        MPICXX := mpiicpc
-  else
-  ifneq ($(wildcard $(shell which mpic++ 2> /dev/null)),)
-        MPICXX := mpic++
-  else
-  ifneq ($(wildcard $(shell which mpicxx 2> /dev/null)),)
-        MPICXX := mpicxx
-  else
-        MPICXX := $(CXX)
-  endif
-  endif
-  endif
-
-# MPI FC compiler detection
-# -------------------------
-  ifneq ($(wildcard $(shell which mpiifort 2> /dev/null)),)
-        MPIFC := mpiifort
-        CPPDEFS += -DpgiFortran
-  else
-  ifneq ($(wildcard $(shell which mpifort 2> /dev/null)),)
-        MPIFC := mpifort
-  else
-  ifneq ($(wildcard $(shell which mpif90 2> /dev/null)),)
-        MPIFC := mpif90
-  else
-        MPIFC := $(FC)
   endif
   endif
   endif
@@ -184,6 +130,63 @@
   endif
   endif
 
+# MPI CC compiler detection
+# --------------------
+  ifeq ($(ESMF_COMM),intelmpi)
+    ifeq ($(ES_CC),gcc)
+      MPICC := mpigcc
+    else
+      MPICC := mpiicc
+    endif
+  else
+  ifneq ($(wildcard $(shell which mpicc 2> /dev/null)),)
+    MPICC := mpicc
+  else
+    MPICC := $(CC)
+  endif
+  endif
+
+# MPI CXX compiler detection
+# --------------------
+  ifeq ($(ESMF_COMM),intelmpi)
+    ifeq ($(ES_CC),g++)
+      MPICXX := mpigxx
+    else
+      MPICXX := mpiicpc
+    endif
+  else
+  ifneq ($(wildcard $(shell which mpic++ 2> /dev/null)),)
+    MPICXX := mpic++
+  else
+  ifneq ($(wildcard $(shell which mpicxx 2> /dev/null)),)
+    MPICXX := mpicxx
+  else
+    MPICXX := $(CXX)
+  endif
+  endif
+  endif
+
+# MPI FC compiler detection
+# -------------------------
+  ifeq ($(ESMF_COMM),intelmpi)
+    ifeq ($(FC),gfortran)
+      MPIFC := mpifc
+    else
+      MPIFC := mpiifort
+      CPPDEFS += -DpgiFortran
+    endif
+  else
+  ifneq ($(wildcard $(shell which mpifort 2> /dev/null)),)
+        MPIFC := mpifort
+  else
+  ifneq ($(wildcard $(shell which mpif90 2> /dev/null)),)
+        MPIFC := mpif90
+  else
+        MPIFC := $(FC)
+  endif
+  endif
+  endif
+
  
 # Make sure we have compilers
 # ---------------------------
@@ -206,8 +209,12 @@
 # ESMF default options
 # --------------------
   ESMF_DIR  := $(shell pwd)/esmf
-  ESMF_COMM := openmpi
+  ESMF_COMM ?= UNKNOWN
   ESMF_OS   := $(ARCH)
+
+  ifeq ($(ESMF_COMM),UNKNOWN)
+     $(error Cannot detect ESMF MPI stack; please set ESMF_COMM)
+  endif
 
 # Where to install stuff
 # ----------------------

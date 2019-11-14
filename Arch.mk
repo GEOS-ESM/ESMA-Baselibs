@@ -61,8 +61,6 @@ ifeq ($(ARCH),Linux)
    CFLAGS := -fPIC 
    export CFLAGS
 
-   ESMF_COMM := openmpi
-
    # Gentoo puts tiprc files in a weird place
    ifneq (,$(wildcard /etc/gentoo-release))
       INC_EXTRA += -I/usr/include/tirpc
@@ -71,12 +69,7 @@ ifeq ($(ARCH),Linux)
 
    ifeq ($(SITE),NCCS)
       ENABLE_GPFS = --enable-gpfs
-      ESMF_COMM := mpi
       LINK_GPFS = -lgpfs
-   endif
-
-   ifeq ($(SITE),NAS)
-      ESMF_COMM := mpi
    endif
 
    ifeq ($(FC),gfortran)
@@ -87,12 +80,3 @@ ifeq ($(ARCH),Linux)
 
 endif
 
-#
-#                            ----------------
-#                            MacOS X (Darwin)
-#                            ----------------
-#
-
-ifeq ($(ARCH),Darwin)
-   ESMF_COMM := openmpi
-endif
