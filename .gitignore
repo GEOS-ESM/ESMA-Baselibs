@@ -17,6 +17,9 @@ TOOLKIT/
 
 SDPToolkit
 
+gsl-*/
+gsl
+
 # Ignore the files created by our make system
 # -------------------------------------------
 *.config
