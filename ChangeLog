@@ -5,6 +5,10 @@
          * Import gFTL v1.2.1
          * Import pFUnit v4.1.1
          * Import fArgParse v0.9.1
+         * Import FLAP from mathomp4 git fork version geos/v1.4.0
+
+         * Converted GSL to a downloaded library due to issues on SCU14
+         * Fixes to various scripting
 
 2019-11-01: Matt Thompson <matthew.thompson@nasa.gov>
       Git Version 6.0.1
