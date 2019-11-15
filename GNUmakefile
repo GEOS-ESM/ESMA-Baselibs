@@ -189,11 +189,6 @@ download_SDPToolkit:
 download_all: download_antlr download_gsl download_szlib download_cdo download_hdfeos download_hdfeos5 download_SDPToolkit
 
 verify: javac-check
-	@echo NC_CC     = $(NC_CC)
-	@echo NC_CXX    = $(NC_CXX)
-	@echo NC_FC     = $(NC_FC)
-	@echo NC_F77    = $(NC_F77)
-	@echo NC_CFLAGS = $(NC_CFLAGS) 
 	@echo MKFILE_PATH = $(MKFILE_PATH)
 	@echo MKFILE_DIR = $(MKFILE_DIR)
 	@echo SUBDIRS = $(SUBDIRS)
