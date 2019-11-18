@@ -1,8 +1,8 @@
-2019-11-12: Matt Thompson <matthew.thompson@nasa.gov>
+2019-11-18: Matt Thompson <matthew.thompson@nasa.gov>
       Git Version 6.0.2
 
          * Import cURL v7.67.0
-         * Import gFTL v1.2.1
+         * Import gFTL v1.2.2
          * Import pFUnit v4.1.1
          * Import fArgParse v0.9.1
          * Import FLAP from mathomp4 git fork version geos/v1.4.0
