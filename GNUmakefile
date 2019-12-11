@@ -257,7 +257,8 @@ baselibs-config: baselibs-config.mk
 	@echo "Doing preliminaries"
 	@mkdir -p $(prefix)/etc
 	@cp VERSION $(prefix)/etc
-	@cp ChangeLog $(prefix)/etc
+	@cp CHANGELOG.md $(prefix)/etc
+	@cp ChangeLog-preV6 $(prefix)/etc
 	@cp CONTENTS $(prefix)/etc
 	@$(if $(MODULECMD),$(MODULECMD) sh list -t >& $(prefix)/etc/MODULES,echo "TCL Modules not found")
 	@$(if $(LMODULECMD),$(shell echo $(LOADEDMODULES) >& $(prefix)/etc/MODULES),echo "Lua Modules not found")
