@@ -4,7 +4,6 @@
 
 ### Updates
 
-* netCDF-C 4.7.3
 * NCO 4.9.0
 * pFUnit v4.1.3
 * nccmp 1.8.6.0
