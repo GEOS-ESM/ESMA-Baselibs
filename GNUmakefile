@@ -165,28 +165,7 @@ endif
 
 TARGETS = all lib install
 
-download_antlr:
-	$(shell scripts/download_antlr.bash)
-
-download_gsl:
-	$(shell scripts/download_gsl.bash)
-
-download_szlib:
-	$(shell scripts/download_szlib.bash)
-
-download_cdo:
-	$(shell scripts/download_cdo.bash)
-
-download_hdfeos:
-	$(shell scripts/download_hdfeos.bash)
-
-download_hdfeos5:
-	$(shell scripts/download_hdfeos5.bash)
-
-download_SDPToolkit:
-	$(shell scripts/download_SDPToolkit.bash)
-
-download_all: download_antlr download_gsl download_szlib download_cdo download_hdfeos download_hdfeos5 download_SDPToolkit
+download: antlr.download gsl.download szlib.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download
 
 verify: javac-check
 	@echo MKFILE_PATH = $(MKFILE_PATH)
