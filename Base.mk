@@ -149,7 +149,7 @@
 # MPI CXX compiler detection
 # --------------------
   ifeq ($(ESMF_COMM),intelmpi)
-    ifeq ($(ES_CC),g++)
+    ifeq ($(ES_CXX),g++)
       MPICXX := mpigxx
     else
       MPICXX := mpiicpc
