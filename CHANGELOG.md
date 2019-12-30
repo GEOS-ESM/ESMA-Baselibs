@@ -1,5 +1,16 @@
 # Changelog
 
+## [6.0.4] - 2019-12-30
+
+### Updates
+
+* HDF5 1.10.6
+* netCDF-C 4.7.3
+* NCO 4.9.1
+* nccmp 1.8.6.5
+* fArgParse v0.9.2
+* pFUnit v4.1.5
+
 ## [6.0.3] - 2019-12-11
 
 ### Updates
