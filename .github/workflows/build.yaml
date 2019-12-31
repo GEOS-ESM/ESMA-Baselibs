@@ -1,6 +1,8 @@
 name: Build baselibs
 
-on: [push]
+on:
+  release:
+    types: [published]
 
 jobs:
   build_baselibs:
