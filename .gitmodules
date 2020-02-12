@@ -1,30 +1,30 @@
 [submodule "zlib"]
 	path = zlib
-	url = git@github.com:madler/zlib.git
+	url = https://github.com/madler/zlib.git
 [submodule "jpeg"]
 	path = jpeg
-	url = git@github.com:libjpeg-turbo/ijg.git
+	url = https://github.com/libjpeg-turbo/ijg.git
 [submodule "curl"]
 	path = curl
-	url = git@github.com:curl/curl.git
+	url = https://github.com/curl/curl.git
 [submodule "hdf5"]
 	path = hdf5
 	url = https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
 [submodule "netcdf"]
 	path = netcdf
-	url = git@github.com:Unidata/netcdf-c.git
+	url = https://github.com/Unidata/netcdf-c.git
 [submodule "netcdf-fortran"]
 	path = netcdf-fortran
-	url = git@github.com:Unidata/netcdf-fortran.git
+	url = https://github.com/Unidata/netcdf-fortran.git
 [submodule "netcdf-cxx4"]
 	path = netcdf-cxx4
-	url = git@github.com:Unidata/netcdf-cxx4.git
+	url = https://github.com/Unidata/netcdf-cxx4.git
 [submodule "udunits2"]
 	path = udunits2
-	url = git@github.com:Unidata/UDUNITS-2.git
+	url = https://github.com/Unidata/UDUNITS-2.git
 [submodule "nco"]
 	path = nco
-	url = git@github.com:nco/nco.git
+	url = https://github.com/nco/nco.git
 [submodule "nccmp"]
 	path = nccmp
 	url = https://gitlab.com/remikz/nccmp.git
@@ -33,22 +33,22 @@
 	url = https://bitbucket.hdfgroup.org/scm/hdffr/hdf4.git
 [submodule "pFUnit"]
 	path = pFUnit
-	url = git@github.com:Goddard-Fortran-Ecosystem/pFUnit.git
+	url = https://github.com/Goddard-Fortran-Ecosystem/pFUnit.git
 [submodule "gFTL"]
 	path = gFTL
-	url = git@github.com:Goddard-Fortran-Ecosystem/gFTL.git
+	url = https://github.com/Goddard-Fortran-Ecosystem/gFTL.git
 [submodule "gFTL-shared"]
 	path = gFTL-shared
-	url = git@github.com:Goddard-Fortran-Ecosystem/gFTL-shared.git
+	url = https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared.git
 [submodule "pFlogger"]
 	path = pFlogger
-	url = git@github.com:Goddard-Fortran-Ecosystem/pFlogger.git
+	url = https://github.com/Goddard-Fortran-Ecosystem/pFlogger.git
 [submodule "fArgParse"]
 	path = fArgParse
-	url = git@github.com:Goddard-Fortran-Ecosystem/fArgParse.git
+	url = https://github.com/Goddard-Fortran-Ecosystem/fArgParse.git
 [submodule "esmf"]
 	path = esmf
 	url = https://git.code.sf.net/p/esmf/esmf
 [submodule "FLAP"]
 	path = FLAP
-	url = git@github.com:mathomp4/FLAP.git
+	url = https://github.com/mathomp4/FLAP.git
