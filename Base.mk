@@ -212,7 +212,7 @@
   ESMF_COMM ?= UNKNOWN
   ESMF_OS   := $(ARCH)
 
-  ifeq (,$(filter $(MAKECMDGOALS),verify download))
+  ifeq (,$(filter $(MAKECMDGOALS),verify download dist))
   ifeq ($(ESMF_COMM),UNKNOWN)
      $(error Cannot detect ESMF MPI stack; please set ESMF_COMM)
   endif

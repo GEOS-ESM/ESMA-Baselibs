@@ -19,6 +19,12 @@
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MKFILE_DIR := $(dir $(MKFILE_PATH))
 
+PACKAGE = ESMA-Baselibs
+VERSION = $(shell cat VERSION)
+DATE = $(shell date +"%Y%b%d")
+RELEASE_DIR = ..
+RELEASE_FILE = $(PACKAGE)-$(VERSION)-$(DATE)
+
 # System dependent defauls
 # ------------------------
   include Base.mk
@@ -167,6 +173,9 @@ endif
 TARGETS = all lib install
 
 download: antlr.download gsl.download szlib.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download
+
+dist: download
+	tar --exclude-tag-all='.noarchive' -czf $(RELEASE_DIR)/$(RELEASE_FILE).tar.gz $(MKFILE_DIR)
 
 verify: javac-check
 	@echo MKFILE_PATH = $(MKFILE_PATH)
