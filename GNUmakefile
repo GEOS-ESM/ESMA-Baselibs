@@ -213,7 +213,7 @@ verify: javac-check
 
 JAVACFOUND := $(shell command -v javac 2> /dev/null)
 
-prelim: javac-check echo-compilers baselibs-config versions
+prelim: javac-check echo-compilers baselibs-config versions download
 
 echo-compilers:
 	@mkdir -p $(prefix)/etc
