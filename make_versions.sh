@@ -163,6 +163,13 @@ then
    echo_version pFlogger "$PFLOGGER_VERSION" "$PFLOGGER_VERSION_LOC"
 fi
 
+YAFYAML_VERSION_LOC="yaFyaml/CMakeLists.txt"
+if [[ -e $YAFYAML_VERSION_LOC ]]
+then
+   YAFYAML_VERSION=$(grep -m1 '^ *VERSION' ${YAFYAML_VERSION_LOC} | awk '{print $2}')
+   echo_version yaFyaml "$YAFYAML_VERSION" "$YAFYAML_VERSION_LOC"
+fi
+
 FARGPARSE_VERSION_LOC="fArgParse/CMakeLists.txt"
 if [[ -e $FARGPARSE_VERSION_LOC ]]
 then

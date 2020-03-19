@@ -52,3 +52,6 @@
 [submodule "FLAP"]
 	path = FLAP
 	url = https://github.com/mathomp4/FLAP.git
+[submodule "yaFyaml"]
+	path = yaFyaml
+	url = https://github.com/Goddard-Fortran-Ecosystem/yaFyaml.git

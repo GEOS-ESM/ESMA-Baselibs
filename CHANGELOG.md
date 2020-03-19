@@ -1,5 +1,18 @@
 # Changelog
 
+## [6.0.5] - 2020-03-18
+
+### Added
+
+* yaFyaml 0.2.1
+
+### Updates
+
+* cURL 7.69.1
+* HDF4 4.2.14
+* NCO 4.9.2
+* pFlogger 1.3.1
+
 ## [6.0.4] - 2019-12-30
 
 ### Updates

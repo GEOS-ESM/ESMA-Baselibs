@@ -145,11 +145,12 @@ MKFILE_DIR := $(dir $(MKFILE_PATH))
 #                  --------------------------------
 
 ALLDIRS = antlr gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp esmf gFTL gFTL-shared fArgParse pFUnit FLAP \
-          hdfeos hdfeos5 SDPToolkit
+          udunits2 nco cdo nccmp esmf \
+          gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger \
+          FLAP hdfeos hdfeos5 SDPToolkit
 
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-                 esmf pFUnit gFTL gFTL-shared FLAP
+                 esmf pFUnit gFTL gFTL-shared yaFyaml pFlogger FLAP
 
 ifeq ('$(BUILD)','ESSENTIALS')
 SUBDIRS = $(ESSENTIAL_DIRS)
@@ -574,18 +575,25 @@ gFTL-shared.config: gFTL.install
 		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
 	@touch $@
 
-fArgParse.config: gFTL.install
+fArgParse.config: gFTL.install gFTL-shared.install
 	@echo "Configuring fArgParse"
 	@mkdir -p ./fArgParse/build
 	@(cd ./fArgParse/build; \
 		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
 	@touch $@
 
-pFlogger.config:
+pFlogger.config: gFTL.install gFTL-shared.install yaFyaml.install
 	@echo "Configuring pFlogger"
 	@mkdir -p ./pFlogger/build
 	@(cd ./pFlogger/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/pFlogger -DCMAKE_PREFIX_PATH=$(prefix) .. )
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
+	@touch $@
+
+yaFyaml.config: gFTL.install gFTL-shared.install
+	@echo "Configuring yaFyaml"
+	@mkdir -p ./yaFyaml/build
+	@(cd ./yaFyaml/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
 	@touch $@
 
 FLAP.config:
@@ -755,6 +763,12 @@ fArgParse.install: fArgParse.config
 pFlogger.install: pFlogger.config
 	@echo "Installing pFlogger"
 	@(cd ./pFlogger/build; \
+		$(MAKE) install )
+	@touch $@
+
+yaFyaml.install: yaFyaml.config
+	@echo "Installing yaFyaml"
+	@(cd ./yaFyaml/build; \
 		$(MAKE) install )
 	@touch $@
 
@@ -935,6 +949,14 @@ pFlogger.distclean:
 	@echo "Cleaning pFlogger"
 	@rm -rf ./pFlogger/build
 
+yaFyaml.clean:
+	@echo "Cleaning yaFyaml"
+	@rm -rf ./yaFyaml/build
+
+yaFyaml.distclean:
+	@echo "Cleaning yaFyaml"
+	@rm -rf ./yaFyaml/build
+
 FLAP.clean:
 	@echo "Cleaning FLAP"
 	@rm -rf ./FLAP/build
@@ -1007,6 +1029,12 @@ fArgParse.check: fArgParse.install pFUnit.install
 pFlogger.check: pFlogger.install pFUnit.install
 	@echo "Checking pFlogger"
 	@(cd ./pFlogger/build; \
+		$(MAKE) tests )
+	@touch $@
+
+yaFyaml.check: yaFyaml.install pFUnit.install
+	@echo "Checking yaFyaml"
+	@(cd ./yaFyaml/build; \
 		$(MAKE) tests )
 	@touch $@
 
