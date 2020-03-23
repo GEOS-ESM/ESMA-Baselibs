@@ -736,6 +736,18 @@ hdf5.install: hdf5.config
           $(MAKE) install)
 	@touch $@
 
+netcdf-fortran.install : netcdf-fortran.config
+	@echo "Installing netcdf-fortran $*"
+	@(cd netcdf-fortran; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
+          export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
+          $(MAKE) install ;\
+          $(MAKE) clean ;\
+          $(MAKE) install)
+	@touch $@
+
 netcdf-cxx4.install : netcdf-cxx4.config
 	@echo "Installing netcdf-cxx4 $*"
 	@(cd netcdf-cxx4/build; \
