@@ -743,9 +743,7 @@ netcdf-fortran.install : netcdf-fortran.config
           export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
-          $(MAKE) install ;\
-          $(MAKE) clean ;\
-          $(MAKE) install)
+          make -j1 install)
 	@touch $@
 
 netcdf-cxx4.install : netcdf-cxx4.config
