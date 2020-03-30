@@ -85,7 +85,8 @@ if [[ ! -L $MAINDIR/$package_name ]]
 then
    if [[ ! -e $MAINDIR/$package_name ]]
    then
-      ln -s $MAINDIR/$tar_dir_name $MAINDIR/$package_name
+      cd $MAINDIR
+      ln -s $tar_dir_name $package_name
    else
       echo "If you got here, this means you have a broken symlink, I think"
       exit 1
