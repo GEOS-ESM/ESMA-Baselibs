@@ -7,10 +7,19 @@ on:
     types: 
       - published
 
+
 jobs:
   build_baselibs:
     runs-on: ubuntu-latest
     container: gmao/mpi-openmpi-gcc-source:4.0.2
+    env:
+      LANGUAGE: en_US.UTF-8
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
+      LC_TYPE: en_US.UTF-8 
+      OMPI_ALLOW_RUN_AS_ROOT: 1
+      OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
+      OMPI_MCA_btl_vader_single_copy_mechanism: none
     steps:
       - name: Install git and dependencies
         run: |
@@ -38,11 +47,9 @@ jobs:
       - name: Build
         run: |
           make -j4 install ESMF_COMM=openmpi CONFIG_SETUP=${config}
-      - name: Check
+      - name: Verify
         run: |
-          grep -lr "mpirun -n" | xargs sed -i 's/mpirun\ -n/mpirun\ --allow-run-as-root\ -n/g'
-          grep -lr "mpiexec -n" | xargs sed -i 's/mpiexec\ -n/mpiexec\ --allow-run-as-root\ -n/g'
-          make -j4 check ESMF_COMM=openmpi
+          make verify
       - name: Check directory structure
         run: |
           cd ..
