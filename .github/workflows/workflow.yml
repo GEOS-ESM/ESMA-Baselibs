@@ -1,7 +1,11 @@
 name: Build Baselibs
 on:
+  push:
+    branches:
+      - master
   release:
-    types: [published]
+    types: 
+      - published
 
 jobs:
   build_baselibs:
