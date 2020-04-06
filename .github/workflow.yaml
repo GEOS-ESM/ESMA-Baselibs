@@ -1,0 +1,45 @@
+name: Build Baselibs
+on:
+  release:
+    types: [published]
+
+jobs:
+  build_baselibs:
+    runs-on: ubuntu-latest
+    container: gmao/mpi-openmpi-gcc-source:4.0.2
+    steps:
+      - name: Install git and dependencies
+        run: |
+          yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+          yum erase -y git
+          yum install -y git222-all 
+      - name: Install more dependencies
+        run: |
+          yum install -y byacc bison flex expat-devel texinfo tree epel-release
+          yum install -y file automake autoconf libtool which
+          yum install -y epel-release cmake3 && ln -s /usr/bin/cmake3 /usr/bin/cmake && ln -s /usr/bin/ccmake3 /usr/bin/ccmake
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          git submodule init
+          git submodule update
+      - name: Versions etc.
+        run: |
+          gfortran --version
+          mpirun --version
+          echo $BASEDIR
+      - name: Build
+        run: |
+          make -j4 install ESMF_COMM=openmpi CONFIG_SETUP=${config}
+      - name: Check
+        run: |
+          grep -lr "mpirun -n" | xargs sed -i 's/mpirun\ -n/mpirun\ --allow-run-as-root\ -n/g'
+          grep -lr "mpiexec -n" | xargs sed -i 's/mpiexec\ -n/mpiexec\ --allow-run-as-root\ -n/g'
+          make -j4 check ESMF_COMM=openmpi
+      - name: Check directory structure
+        run: |
+          cd ..
+          tree -L 2 x86_64-unknown-linux-gnu/Linux
