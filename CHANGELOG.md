@@ -2,15 +2,17 @@
 
 ## Unreleased
 
-### Changed
-  - Updated versions of GFE repositories
-    .   gFTL         v1.2.5
-    .   gFTL-shared  v1.0.4
-    .   fArgParse    v0.9.3
-    .   pFUnit       v4.1.7
-    .   yaFyaml      v0.3.0
-    .   pFlogger     v1.3.3
-    
+## [6.0.7]
+
+### Updates
+
+* gFTL v1.2.5
+* gFTL-shared v1.0.4
+* fArgParse v0.9.3
+* pFUnit v4.1.7
+* yaFyaml v0.3.0
+* pFlogger v1.3.3
+
 ## [6.0.6] - 2020-03-30
 
 ### Reverted

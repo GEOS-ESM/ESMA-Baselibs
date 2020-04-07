@@ -18,12 +18,13 @@
 
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MKFILE_DIR := $(dir $(MKFILE_PATH))
+MKFILE_DIRNAME := $(shell basename $(MKFILE_DIR))
 
 PACKAGE = ESMA-Baselibs
 VERSION = $(shell cat VERSION)
 DATE = $(shell date +"%Y%b%d")
-RELEASE_DIR = ..
-RELEASE_FILE = $(PACKAGE)-$(VERSION)-$(DATE)
+RELEASE_DIR = $(shell dirname $(MKFILE_DIR))
+RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 
 # System dependent defauls
 # ------------------------
@@ -155,8 +156,12 @@ ALLDIRS = antlr gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-
           gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger \
           FLAP hdfeos hdfeos5 SDPToolkit
 
+ifeq ($(ARCH),Darwin)
+   ALLDIRS := $(filter-out SDPToolkit,$(ALLDIRS))
+endif
+
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-                 esmf pFUnit gFTL gFTL-shared yaFyaml pFlogger FLAP
+                 esmf gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger FLAP
 
 ifeq ('$(BUILD)','ESSENTIALS')
 SUBDIRS = $(ESSENTIAL_DIRS)
@@ -175,11 +180,12 @@ TARGETS = all lib install
 download: antlr.download gsl.download szlib.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download
 
 dist: download
-	tar --exclude-tag-all='.noarchive' -czf $(RELEASE_DIR)/$(RELEASE_FILE).tar.gz $(MKFILE_DIR)
+	tar -czf $(RELEASE_DIR)/$(RELEASE_FILE).tar.gz -C $(RELEASE_DIR) $(MKFILE_DIRNAME)
 
 verify: javac-check
 	@echo MKFILE_PATH = $(MKFILE_PATH)
 	@echo MKFILE_DIR = $(MKFILE_DIR)
+	@echo MKFILE_DIRNAME = $(MKFILE_DIRNAME)
 	@echo SUBDIRS = $(SUBDIRS)
 	@echo BUILD_DAP = $(BUILD_DAP)
 	@ argv="$(SUBDIRS)" ;\
@@ -248,7 +254,7 @@ baselibs-config: baselibs-config.mk
 	@cp VERSION $(prefix)/etc
 	@cp CHANGELOG.md $(prefix)/etc
 	@cp ChangeLog-preV6 $(prefix)/etc
-	@cp CONTENTS $(prefix)/etc
+	@cp README.md $(prefix)/etc
 	@$(if $(MODULECMD),$(MODULECMD) sh list -t >& $(prefix)/etc/MODULES,echo "TCL Modules not found")
 	@$(if $(LMODULECMD),$(shell echo $(LOADEDMODULES) >& $(prefix)/etc/MODULES),echo "Lua Modules not found")
 	@rm -f $(prefix)/etc/CONFIG
@@ -377,12 +383,12 @@ hdf5.config: hdf5/README.txt hdf4.install szlib.install zlib.install
                       CFLAGS="$(CFLAGS)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	touch $@
 
-ifeq ('$(BUILD)','ESSENTIALS')
-BUILD_DAP = --disable-dap
-LIB_CURL = 
-else
+ifneq ($(filter curl,$(SUBDIRS)),)
 BUILD_DAP = --enable-dap
 LIB_CURL = $(shell $(prefix)/bin/curl-config --libs)	
+else
+BUILD_DAP = --disable-dap
+LIB_CURL =
 endif
 netcdf.config : netcdf/configure
 	@echo "Configuring netcdf $*"

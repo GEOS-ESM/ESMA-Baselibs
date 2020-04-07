@@ -1,5 +1,5 @@
                     Installing the Git ESMA Baselibs
-                                Jul 2019
+                                Apr 2020
                     --------------------------------
 
 0) REQUIREMENTS
@@ -9,15 +9,15 @@
    - Fortran compiler. Tested compilers are GNU, Intel, and PGI. 
      NAG support is under development
 
-   - The MPI library. On a Linux desktop/laptop, OpenMPI is recommended.
+   - The MPI library. On a Linux desktop/laptop, Open MPI is recommended.
      Make sure mpicc, mpifort, etc is on your path. Try compiling a simple
      "Hello, world!" program with mpicc and running it; sometimes you need
      to set your LD_LIBRARY_PATH so that the runtime MPI libraries can be
      found.
 
-     Linux Note: many Linux distributions now have OpenMPI packages. 
+     Linux Note: many Linux distributions now have Open MPI packages. 
                  However these either lack Fortran altogether or
-                 use gfortran. You must have OpenMPI with Fortran
+                 use gfortran. You must have Open MPI with Fortran
                  support, and the Fortran compiler used to build MPI
                  must the Fortran compiler you will be using.
 
@@ -36,10 +36,10 @@
 1) GETTING THE SOURCES
 
    For checking out the software from developer.nasa.gov, first
-   get a tag from someone, for example 5.2.7. Then issue the git
+   get a tag from someone, for example v6.0.7. Then issue the git
    command:
 
-    git clone --recursive -b 5.2.7 git@developer.nasa.gov:mathomp4/ESMA-Baselibs.git ESMA-Baselibs-5.2.7/src
+    git clone --recurse-submodules -b v6.0.7 https://github.com/GEOS-ESM/ESMA-Baselibs.git
 
 
 2) QUICK INSTALL
