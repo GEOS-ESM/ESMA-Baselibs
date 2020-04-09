@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Updates
+
+* gFTL-shared v1.0.5
+* pFlogger v1.3.4
+
 ## [6.0.7]
 
 ### Updates
