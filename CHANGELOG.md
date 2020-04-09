@@ -1,13 +1,13 @@
 # Changelog
 
-## Unreleased
+## [6.0.8] - 2020-04-09
 
 ### Updates
 
 * gFTL-shared v1.0.5
 * pFlogger v1.3.4
 
-## [6.0.7]
+## [6.0.7] - 2020-04-07
 
 ### Updates
 
