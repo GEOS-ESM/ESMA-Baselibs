@@ -1067,7 +1067,7 @@ yaFyaml.check: yaFyaml.install pFUnit.install
 	@rm -rf ./yaFyaml/build
 	@mkdir -p ./yaFyaml/build
 	@(cd ./yaFyaml/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
 		$(MAKE) tests )
 	@touch $@
 
