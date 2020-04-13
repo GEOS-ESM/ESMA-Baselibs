@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.0.9] - 2020-04-13
+
+### Updates
+
+* yaFyaml v0.3.1
+* pFlogger v1.3.5
+
 ## [6.0.8] - 2020-04-09
 
 ### Updates
