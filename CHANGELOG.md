@@ -1,5 +1,11 @@
 # Changelog
 
+## [6.0.10] - 2020-04-13
+
+### Fixed
+
+* Build pFlogger with `Release` flags
+
 ## [6.0.9] - 2020-04-13
 
 ### Updates

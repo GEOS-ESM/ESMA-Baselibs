@@ -601,7 +601,7 @@ pFlogger.config: gFTL.install gFTL-shared.install yaFyaml.install
 	@echo "Configuring pFlogger"
 	@mkdir -p ./pFlogger/build
 	@(cd ./pFlogger/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_BUILD_TYPE=Release .. )
 	@touch $@
 
 yaFyaml.config: gFTL.install gFTL-shared.install
