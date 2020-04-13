@@ -1023,7 +1023,7 @@ pFUnit.check: pFUnit.install
 
 gFTL.check: gFTL.install pFUnit.install
 	@echo "Checking gFTL"
-	@echo "This requires a new CMake, so we remove old build"
+	@echo "This could require a new CMake for pFUnit, so we remove old build"
 	@rm -rf ./gFTL/build
 	@mkdir -p ./gFTL/build
 	@(cd ./gFTL/build; \
@@ -1033,7 +1033,7 @@ gFTL.check: gFTL.install pFUnit.install
 
 gFTL-shared.check: gFTL-shared.install pFUnit.install
 	@echo "Checking gFTL-shared"
-	@echo "This requires a new CMake, so we remove old build"
+	@echo "This could require a new CMake for pFUnit, so we remove old build"
 	@rm -rf ./gFTL-shared/build
 	@mkdir -p ./gFTL-shared/build
 	@(cd ./gFTL-shared/build; \
@@ -1053,13 +1053,21 @@ fArgParse.check: fArgParse.install pFUnit.install
 
 pFlogger.check: pFlogger.install pFUnit.install
 	@echo "Checking pFlogger"
+	@echo "This could require a new CMake for pFUnit, so we remove old build"
+	@rm -rf ./pFlogger/build
+	@mkdir -p ./pFlogger/build
 	@(cd ./pFlogger/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_BUILD_TYPE=Release .. ;\
 		$(MAKE) tests )
 	@touch $@
 
 yaFyaml.check: yaFyaml.install pFUnit.install
 	@echo "Checking yaFyaml"
+	@echo "This could require a new CMake for pFUnit, so we remove old build"
+	@rm -rf ./yaFyaml/build
+	@mkdir -p ./yaFyaml/build
 	@(cd ./yaFyaml/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
 		$(MAKE) tests )
 	@touch $@
 
