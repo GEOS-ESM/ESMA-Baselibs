@@ -1,5 +1,18 @@
 # Changelog
 
+## [6.0.12] - 2020-05-XX
+
+### Updates
+
+* FLAP geos/v1.9.0
+
+### Fixed
+
+* Added `patches/` directory to contain two patches:
+   * A patch for ESMF on macOS for intelclang
+   * A patch for HDF5 when using NAG
+   * Updates to `GNUmakefile` to use the patches
+
 ## [6.0.11] - 2020-04-17
 
 ### Updates

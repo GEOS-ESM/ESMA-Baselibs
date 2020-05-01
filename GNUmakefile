@@ -131,7 +131,6 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      FORTRAN_VERSION = -V
      NAG_FCFLAGS = -fpp -mismatch_all
      NAG_DUSTY = -dusty
-     HDF5_ENABLE_F2003 = --disable-fortran2003
   endif
 
 # Building with PGI on Darwin (Community Edition) does not quite work. 
@@ -368,9 +367,15 @@ hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
                       CFLAGS="$(CFLAGS)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
-hdf5.config: hdf5/README.txt hdf4.install szlib.install zlib.install
-	@echo Configuring hdf5
-	@(cd hdf5; \
+ifeq ($(FC),nagfor)
+hdf5.config :: hdf5/README.txt
+	@echo Patching HDF5 for NAG
+	patch -p1 < ./patches/hdf5/nag.configure.patch
+endif
+
+hdf5.config :: hdf5/README.txt hdf4.install szlib.install zlib.install
+	echo Configuring hdf5
+	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export LDFLAGS="-lm" ;\
           ./configure --prefix=$(prefix) \
@@ -382,6 +387,12 @@ hdf5.config: hdf5/README.txt hdf4.install szlib.install zlib.install
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
                       CFLAGS="$(CFLAGS)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	touch $@
+
+ifeq ($(FC),nagfor)
+hdf5.config :: hdf5/README.txt
+	@echo Unpatching HDF5 for NAG
+	patch -p1 -R < ./patches/hdf5/nag.configure.patch
+endif
 
 ifneq ($(filter curl,$(SUBDIRS)),)
 BUILD_DAP = --enable-dap
@@ -655,6 +666,9 @@ gsl.config : gsl.download gsl/configure
 	@touch $@
 
 esmf.config : esmf_rules.mk netcdf-fortran.install
+	@echo "Patching esmf"
+	@patch -p1 -R < patches/esmf/Darwin.intelclang.patch
+	@patch -p1 < patches/esmf/Darwin.intelclang.patch
 	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
 
 hdfeos.download : scripts/download_hdfeos.bash

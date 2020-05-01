@@ -36,7 +36,7 @@ For installation instructions, see file INSTALL.
 | [NCO](http://nco.sourceforge.net/)                                       | 4.9.1       |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 1.9.8       |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.8.6.5     |
-| [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.5.0 |
+| [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.9.0 |
 | [HDF-EOS2](http://hdfeos.org/software/library.php)                       | 2.20        |
 | [HDF-EOS5](http://hdfeos.org/software/library.php)                       | 1.16        |
 | [SDP Toolkit](https://newsroom.gsfc.nasa.gov/sdptoolkit/TKDownload.html) | 5.2.20      |

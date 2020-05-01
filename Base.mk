@@ -107,7 +107,12 @@
         ES_CC := pgcc
   else
   ifneq ($(wildcard $(shell which gcc 2> /dev/null)),)
+    ifneq (,$(findstring clang,$(ESMF_COMPILER)))
+        CC := clang
+        ES_CC := clang
+    else
         ES_CC := gcc
+    endif
   else
         ES_CC  := UNKNOWN
   endif
@@ -123,7 +128,12 @@
         ES_CXX := pgc++
   else
   ifneq ($(wildcard $(shell which g++ 2> /dev/null)),)
+    ifneq (,$(findstring clang,$(ESMF_COMPILER)))
+        CXX := clang++
+        ES_CXX := clang++
+    else
         ES_CXX := g++
+    endif
   else
         ES_CXX := UNKNOWN
   endif
