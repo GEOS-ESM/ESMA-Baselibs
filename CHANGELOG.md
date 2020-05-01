@@ -1,9 +1,13 @@
 # Changelog
 
-## [6.0.12] - 2020-05-XX
+## [6.0.12] - 2020-05-01
 
 ### Updates
 
+* cURL 7.70.0
+* netCDF-C 4.7.4
+* nccmp 1.8.7.0
+* pFlogger v1.4.1
 * FLAP geos/v1.9.0
 
 ### Fixed

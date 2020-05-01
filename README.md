@@ -15,7 +15,7 @@ For installation instructions, see file INSTALL.
 | Library                                                                  | Version     |
 | ---                                                                      | ---         |
 | [ESMF](https://www.earthsystemcog.org/projects/esmf/)                    | 8.0.1beta02 |
-| [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.7.3       |
+| [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.7.4       |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.5.2       |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1       |
 | [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.10.6      |
@@ -25,17 +25,17 @@ For installation instructions, see file INSTALL.
 | [gFTL-shared](https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared)  | v1.0.5      |
 | [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)      | v0.9.3      |
 | [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)          | v0.3.1      |
-| [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)        | v1.4.0      |
+| [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)        | v1.4.1      |
 | [antlr](https://www.antlr.org/)                                          | 2.7.7       |
 | [GSL](https://www.gnu.org/software/gsl/)                                 | 2.6         |
 | [jpeg](http://www.ijg.org/)                                              | 9c          |
 | [zlib](http://www.zlib.net/)                                             | 1.2.11      |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                  | 2.1.1       |
-| [cURL](https://curl.haxx.se/)                                            | 7.69.1      |
+| [cURL](https://curl.haxx.se/)                                            | 7.70.0      |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                         | 2.2.26      |
 | [NCO](http://nco.sourceforge.net/)                                       | 4.9.1       |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 1.9.8       |
-| [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.8.6.5     |
+| [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.8.7.0     |
 | [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.9.0 |
 | [HDF-EOS2](http://hdfeos.org/software/library.php)                       | 2.20        |
 | [HDF-EOS5](http://hdfeos.org/software/library.php)                       | 1.16        |
