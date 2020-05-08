@@ -46,9 +46,6 @@
 [submodule "fArgParse"]
 	path = fArgParse
 	url = https://github.com/Goddard-Fortran-Ecosystem/fArgParse.git
-[submodule "esmf"]
-	path = esmf
-	url = https://git.code.sf.net/p/esmf/esmf
 [submodule "FLAP"]
 	path = FLAP
 	url = https://github.com/mathomp4/FLAP.git
