@@ -8,7 +8,7 @@
 * gFTL-shared v1.0.7
 * pFUnit v4.1.7
 * fArgParse v0.9.5
-* yaFyaml v0.3.2
+* yaFyaml v0.3.3
 
 ### Fixed
 
