@@ -144,6 +144,19 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      endif
   endif
 
+# HDF4 and netCDF-Fortran has a bug with GCC 10.1
+# -----------------------------------------------
+
+  ifeq ($(FC),gfortran)
+     GFORTRAN_VERSION_GTE_10 := $(shell expr `$(FC) -dumpversion | cut -f1 -d.` \>= 10)
+     export GFORTRAN_VERSION_GTE_10
+     ifeq ($(GFORTRAN_VERSION_GTE_10),1)
+        ALLOW_ARGUMENT_MISMATCH := -fallow-argument-mismatch
+        ALLOW_INVALID_BOZ := -fallow-invalid-boz
+        export ALLOW_ARGUMENT_MISMATCH ALLOW_INVALID_BOZ
+     endif
+  endif
+
 #-------------------------------------------------------------------------
 
 #                  --------------------------------
@@ -187,6 +200,8 @@ verify: javac-check
 	@echo MKFILE_DIRNAME = $(MKFILE_DIRNAME)
 	@echo SUBDIRS = $(SUBDIRS)
 	@echo BUILD_DAP = $(BUILD_DAP)
+	@echo GFORTRAN_VERSION_GTE_10 = $(GFORTRAN_VERSION_GTE_10)
+	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
 	@ argv="$(SUBDIRS)" ;\
         ( echo "-------+---------+---------+--------------" );  \
         ( echo "Config | Install |  Check  |   Package" );      \
@@ -363,7 +378,7 @@ hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
                       --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
                       --disable-netcdf \
-                      CFLAGS="$(CFLAGS)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
+                      CFLAGS="$(CFLAGS)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
 ifeq ($(FC),nagfor)
@@ -393,7 +408,7 @@ hdf5.config :: hdf5/README.txt
 	patch -p1 -R < ./patches/hdf5/nag.configure.patch
 endif
 
-ifneq ($(filter curl,$(SUBDIRS)),)
+ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
 BUILD_DAP = --enable-dap
 LIB_CURL = $(shell $(prefix)/bin/curl-config --libs)	
 else
@@ -431,7 +446,7 @@ netcdf-fortran.config : netcdf-fortran/configure netcdf.install
                       $(NC_PAR_TESTS) \
                       --disable-shared \
                       --enable-f90 \
-                      FFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS)" FCFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS)" \
+                      FFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS) $(ALLOW_ARGUMENT_MISMATCH)" FCFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS) $(ALLOW_ARGUMENT_MISMATCH)" \
                       CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
@@ -665,9 +680,6 @@ gsl.config : gsl.download gsl/configure
 	@touch $@
 
 esmf.config : esmf_rules.mk netcdf-fortran.install
-	@echo "Patching esmf"
-	@patch -p1 -R < patches/esmf/Darwin.intelclang.patch
-	@patch -p1 < patches/esmf/Darwin.intelclang.patch
 	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
 
 hdfeos.download : scripts/download_hdfeos.bash
@@ -754,6 +766,32 @@ hdf5.install: hdf5.config
           "$(HDF5_DEEPBIND)" ;\
           $(MAKE) install)
 	@touch $@
+
+ifeq ($(GFORTRAN_VERSION_GTE_10),1)
+ifeq ("$(BUILD_DAP)","--enable-dap")
+netcdf.install :: netcdf.config
+	@echo Patching netCDF-C ocprint for GCC 10
+	patch -p1 < ./patches/netcdf/netcdf.ocprint.patch
+endif
+endif
+
+netcdf.install :: netcdf.config
+	@echo "Installing netcdf $*"
+	@(cd netcdf; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          export CPPFLAGS="$(CPPFLAGS) $(NC_CPPFLAGS) $(INC_SUPP)";\
+          export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
+          export LIBS="-L$(prefix)/lib -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          $(MAKE) install)
+	@touch $@
+
+ifeq ($(GFORTRAN_VERSION_GTE_10),1)
+ifeq ("$(BUILD_DAP)","--enable-dap")
+netcdf.install :: netcdf.config
+	@echo Unpatching netCDF-C ocprint for GCC 10
+	patch -p1 -R < ./patches/netcdf/netcdf.ocprint.patch
+endif
+endif
 
 netcdf-fortran.install : netcdf-fortran.config
 	@echo "Installing netcdf-fortran $*"
@@ -919,6 +957,9 @@ SDPToolkit.install: SDPToolkit.config
 
 esmf.install : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) install
+
+esmf.info : esmf_rules.mk
+	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) info
 
 esmf.examples : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) examples

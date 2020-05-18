@@ -78,11 +78,19 @@ endif
     endif
   endif
 
+# ESMF with GCC 10.1 needs extra flags
+# ------------------------------------
+
+  ifeq ($(GFORTRAN_VERSION_GTE_10),1)
+     ESMF_F90COMPILEOPTS += $(ALLOW_ARGUMENT_MISMATCH) $(ALLOW_INVALID_BOZ)
+  endif
+
   $(warning Using $(ESMF_COMPILER) as the ESMF compiler (FC=$(FC)))
   $(warning Using $(ESMF_MACHINE)  as the ESMF machine)
   $(warning Using $(ESMF_OS)  as the ESMF OS)
   $(warning Using $(ESMF_PYTHON)  as the ESMF python)
   $(warning Using $(ESMF_SED)  as the ESMF sed)
+  $(warning Using $(ESMF_F90COMPILEOPTS)  as the ESMF F90COMPILEOPTS)
 
 #      ESMF_COMM 
 #      ESMF_ABI
@@ -108,7 +116,7 @@ endif
      export ESMF_NETCDF ESMF_NETCDF_INCLUDE ESMF_NETCDF_LIBPATH ESMF_NETCDF_LIBS
   endif
 
-export ESMF_DIR ESMF_BOPT ESMF_COMPILER ESMF_INSTALL_PREFIX ESMF_OS ESMF_INSTALL_HEADERDIR ESMF_INSTALL_MODDIR ESMF_INSTALL_LIBDIR ESMF_INSTALL_BINDIR
+export ESMF_DIR ESMF_BOPT ESMF_COMPILER ESMF_INSTALL_PREFIX ESMF_OS ESMF_INSTALL_HEADERDIR ESMF_INSTALL_MODDIR ESMF_INSTALL_LIBDIR ESMF_INSTALL_BINDIR ESMF_F90COMPILEOPTS
 
 esmf.config config: 
 	@echo "Customized ESMF build step $@..."

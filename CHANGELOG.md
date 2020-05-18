@@ -2,9 +2,29 @@
 
 ## [Unreleased]
 
+### Updates
+
+* ESMF 8_0_1_beta_snapshot_13
+* gFTL-shared v1.0.7
+* pFUnit v4.1.7
+* fArgParse v0.9.5
+* yaFyaml v0.3.2
+
+### Fixed
+
+* Fixes for GCC 10
+  * Added patch for netcdf issue with GCC 10
+  * Added flag for HDF4 when using GCC 10
+  * Need to pass in extra flags to ESMF when using GCC 10
+* Fix for detection for `--enable-dap` with netcdf
+
 ### Changed
 
 * Move to use ESMF GitHub repo
+
+### Removed
+
+* Removed patching of ESMF with move to snapshot 13
 
 ## [6.0.12] - 2020-05-01
 

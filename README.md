@@ -14,17 +14,17 @@ For installation instructions, see file INSTALL.
 
 | Library                                                                  | Version     |
 | ---                                                                      | ---         |
-| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                    | 8.0.1beta02 |
+| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                    | 8.0.1beta13 |
 | [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.7.4       |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.5.2       |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1       |
 | [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.10.6      |
 | [HDF4](https://portal.hdfgroup.org/display/support)                      | 4.2.15      |
-| [pFUnit](https://github.com/Goddard-Fortran-Ecosystem/pFUnit)            | v4.1.7      |
+| [pFUnit](https://github.com/Goddard-Fortran-Ecosystem/pFUnit)            | v4.1.8      |
 | [gFTL](https://github.com/Goddard-Fortran-Ecosystem/gFTL)                | v1.2.5      |
-| [gFTL-shared](https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared)  | v1.0.5      |
-| [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)      | v0.9.3      |
-| [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)          | v0.3.1      |
+| [gFTL-shared](https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared)  | v1.0.7      |
+| [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)      | v0.9.5      |
+| [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)          | v0.3.2      |
 | [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)        | v1.4.1      |
 | [antlr](https://www.antlr.org/)                                          | 2.7.7       |
 | [GSL](https://www.gnu.org/software/gsl/)                                 | 2.6         |
