@@ -11,7 +11,7 @@ on:
 jobs:
   build_baselibs:
     runs-on: ubuntu-latest
-    container: gmao/mpi-openmpi-gcc-source:4.0.2
+    container: gmao/mpi-openmpi-gcc-source:4.0.3
     env:
       LANGUAGE: en_US.UTF-8
       LC_ALL: en_US.UTF-8
@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Install git and dependencies
         run: |
-          yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+          yum install -y https://repo.ius.io/ius-release-el7.rpm
           yum erase -y git
           yum install -y git222-all 
       - name: Install more dependencies
