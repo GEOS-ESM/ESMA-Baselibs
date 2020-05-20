@@ -25,7 +25,7 @@ For installation instructions, see file INSTALL.
 | [gFTL-shared](https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared)  | v1.0.7      |
 | [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)      | v0.9.5      |
 | [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)          | v0.3.3      |
-| [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)        | v1.4.1      |
+| [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)        | v1.4.2      |
 | [antlr](https://www.antlr.org/)                                          | 2.7.7       |
 | [GSL](https://www.gnu.org/software/gsl/)                                 | 2.6         |
 | [jpeg](http://www.ijg.org/)                                              | 9c          |
