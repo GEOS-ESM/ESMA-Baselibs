@@ -4,7 +4,7 @@
 
 ### Updates
 
-* ESMF 8_0_1_beta_snapshot_13
+* ESMF 8_0_1_beta_snapshot_15
 * gFTL-shared v1.0.7
 * pFUnit v4.1.7
 * pFlogger v1.4.2
