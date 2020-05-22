@@ -1,10 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [6.0.13] - 2020-05-22
 
 ### Updates
 
-* ESMF 8_0_1_beta_snapshot_15
+* ESMF 8.0.1
 * gFTL-shared v1.0.7
 * pFUnit v4.1.7
 * pFlogger v1.4.2
