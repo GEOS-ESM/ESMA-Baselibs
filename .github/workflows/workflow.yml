@@ -7,11 +7,10 @@ on:
     types: 
       - published
 
-
 jobs:
   build_baselibs:
     runs-on: ubuntu-latest
-    container: gmao/mpi-openmpi-gcc-source:4.0.3
+    container: gmao/mpi-openmpi-gcc-source:4.0.3-gcc_9.3.0
     env:
       LANGUAGE: en_US.UTF-8
       LC_ALL: en_US.UTF-8
