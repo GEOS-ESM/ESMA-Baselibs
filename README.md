@@ -33,7 +33,7 @@ For installation instructions, see file INSTALL.
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                  | 2.1.1       |
 | [cURL](https://curl.haxx.se/)                                            | 7.70.0      |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                         | 2.2.26      |
-| [NCO](http://nco.sourceforge.net/)                                       | 4.9.1       |
+| [NCO](http://nco.sourceforge.net/)                                       | 4.9.2       |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 1.9.8       |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.8.7.0     |
 | [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.9.0 |
