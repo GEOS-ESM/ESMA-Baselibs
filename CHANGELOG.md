@@ -12,7 +12,7 @@
 
 * ESMF 8.0.1
 * gFTL-shared v1.0.7
-* pFUnit v4.1.7
+* pFUnit v4.1.8
 * pFlogger v1.4.2
 * fArgParse v0.9.5
 * yaFyaml v0.3.3
