@@ -37,9 +37,9 @@ For installation instructions, see file INSTALL.
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 1.9.8       |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.8.7.0     |
 | [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.9.0 |
-| [HDF-EOS2](http://hdfeos.org/software/library.php)                       | 2.20        |
-| [HDF-EOS5](http://hdfeos.org/software/library.php)                       | 1.16        |
-| [SDP Toolkit](https://newsroom.gsfc.nasa.gov/sdptoolkit/TKDownload.html) | 5.2.20      |
+| [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                  | 2.20        |
+| [HDF-EOS5](https://wiki.earthdata.nasa.gov/display/DAS)                  | 1.16        |
+| [SDP Toolkit](https://wiki.earthdata.nasa.gov/display/DAS)               | 5.2.20      |
 
 For additional information, contact Matthew.Thompson@nasa.gov
 

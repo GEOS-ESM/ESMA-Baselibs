@@ -6,7 +6,7 @@
 
 package_name='hdfeos'
 tarball='HDF-EOS2.20v1.00.tar.Z'
-base_url='https://observer.gsfc.nasa.gov/ftp/edhs/hdfeos/latest_release/'
+base_url='https://git.earthdata.nasa.gov/rest/git-lfs/storage/DAS/hdfeos/cb0f900d2732ab01e51284d6c9e90d0e852d61bba9bce3b43af0430ab5414903?response-content-disposition=attachment%3B%20filename%3D%22HDF-EOS2.20v1.00.tar.Z%22%3B%20filename*%3Dutf-8%27%27HDF-EOS2.20v1.00.tar.Z'
 
 export LMOD_SH_DBG_ON=0
 
@@ -52,7 +52,7 @@ fi
 # ---------------
 if [[ ! -f ${SCRIPTDIR}/${tarball} ]]
 then
-   $fetch $SCRIPTDIR/${tarball} ${base_url}${tarball}
+   $fetch $SCRIPTDIR/${tarball} ${base_url}
 fi
 
 # ------------------

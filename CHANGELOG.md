@@ -10,6 +10,10 @@
 * pFUnit v4.1.9
 * yaFyaml v0.3.5
 
+### Changed
+
+* Download URLs for HDF-EOS2, HDF-EOS5, and SDP Toolkit have changed due to changes in hosting.
+ 
 ## [6.0.13] - 2020-05-22
 
 ### Updates

@@ -6,7 +6,7 @@
 
 package_name='SDPToolkit'
 tarball='SDPTK5.2.20v1.01.tar.Z'
-base_url='https://observer.gsfc.nasa.gov/ftp/edhs/sdptk/latest_release/'
+base_url='https://git.earthdata.nasa.gov/rest/git-lfs/storage/DAS/sdptoolkit/a7ccbb33de2fddf1bafb718cd2d57b9f7ea0416cd80ccb4cf03bd1ec9080d96b?response-content-disposition=attachment%3B%20filename%3D%22SDPTK5.2.20v1.01.tar.Z%22%3B%20filename*%3Dutf-8%27%27SDPTK5.2.20v1.01.tar.Z'
 
 export LMOD_SH_DBG_ON=0
 
@@ -52,7 +52,7 @@ fi
 # ---------------
 if [[ ! -f ${SCRIPTDIR}/${tarball} ]]
 then
-   $fetch $SCRIPTDIR/${tarball} ${base_url}${tarball}
+   $fetch $SCRIPTDIR/${tarball} ${base_url}
 fi
 
 # ------------------
