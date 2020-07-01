@@ -31,7 +31,7 @@ For installation instructions, see file INSTALL.
 | [jpeg](http://www.ijg.org/)                                              | 9c          |
 | [zlib](http://www.zlib.net/)                                             | 1.2.11      |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                  | 2.1.1       |
-| [cURL](https://curl.haxx.se/)                                            | 7.71.0      |
+| [cURL](https://curl.haxx.se/)                                            | 7.71.1      |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                         | 2.2.26      |
 | [NCO](http://nco.sourceforge.net/)                                       | 4.9.3       |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 1.9.8       |
