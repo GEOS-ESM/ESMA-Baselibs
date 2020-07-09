@@ -61,8 +61,8 @@ ifeq ($(ARCH),Linux)
    CFLAGS := -fPIC 
    export CFLAGS
 
-   # Gentoo puts tiprc files in a weird place
-   ifneq (,$(wildcard /etc/gentoo-release))
+   # Gentoo and Fedora put tiprc files in a weird place
+   ifneq (,$(wildcard /usr/include/tirpc/.))
       INC_EXTRA += -I/usr/include/tirpc
       LIB_EXTRA += -ltirpc
    endif

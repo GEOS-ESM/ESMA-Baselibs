@@ -10,6 +10,11 @@
 * pFUnit v4.1.9
 * yaFyaml v0.4.0
 
+### Fixed
+
+* The tirpc workaround in `Arch.mk` also needs to be used on Fedora, so
+  the detection is generalized
+
 ### Changed
 
 * Download URLs for HDF-EOS2, HDF-EOS5, and SDP Toolkit have changed due to changes in hosting.
