@@ -8,7 +8,7 @@
 * netCDF-Fortran 4.5.3
 * NCO 4.9.3
 * pFUnit v4.1.9
-* yaFyaml v0.3.5
+* yaFyaml v0.4.0
 
 ### Changed
 
