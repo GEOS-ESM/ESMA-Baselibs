@@ -16,7 +16,7 @@ For installation instructions, see file INSTALL.
 | ---                                                                      | ---         |
 | [ESMF](https://www.earthsystemcog.org/projects/esmf/)                    | 8.0.1       |
 | [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.7.4       |
-| [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.5.3       |
+| [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.5.2       |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1       |
 | [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.10.6      |
 | [HDF4](https://portal.hdfgroup.org/display/support)                      | 4.2.15      |

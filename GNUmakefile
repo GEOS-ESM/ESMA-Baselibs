@@ -144,8 +144,8 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      endif
   endif
 
-# HDF4 has a bug with GCC 10.1
-# ----------------------------
+# HDF4 and netCDF-Fortran has a bug with GCC 10.1
+# -----------------------------------------------
 
   ifeq ($(FC),gfortran)
      GFORTRAN_VERSION_GTE_10 := $(shell expr `$(FC) -dumpversion | cut -f1 -d.` \>= 10)
@@ -446,7 +446,7 @@ netcdf-fortran.config : netcdf-fortran/configure netcdf.install
                       $(NC_PAR_TESTS) \
                       --disable-shared \
                       --enable-f90 \
-                      FFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS)" FCFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS)" \
+                      FFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS) $(ALLOW_ARGUMENT_MISMATCH)" FCFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS) $(ALLOW_ARGUMENT_MISMATCH)" \
                       CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
