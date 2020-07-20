@@ -83,13 +83,22 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
     endif
   endif
 
+# Testing with MVAPICH2 and ifort showed this flag was needed
+# -----------------------------------------------------------
+#
+  ifeq ($(FC), ifort)
+    ifeq ($(ESMF_COMM),mvapich2)
+      PTHREAD_FLAG = -pthread
+    endif
+  endif
+
 # netCDF has an issue with Intel 15+. It must be compiled with -g -O0 to
 # avoid the problem (which manifests as a crash in ESMF_cfio where in a
 # FPE is thrown in an NF90_DEF_VAR for time!).
 # ----------------------------------------------------------------------
 
   ifeq ($(FC), ifort)
-     NC_CFLAGS = "-g -O0"
+     NC_CFLAGS = -g -O0
   endif
 
 # HDF5, MVAPICH2 2.1rc1 (at least), and SLES 11 SP3 have an issue. Aaron
