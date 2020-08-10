@@ -181,8 +181,8 @@ ifeq ($(ARCH),Darwin)
    ALLDIRS := $(filter-out SDPToolkit,$(ALLDIRS))
 endif
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-                 esmf gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger FLAP
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf \
+                 gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger FLAP
 
 ifeq ('$(BUILD)','ESSENTIALS')
 SUBDIRS = $(ESSENTIAL_DIRS)
