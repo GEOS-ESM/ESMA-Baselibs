@@ -7,6 +7,7 @@
 * cURL 7.71.1
 * NCO 4.9.3
 * pFUnit v4.1.10
+* pFlogger v1.4.3
 * yaFyaml v0.4.0
 
 ### Fixed
