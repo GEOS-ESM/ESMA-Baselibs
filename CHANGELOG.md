@@ -1,6 +1,11 @@
 # Changelog
 # 
 ## Unreleased
+### Updates
+### Fixed
+### Changed
+
+## [6.0.14] - 2020-08-12
 
 ### Updates
 
