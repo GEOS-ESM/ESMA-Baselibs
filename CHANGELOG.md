@@ -1,7 +1,14 @@
 # Changelog
 # 
 ## Unreleased
+
 ### Updates
+
+* cURL 7.72.0
+* pFUnit v4.1.12
+* pFlogger v1.4.4
+* yaFyaml v0.4.1
+
 ### Fixed
 ### Changed
 
