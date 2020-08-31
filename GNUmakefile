@@ -181,6 +181,16 @@ ifeq ($(ARCH),Darwin)
    ALLDIRS := $(filter-out SDPToolkit,$(ALLDIRS))
 endif
 
+ifeq ($(MACH),aarch64)
+   NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
+   ALLDIRS := $(filter-out $(NO_ARM_DIRS),$(ALLDIRS))
+   ENABLE_HDF4 = --disable-hdf4
+   LIB_HDF4 =
+else
+   ENABLE_HDF4 = --enable-hdf4
+   LIB_HDF4 = -lmfhdf -ldf
+endif
+
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf \
                  gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger FLAP
 
@@ -396,7 +406,7 @@ hdf5.config :: hdf5/README.txt
 	patch -p1 < ./patches/hdf5/nag.configure.patch
 endif
 
-hdf5.config :: hdf5/README.txt hdf4.install szlib.install zlib.install
+hdf5.config :: hdf5/README.txt szlib.install zlib.install
 	echo Configuring hdf5
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -430,10 +440,10 @@ netcdf.config : netcdf/configure
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(NC_CPPFLAGS) $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
-          export LIBS="-L$(prefix)/lib -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/netcdf \
-                      --enable-hdf4 \
+                      $(ENABLE_HDF4) \
                       $(BUILD_DAP) \
                       $(NC_PAR_TESTS) \
                       --disable-shared \
@@ -478,7 +488,7 @@ udunits2.config : udunits2/configure.ac
 	@(cd udunits2; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/udunits2 \
@@ -505,7 +515,7 @@ nco.config : nco/configure
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
           export CXXFLAGS="$(NCO_CXXFLAGS)";\
           export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG)";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF5) -lmfhdf -ldf -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nco \
                       --enable-ncoxx \
@@ -576,7 +586,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
 	@(cd cdo; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/cdo \
                       --with-szlib=$(prefix) \
@@ -595,7 +605,7 @@ nccmp.config: nccmp/configure netcdf.install
           chmod +x configure ;\
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG)";\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nccmp \
@@ -701,7 +711,7 @@ hdfeos.config: hdfeos.download hdfeos/configure hdf4.install
 	@(cd hdfeos; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -Df2cFortran";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos \
                       --with-jpeg=$(prefix)/include/jpeg,$(prefix)/lib \
@@ -726,7 +736,7 @@ hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -Df2cFortran";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos5 \
                       --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
@@ -750,7 +760,7 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
 	@(cd SDPToolkit; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP_SDP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/SDPToolkit \
                       --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
@@ -790,7 +800,7 @@ netcdf.install :: netcdf.config
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(NC_CPPFLAGS) $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
-          export LIBS="-L$(prefix)/lib -lmfhdf -ldf -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           $(MAKE) install)
 	@touch $@
 
@@ -887,7 +897,7 @@ nco.install: nco.config
           export NETCDF_INC="$(prefix)/include/netcdf"; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF5) -lmfhdf -ldf -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
 	  sed -i '' '/^SUBDIRS/s/doc//' Makefile ;\
 	  $(MAKE) install ;\
 	  cd src/nco ;\
@@ -905,7 +915,7 @@ nco.install: nco.config
           export NETCDF_INC="$(prefix)/include/netcdf"; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF5) -lmfhdf -ldf -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
 	  $(MAKE) install )
 	@touch $@
 endif
