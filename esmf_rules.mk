@@ -150,7 +150,7 @@ esmf.script_info script_info:
 
 esmf.check check:
 	@echo "Customized ESMF build step $@..."
-	@(cd $(ESMF_DIR); $(MAKE) -e check)
+	@(cd $(ESMF_DIR); make -e check)
 	@(cd $(ESMF_DIR)/src/addon/ESMPy; export PYTHONPATH=$(ESMF_INSTALL_PREFIX)/lib/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
 	@touch esmf.check
 
