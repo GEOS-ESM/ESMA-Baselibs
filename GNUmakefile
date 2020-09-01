@@ -181,18 +181,19 @@ ifeq ($(ARCH),Darwin)
    ALLDIRS := $(filter-out SDPToolkit,$(ALLDIRS))
 endif
 
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf \
+                 gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger FLAP
+
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_ARM_DIRS),$(ALLDIRS))
+   ESSENTIAL_DIRS := $(filter-out hdf4,$(ESSENTIAL_DIRS))
    ENABLE_HDF4 = --disable-hdf4
    LIB_HDF4 =
 else
    ENABLE_HDF4 = --enable-hdf4
    LIB_HDF4 = -lmfhdf -ldf
 endif
-
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf \
-                 gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger FLAP
 
 ifeq ('$(BUILD)','ESSENTIALS')
 SUBDIRS = $(ESSENTIAL_DIRS)
