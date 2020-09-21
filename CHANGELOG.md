@@ -3,7 +3,14 @@
 ## Unreleased
 
 ### Updates
+
+* HDF5 1.10.7
+* NCO 4.9.4
+
 ### Fixed
+
+* Add `-fcommon` when building nccmp with GCC 10+ (see [this post](https://gitlab.com/remikz/nccmp/-/issues/14#note_416196531))
+
 ### Changed
 
 ## [6.0.16] - 2020-08-25
