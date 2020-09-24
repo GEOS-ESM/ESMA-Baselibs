@@ -5,7 +5,7 @@
 ### Updates
 
 * HDF5 1.10.7
-* NCO 4.9.4
+* NCO 4.9.5
 
 ### Fixed
 
