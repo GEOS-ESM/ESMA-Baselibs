@@ -14,6 +14,8 @@
 
 ### Changed
 
+* Moved to use new GitHub remote for HDF5
+
 ## [6.0.16] - 2020-08-25
 
 ### Updates
