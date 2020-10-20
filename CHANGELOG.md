@@ -1,6 +1,12 @@
 # Changelog
-# 
+ 
 ## Unreleased
+
+### Updates
+### Fixed
+### Changed
+
+## [6.0.17] - 2020-10-20
 
 ### Updates
 
