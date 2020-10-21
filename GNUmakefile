@@ -604,6 +604,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
 nccmp.config: nccmp/configure netcdf.install
 	@echo "Configuring nccmp $*"
 	@(cd nccmp; \
+          autoreconf -f -v -i;\
           chmod +x configure ;\
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
