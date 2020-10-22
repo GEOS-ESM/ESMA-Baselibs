@@ -4,6 +4,9 @@
 
 ### Updates
 ### Fixed
+
+- Use `autoreconf` with cURL
+
 ### Changed
 
 ## [6.0.17] - 2020-10-20

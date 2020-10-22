@@ -558,13 +558,13 @@ zlib.config : zlib/configure
 	touch $@
 
 
-curl.config : curl/buildconf zlib.install
+curl.config : curl/configure.ac zlib.install
 	@echo "Configuring curl"
 	@(cd curl; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LIBS="-lm";\
-          ./buildconf;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/ \
                       --libdir=$(prefix)/lib \
