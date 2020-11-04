@@ -4,10 +4,18 @@
 
 ### Updates
 ### Fixed
+### Changed
+
+## [6.0.18] - 2020-11-04
+
+### Updates
+
+* nccmp 1.8.8.0
+
+### Fixed
 
 - Use `autoreconf` with cURL
-
-### Changed
+- Added workaround for building HDF4 and UDUNITS with clang
 
 ## [6.0.17] - 2020-10-20
 
