@@ -167,6 +167,14 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      endif
   endif
 
+# Clang has issues with some libraries due to strict C99
+# ------------------------------------------------------
+
+  ifeq ($(CC_IS_CLANG),TRUE)
+     NO_IMPLICIT_FUNCTION_ERROR := -Wno-error=implicit-function-declaration
+     export NO_IMPLICIT_FUNCTION_ERROR
+  endif
+
 #-------------------------------------------------------------------------
 
 #                  --------------------------------
@@ -223,6 +231,8 @@ verify: javac-check
 	@echo BUILD_DAP = $(BUILD_DAP)
 	@echo GFORTRAN_VERSION_GTE_10 = $(GFORTRAN_VERSION_GTE_10)
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
+	@echo CC_IS_CLANG = $(CC_IS_CLANG)
+	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
 	@ argv="$(SUBDIRS)" ;\
         ( echo "-------+---------+---------+--------------" );  \
         ( echo "Config | Install |  Check  |   Package" );      \
@@ -399,7 +409,7 @@ hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
                       --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
                       --disable-netcdf \
-                      CFLAGS="$(CFLAGS)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
 ifeq ($(FC),nagfor)
@@ -495,7 +505,7 @@ udunits2.config : udunits2/configure.ac
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/udunits2 \
                       --disable-shared \
-                      CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 INC_HDF5 = $(prefix)/include/hdf5

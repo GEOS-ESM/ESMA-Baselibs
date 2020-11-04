@@ -68,16 +68,26 @@
 
 # C compiler detection
 # --------------------
+  CC_IS_CLANG := FALSE
   ifneq ($(wildcard $(shell which gcc 2> /dev/null)),)
         CC := gcc
+        TEST_FOR_CLANG := $(findstring clang, $(shell gcc --version))
+        ifeq ($(TEST_FOR_CLANG),clang)
+           CC_IS_CLANG := TRUE
+        endif
   else
   ifneq ($(wildcard $(shell which icc 2> /dev/null)),)
         CC := icc
+  else
+  ifneq ($(wildcard $(shell which clang 2> /dev/null)),)
+        CC := clang
+        CC_IS_CLANG := TRUE
   else
   ifneq ($(wildcard $(shell which pgcc 2> /dev/null)),)
         CC := pgcc
   else
         CC := UNKNOWN
+  endif
   endif
   endif
   endif
