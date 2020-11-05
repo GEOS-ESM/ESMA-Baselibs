@@ -173,6 +173,12 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
   ifeq ($(CC_IS_CLANG),TRUE)
      NO_IMPLICIT_FUNCTION_ERROR := -Wno-error=implicit-function-declaration
      export NO_IMPLICIT_FUNCTION_ERROR
+
+     # There is also an issue with clang and curl
+     ifeq ($(ARCH),Darwin)
+        MMACOS_MIN := -mmacosx-version-min=10.13
+        export MMACOS_MIN
+     endif
   endif
 
 #-------------------------------------------------------------------------
@@ -187,7 +193,8 @@ ALLDIRS = antlr gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-
           FLAP hdfeos hdfeos5 SDPToolkit
 
 ifeq ($(ARCH),Darwin)
-   ALLDIRS := $(filter-out SDPToolkit,$(ALLDIRS))
+   NO_DARWIN_DIRS = hdfeos hdfeos5 SDPToolkit
+   ALLDIRS := $(filter-out $(NO_DARWIN_DIRS),$(ALLDIRS))
 endif
 
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf \

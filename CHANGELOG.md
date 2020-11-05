@@ -6,6 +6,16 @@
 ### Fixed
 ### Changed
 
+## [6.0.19] - 2020-11-05
+
+## Fixed
+
+* Fixed issue with Clang and Curl on macOS
+
+## Changed
+
+* Remove hdfeos and hdfeos5 from default "all" build on macOS
+
 ## [6.0.18] - 2020-11-04
 
 ### Updates
