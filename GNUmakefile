@@ -240,6 +240,8 @@ verify: javac-check
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
+	@echo JAVAC_FOUND = $(JAVAC_FOUND)
+	@echo JAVAC_WORKS = $(JAVAC_WORKS)
 	@ argv="$(SUBDIRS)" ;\
         ( echo "-------+---------+---------+--------------" );  \
         ( echo "Config | Install |  Check  |   Package" );      \
@@ -269,8 +271,6 @@ verify: javac-check
 
 .NOTPARALLEL: baselibs-config
 
-JAVACFOUND := $(shell command -v javac 2> /dev/null)
-
 prelim: javac-check echo-compilers baselibs-config versions download
 
 echo-compilers:
@@ -285,18 +285,31 @@ echo-compilers:
 	$(warning Using $(MPICXX) for MPIC++ compiler)
 	$(warning Using $(ES_CXX) for ESMF C++ compiler)
 
-JAVACDIRS = antlr gsl
+JAVAC_COMMAND := javac
+JAVAC_DIRS := antlr gsl
+
+JAVAC_FOUND := $(shell command -v $(JAVAC_COMMAND) 2> /dev/null)
 
 javac-check:
-ifndef JAVACFOUND
-	$(warning "javac is not available. Please install javac or add to path")
-	$(warning "as antlr requires it. For now, we build without")
-	$(warning "antlr, gsl, and disable ncap2")
-	$(eval ALLDIRS := $(filter-out $(JAVACDIRS),$(ALLDIRS)))
-	$(warning ALLDIRS: $(ALLDIRS))
+ifndef JAVAC_FOUND
+   $(warning "javac is not available.")
+   $(warning "As antlr requires it, for now, we build without")
+   $(warning "antlr, gsl, and disable ncap2")
+   $(eval ALLDIRS := $(filter-out $(JAVAC_DIRS),$(ALLDIRS)))
+   $(warning ALLDIRS: $(ALLDIRS))
+   BUILD_NCAP2 = --disable-ncap2 --disable-gsl
+else
+JAVAC_WORKS := $(shell $(JAVAC_COMMAND) -version 2> /dev/null; echo $$?)
+ifneq ($(JAVAC_WORKS),0)
+   $(warning "javac does not seem to work correctly.")
+   $(warning "As antlr requires it, for now, we build without")
+   $(warning "antlr, gsl, and disable ncap2")
+   $(eval ALLDIRS := $(filter-out $(JAVAC_DIRS),$(ALLDIRS)))
+   $(warning ALLDIRS: $(ALLDIRS))
    BUILD_NCAP2 = --disable-ncap2 --disable-gsl
 else
    BUILD_NCAP2 = --enable-ncap2 --enable-gsl
+endif
 endif
 
 baselibs-config: baselibs-config.mk
@@ -422,7 +435,7 @@ hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
 ifeq ($(FC),nagfor)
 hdf5.config :: hdf5/README.txt
 	@echo Patching HDF5 for NAG
-	patch -p1 < ./patches/hdf5/nag.configure.patch
+	patch -f -p1 < ./patches/hdf5/nag.configure.patch
 endif
 
 hdf5.config :: hdf5/README.txt szlib.install zlib.install
@@ -443,7 +456,7 @@ hdf5.config :: hdf5/README.txt szlib.install zlib.install
 ifeq ($(FC),nagfor)
 hdf5.config :: hdf5/README.txt
 	@echo Unpatching HDF5 for NAG
-	patch -p1 -R < ./patches/hdf5/nag.configure.patch
+	patch -f -p1 -R < ./patches/hdf5/nag.configure.patch
 endif
 
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
@@ -592,7 +605,7 @@ curl.config : curl/configure.ac zlib.install
                       --enable-static \
                       --without-libidn \
                       --without-libidn2 \
-                      CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
+                      CFLAGS="$(CFLAGS) $(MMACOS_MIN)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
 cdo.download : scripts/download_cdo.bash
@@ -810,7 +823,7 @@ ifeq ($(GFORTRAN_VERSION_GTE_10),1)
 ifeq ("$(BUILD_DAP)","--enable-dap")
 netcdf.install :: netcdf.config
 	@echo Patching netCDF-C ocprint for GCC 10
-	patch -p1 < ./patches/netcdf/netcdf.ocprint.patch
+	patch -f -p1 < ./patches/netcdf/netcdf.ocprint.patch
 endif
 endif
 
@@ -828,7 +841,7 @@ ifeq ($(GFORTRAN_VERSION_GTE_10),1)
 ifeq ("$(BUILD_DAP)","--enable-dap")
 netcdf.install :: netcdf.config
 	@echo Unpatching netCDF-C ocprint for GCC 10
-	patch -p1 -R < ./patches/netcdf/netcdf.ocprint.patch
+	patch -f -p1 -R < ./patches/netcdf/netcdf.ocprint.patch
 endif
 endif
 

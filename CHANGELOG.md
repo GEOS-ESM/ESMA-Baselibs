@@ -6,6 +6,18 @@
 ### Fixed
 ### Changed
 
+## [6.0.20] - 2020-11-09
+
+### Updates
+
+* pFUnit v4.1.13
+
+## Fixed
+
+* GNU Make issues with javac detection
+* Use force flag with patch commands
+* Actually fix issue with Clang and Curl on macOS
+
 ## [6.0.19] - 2020-11-05
 
 ## Fixed
