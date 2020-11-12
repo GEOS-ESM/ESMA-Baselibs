@@ -11,6 +11,7 @@
 ### Updates
 
 * pFUnit v4.1.14
+* fArgParse v1.0.2
 
 ## [6.0.20] - 2020-11-09
 
