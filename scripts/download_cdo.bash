@@ -5,8 +5,8 @@
 # --------------
 
 package_name='cdo'
-tarball='cdo-1.9.8.tar.gz'
-base_url='https://code.mpimet.mpg.de/attachments/download/20826/'
+tarball='cdo-1.9.9.tar.gz'
+base_url='https://code.mpimet.mpg.de/attachments/download/23323/'
 
 export LMOD_SH_DBG_ON=0
 

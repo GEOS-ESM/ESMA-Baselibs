@@ -6,6 +6,17 @@
 ### Fixed
 ### Changed
 
+## [6.0.22] - 2020-11-17
+
+### Updates
+
+* CDO 1.9.9
+
+## Fixed
+
+* Fixed issue javac-check where some java output version to stderr and
+  some to stdout
+
 ## [6.0.21] - 2020-11-12
 
 ### Updates

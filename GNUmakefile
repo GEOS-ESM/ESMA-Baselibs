@@ -297,7 +297,7 @@ ifndef JAVAC_FOUND
    $(warning ALLDIRS: $(ALLDIRS))
    BUILD_NCAP2 = --disable-ncap2 --disable-gsl
 else
-JAVAC_WORKS := $(shell $(JAVAC_COMMAND) -version 2> /dev/null; echo $$?)
+JAVAC_WORKS := $(shell $(JAVAC_COMMAND) -version &> /dev/null; echo $$?)
 ifneq ($(JAVAC_WORKS),0)
    $(warning "javac does not seem to work correctly.")
    $(warning "As antlr requires it, for now, we build without")
