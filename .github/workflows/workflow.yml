@@ -35,10 +35,10 @@ jobs:
           echo $BASEDIR
       - name: Build
         run: |
-          make -j4 install ESMF_COMM=openmpi
+          make -j4 install ESMF_COMM=openmpi CC=gcc CXX=g++ FC=gfortran
       - name: Verify
         run: |
-          make verify ESMF_COMM=openmpi
+          make verify ESMF_COMM=openmpi CC=gcc CXX=g++ FC=gfortran
       - name: Check directory structure
         run: |
           cd ..
