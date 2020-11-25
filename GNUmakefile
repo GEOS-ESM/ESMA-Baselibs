@@ -77,7 +77,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 # Issue with NCO and nccmp with mpiuni and gcc
 # --------------------------------------------
 
-  ifeq ($(CC), gcc)
+  ifeq ($(findstring gcc,$(notdir $(CC))),gcc)
     ifeq ($(ESMF_COMM),mpiuni)
       PTHREAD_FLAG = -pthread
     endif
@@ -86,7 +86,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 # Testing with MVAPICH2 and ifort showed this flag was needed
 # -----------------------------------------------------------
 #
-  ifeq ($(FC), ifort)
+  ifeq ($(findstring ifort,$(notdir $(FC))),ifort)
     ifeq ($(ESMF_COMM),mvapich2)
       PTHREAD_FLAG = -pthread
     endif
@@ -97,7 +97,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 # FPE is thrown in an NF90_DEF_VAR for time!).
 # ----------------------------------------------------------------------
 
-  ifeq ($(FC), ifort)
+  ifeq ($(findstring ifort,$(notdir $(FC))),ifort)
      NC_CFLAGS = -g -O0
   endif
 
@@ -124,7 +124,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 # pass in -gopt -O2 instead of the usual -g -O2
 # ---------------------------------------------
   NCO_CXXFLAGS = -g -O2
-  ifeq ($(FC),pgfortran)
+  ifeq ($(findstring pgfortran,$(notdir $(FC))),pgfortran)
      NCO_CXXFLAGS = -gopt -O2
   endif
 
@@ -132,21 +132,21 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 # flag. It also needs extra flags to compile code that is not as string
 # as it would like.
 # ---------------------------------------------------------------------
-  FORTRAN_FPIC = -fPIC
-  FORTRAN_VERSION = --version
-  HDF5_ENABLE_F2003 = --enable-fortran2003
-  ifeq ($(FC),nagfor)
-     FORTRAN_FPIC = -PIC
-     FORTRAN_VERSION = -V
-     NAG_FCFLAGS = -fpp -mismatch_all
-     NAG_DUSTY = -dusty
+  FORTRAN_FPIC := -fPIC
+  FORTRAN_VERSION := --version
+  HDF5_ENABLE_F2003 := --enable-fortran2003
+  ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+     FORTRAN_FPIC := -PIC
+     FORTRAN_VERSION := -V
+     NAG_FCFLAGS := -fpp -mismatch_all
+     NAG_DUSTY := -dusty
   endif
 
 # Building with PGI on Darwin (Community Edition) does not quite work. 
 # Fixes are needed. NDEBUG from netcdf list
 # -------------------------------------------------------------------
 
-  ifeq ($(FC),pgfortran)
+  ifeq ($(findstring pgfortran,$(notdir $(FC))),pgfortran)
      ifeq ($(ARCH),Darwin)
         NC_CPPFLAGS = -DNDEBUG
         FORTRAN_FPIC = -fpic
@@ -156,7 +156,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 # HDF4 and netCDF-Fortran has a bug with GCC 10.1
 # -----------------------------------------------
 
-  ifeq ($(FC),gfortran)
+  ifeq ($(findstring gfortran,$(notdir $(FC))),gfortran)
      GFORTRAN_VERSION_GTE_10 := $(shell expr `$(FC) -dumpversion | cut -f1 -d.` \>= 10)
      export GFORTRAN_VERSION_GTE_10
      ifeq ($(GFORTRAN_VERSION_GTE_10),1)
@@ -240,6 +240,25 @@ verify: javac-check
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
+	@echo NAG_FCFLAGS = $(NAG_FCFLAGS)
+	@echo FC_FROM_ENV = $(FC_FROM_ENV)
+	@echo CC_FROM_ENV = $(CC_FROM_ENV)
+	@echo CXX_FROM_ENV = $(CXX_FROM_ENV)
+	@echo FC = $(FC)
+	@echo CC = $(CC)
+	@echo CXX = $(CXX)
+	@echo MPIFC = $(MPIFC)
+	@echo MPICC = $(MPICC)
+	@echo MPICXX = $(MPICXX)
+	@echo NC_FC = $(NC_FC)
+	@echo NC_CC = $(NC_CC)
+	@echo NC_CXX = $(NC_CXX)
+	@echo ES_FC = $(ES_FC)
+	@echo ES_CC = $(ES_CC)
+	@echo ES_CXX = $(ES_CXX)
+	@echo FORTRAN_VERSION = $(FORTRAN_VERSION)
+	@echo ESMF_COMM = $(ESMF_COMM)
+	@echo ESMF_COMPILER = $(ESMF_COMPILER)
 	@ argv="$(SUBDIRS)" ;\
         ( echo "-------+---------+---------+--------------" );  \
         ( echo "Config | Install |  Check  |   Package" );      \
@@ -730,7 +749,7 @@ gsl.config : gsl.download gsl/configure
 	@touch $@
 
 esmf.config : esmf_rules.mk netcdf-fortran.install
-	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
+	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
 
 hdfeos.download : scripts/download_hdfeos.bash
 	@echo "Downloading hdfeos"
@@ -1006,19 +1025,19 @@ SDPToolkit.install: SDPToolkit.config
 	touch $@
 
 esmf.install : esmf_rules.mk
-	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) install
+	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER)  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) install
 
 esmf.info : esmf_rules.mk
-	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) info
+	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER)  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) info
 
 esmf.examples : esmf_rules.mk
-	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) examples
+	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER)  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) examples
 
 esmf.python : esmf_rules.mk
-	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) python
+	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER)  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) python
 
 esmf.pythoncheck : esmf_rules.mk
-	@$(MAKE) -e -f esmf_rules.mk  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) pythoncheck
+	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER)  CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) pythoncheck
 
 
 #                          Clean

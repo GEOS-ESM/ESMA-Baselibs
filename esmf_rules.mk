@@ -25,38 +25,11 @@ endif
   ESMF_INSTALL_MODDIR    ?= $(prefix)/include/esmf
   ESMF_INSTALL_LIBDIR    ?= $(prefix)/lib
   ESMF_INSTALL_BINDIR    ?= $(prefix)/bin
-  ESMF_COMPILER          ?= $(FC)
   ESMF_PIO               ?= internal
   ESMF_MACHINE           ?= $(MACH)
   ESMF_OS                ?= $(ARCH)
   ESMF_PYTHON            ?= $(PYTHON)/bin/python
   ESMF_ABI               ?= 64
-
-# ifort
-# -----
-  ifeq ($(ESMF_COMPILER), ifort) 
-
-      ifeq ($(CXX),icpc)
-         ESMF_COMPILER = intel
-      else
-         ESMF_COMPILER = intelgcc
-      endif
-
-# PGI
-# ---
-  else
-  ifeq ($(ESMF_COMPILER),pgfortran)
-     ESMF_COMPILER = pgi
-
-# NAG
-# ---
-  else
-  ifeq ($(ESMF_COMPILER),nagfor)
-     ESMF_COMPILER = nag
-
-  endif # nag
-  endif # pgi
-  endif # intel
 
 # Open MPI on desktops and laptops
 # can need oversubscribe

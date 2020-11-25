@@ -4,6 +4,10 @@
 
 ### Updates
 ### Fixed
+
+- GNU Make system reworked to be more generic. Older system assumed
+  modules, `CC`, `FC`, etc were defined like at NCCS
+
 ### Changed
 
 ## [6.0.22] - 2020-11-17
