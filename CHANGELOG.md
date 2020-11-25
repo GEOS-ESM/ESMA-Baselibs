@@ -14,6 +14,13 @@
   sometimes find it in a Brew installation, but that could lead to
   linking in Brew includes and libraries.
 - Fixed bug with using clang as C compiler
+- Updated GitHub Actions workflow with new build image and fixed issues
+  with build
+
+### Changed
+
+- Turned off default ESMPy build on Darwin with `esmf.install` due to
+  odd RPATH issues. ESMPy can be built separately if needed.
 
 ## [6.0.23] - 2020-11-25
 

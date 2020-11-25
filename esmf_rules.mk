@@ -124,7 +124,11 @@ esmf.script_info script_info:
 esmf.check check:
 	@echo "Customized ESMF build step $@..."
 	@(cd $(ESMF_DIR); make -e check)
+ifneq ($(ARCH), Darwin)
 	@(cd $(ESMF_DIR)/src/addon/ESMPy; export PYTHONPATH=$(ESMF_INSTALL_PREFIX)/lib/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
+else
+	@echo "Due to issues with rpath on Darwin, not building ESMPy"
+endif
 	@touch esmf.check
 
 esmf.examples:
@@ -143,7 +147,11 @@ esmf.install install: esmf.config
 	@echo "Customized ESMF build step $@..."
 	@(cd $(ESMF_DIR); $(MAKE) -e lib)
 	@(cd $(ESMF_DIR); $(MAKE) -e install)
+ifneq ($(ARCH), Darwin)
 	@(cd $(ESMF_DIR)/src/addon/ESMPy; $(ESMF_PYTHON) setup.py build --ESMFMKFILE=$(ESMF_INSTALL_LIBDIR)/esmf.mk; $(ESMF_PYTHON) setup.py install --prefix=$(ESMF_INSTALL_PREFIX))
+else
+	@echo "Due to issues with rpath on Darwin, not building ESMPy"
+endif
 	@cp -pr $(ESMF_DIR)/cmake/*    $(ESMF_INSTALL_HEADERDIR)
 	@touch esmf.install
 
