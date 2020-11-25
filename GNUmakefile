@@ -622,6 +622,8 @@ curl.config : curl/configure.ac zlib.install
                       --enable-static \
                       --without-libidn \
                       --without-libidn2 \
+                      --without-nghttp2 \
+                      --without-nghttp3 \
                       CFLAGS="$(CFLAGS) $(MMACOS_MIN)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
