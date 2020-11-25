@@ -110,6 +110,7 @@
     ifeq ($(findstring clang,$(notdir $(CC))),clang)
       ES_CC := $(CC)
       CC_FROM_ENV := TRUE
+      CC_IS_CLANG := TRUE
     else
     ifeq ($(findstring pgcc,$(notdir $(CC))),pgcc)
       ES_CC := $(CC)

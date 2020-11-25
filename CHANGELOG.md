@@ -13,6 +13,7 @@
 - Explicitly turn off nghttp2 and nghttp3 support in cURL. It can
   sometimes find it in a Brew installation, but that could lead to
   linking in Brew includes and libraries.
+- Fixed bug with using clang as C compiler
 
 ## [6.0.23] - 2020-11-25
 
