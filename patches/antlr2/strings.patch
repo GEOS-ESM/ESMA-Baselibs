@@ -1,0 +1,15 @@
+diff --git a/antlr2/lib/cpp/antlr/CharScanner.hpp b/antlr2/lib/cpp/antlr/CharScanner.hpp
+index 8a97e97..48dd203 100644
+--- a/antlr2/lib/cpp/antlr/CharScanner.hpp
++++ b/antlr2/lib/cpp/antlr/CharScanner.hpp
+@@ -24,6 +24,10 @@
+ # include <stdio.h>
+ #endif
+
++#ifndef _MSC_VER
++#include <strings.h>
++#endif
++
+ #include <antlr/TokenStream.hpp>
+ #include <antlr/RecognitionException.hpp>
+ #include <antlr/SemanticException.hpp>

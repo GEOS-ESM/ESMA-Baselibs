@@ -187,7 +187,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                   Recurse Make in Sub-directories
 #                  --------------------------------
 
-ALLDIRS = antlr gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
+ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
           udunits2 nco cdo nccmp esmf \
           gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger \
           FLAP hdfeos hdfeos5 SDPToolkit
@@ -219,18 +219,18 @@ INC_SUPP :=  $(foreach subdir, \
 else
 SUBDIRS = $(ALLDIRS)
 INC_SUPP :=  $(foreach subdir, \
-            / /zlib /szlib /jpeg /hdf5 /hdf /netcdf /udunits2 /gsl /antlr,\
+            / /zlib /szlib /jpeg /hdf5 /hdf /netcdf /udunits2 /gsl /antlr2,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 endif
 
 TARGETS = all lib install
 
-download: antlr.download gsl.download szlib.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download
+download: gsl.download szlib.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download
 
 dist: download
 	tar -czf $(RELEASE_DIR)/$(RELEASE_FILE).tar.gz -C $(RELEASE_DIR) $(MKFILE_DIRNAME)
 
-verify: javac-check
+verify: 
 	@echo MKFILE_PATH = $(MKFILE_PATH)
 	@echo MKFILE_DIR = $(MKFILE_DIR)
 	@echo MKFILE_DIRNAME = $(MKFILE_DIRNAME)
@@ -288,7 +288,7 @@ verify: javac-check
 
 .NOTPARALLEL: baselibs-config
 
-prelim: javac-check echo-compilers baselibs-config versions download
+prelim: echo-compilers baselibs-config versions download
 
 echo-compilers:
 	@mkdir -p $(prefix)/etc
@@ -301,33 +301,6 @@ echo-compilers:
 	$(warning Using $(CXX) for C++ compiler)
 	$(warning Using $(MPICXX) for MPIC++ compiler)
 	$(warning Using $(ES_CXX) for ESMF C++ compiler)
-
-JAVAC_COMMAND := javac
-JAVAC_DIRS := antlr gsl
-
-JAVAC_FOUND := $(shell command -v $(JAVAC_COMMAND) 2> /dev/null)
-
-javac-check:
-ifndef JAVAC_FOUND
-   $(warning "javac is not available.")
-   $(warning "As antlr requires it, for now, we build without")
-   $(warning "antlr, gsl, and disable ncap2")
-   $(eval ALLDIRS := $(filter-out $(JAVAC_DIRS),$(ALLDIRS)))
-   $(warning ALLDIRS: $(ALLDIRS))
-   BUILD_NCAP2 = --disable-ncap2 --disable-gsl
-else
-JAVAC_WORKS := $(shell $(JAVAC_COMMAND) -version &> /dev/null; echo $$?)
-ifneq ($(JAVAC_WORKS),0)
-   $(warning "javac does not seem to work correctly.")
-   $(warning "As antlr requires it, for now, we build without")
-   $(warning "antlr, gsl, and disable ncap2")
-   $(eval ALLDIRS := $(filter-out $(JAVAC_DIRS),$(ALLDIRS)))
-   $(warning ALLDIRS: $(ALLDIRS))
-   BUILD_NCAP2 = --disable-ncap2 --disable-gsl
-else
-   BUILD_NCAP2 = --enable-ncap2 --enable-gsl
-endif
-endif
 
 baselibs-config: baselibs-config.mk
 	@echo "Building: $(SUBDIRS)"
@@ -556,7 +529,7 @@ nco.config : nco/configure
           export NETCDF_INC="$(prefix)/include/netcdf"; \
           export ANTLR_ROOT="$(prefix)/"; \
           export ANTLR_LIB="$(prefix)/lib"; \
-          export ANTLR_INC="$(prefix)/include/antlr"; \
+          export ANTLR_INC="$(prefix)/include/antlr2"; \
           export GSL_ROOT="$(prefix)/"; \
           export GSL_LIB="$(prefix)/lib"; \
           export GSL_INC="$(prefix)/include/gsl"; \
@@ -568,7 +541,7 @@ nco.config : nco/configure
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nco \
                       --enable-ncoxx \
-                      $(BUILD_NCAP2) \
+                      --enable-ncap2 --enable-gsl \
                       --disable-shared --enable-static \
                       --disable-nco_cplusplus \
                       --disable-mpi \
@@ -715,21 +688,19 @@ FLAP.config:
 		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) .. )
 	@touch $@
 
-antlr.download : scripts/download_antlr.bash
-	@echo "Downloading antlr"
-	@./scripts/download_antlr.bash
-	@touch $@
-
-antlr.config : antlr.download antlr/configure
-	@echo "Configuring antlr"
-	@mkdir -p ./antlr/build
-	@(cd antlr/build; \
+antlr2.config : antlr2/configure
+	@echo "Configuring antlr2"
+	@mkdir -p ./antlr2/build
+	@(cd antlr2/build; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LIBS="-lm";\
           ../configure --prefix=$(prefix) \
-                       --includedir=$(prefix)/include/antlr \
+                       --includedir=$(prefix)/include/antlr2 \
                        --disable-shared \
+                       --disable-java \
+                       --disable-python \
+                       --disable-csharp \
                        CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
@@ -981,14 +952,22 @@ jpeg.install: jpeg.config
           $(MAKE) -e install)
 	touch $@
 
-antlr.install: antlr.config
-	@echo "Installing antlr"
-	@mkdir -p $(prefix)/bin $(prefix)/lib $(prefix)/include/antlr
-	@(cd antlr/build; \
+antlr2.install :: antlr2.config
+	@echo Patching antlr2
+	patch -f -p1 < ./patches/antlr2/strings.patch
+
+antlr2.install :: antlr2.config
+	@echo "Installing antlr2"
+	@mkdir -p $(prefix)/bin $(prefix)/lib $(prefix)/include/antlr2
+	@(cd antlr2/build; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) all; \
           $(MAKE) -e install)
 	touch $@
+
+antlr2.install :: antlr2.config
+	@echo Unpatching antlr2
+	patch -f -p1 -R < ./patches/antlr2/strings.patch
 
 gsl.install: gsl.config
 	@echo "Installing gsl"
@@ -1115,13 +1094,13 @@ FLAP.distclean:
 	@echo "Cleaning FLAP"
 	@rm -rf ./FLAP/build
 
-antlr.clean: 
-	@echo "Cleaning antlr"
-	@rm -rf ./antlr/build
+antlr2.clean: 
+	@echo "Cleaning antlr2"
+	@rm -rf ./antlr2/build
 
-antlr.distclean: 
-	@echo "Cleaning antlr"
-	@rm -rf ./antlr/build
+antlr2.distclean: 
+	@echo "Cleaning antlr2"
+	@rm -rf ./antlr2/build
 
 # MAT There seems to be some issue in curl with distclean
 #     as it goes into some sort of infinite loop?
@@ -1199,9 +1178,9 @@ yaFyaml.check: yaFyaml.install pFUnit.install
 FLAP.check: FLAP.install
 	@echo "Not sure how to check FLAP"
 
-antlr.check: antlr.install
-	@echo "Checking antlr"
-	@(cd antlr/build; \
+antlr2.check: antlr2.install
+	@echo "Checking antlr2"
+	@(cd antlr2/build; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) test)
 	@touch $@

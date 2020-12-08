@@ -55,3 +55,6 @@
 [submodule "esmf"]
 	path = esmf
 	url = https://github.com/esmf-org/esmf.git
+[submodule "antlr2"]
+	path = antlr2
+	url = https://github.com/nco/antlr2.git
