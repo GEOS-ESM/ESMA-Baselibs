@@ -24,7 +24,7 @@ NASA/GSFC.
 | [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)      | v1.0.2      |
 | [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)          | v0.4.1      |
 | [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)        | v1.4.5      |
-| [antlr](https://www.antlr.org/)                                          | 2.7.7       |
+| [antlr2](https://www.antlr2.org/)                                        | 2.7.7       |
 | [GSL](https://www.gnu.org/software/gsl/)                                 | 2.6         |
 | [jpeg](http://www.ijg.org/)                                              | 9c          |
 | [zlib](http://www.zlib.net/)                                             | 1.2.11      |
@@ -82,7 +82,6 @@ git clone --recurse-submodules -b <TAG> https://github.com/GEOS-ESM/ESMA-Baselib
 Note that there is an additional step needed for building a complete
 ESMA Baselibs. There are seven libraries that are not on git at present:
 
-* antlr
 * GSL
 * szlib
 * CDO

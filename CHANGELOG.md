@@ -6,6 +6,24 @@
 ### Fixed
 ### Changed
 
+## [6.0.25] - 2020-12-08
+
+### Updates
+
+* NCO 4.9.6
+
+### Fixed
+
+* Add patch for using antlr2 GitHub as it seems to have a bug. The patch
+  makes it match the previous tarball
+
+### Changed
+
+* Moved to use antlr2 from https://github.com/nco/antlr2 as the download
+  link broke
+* Disabled the Java, Python, and C# builds for antlr2 as unneeded for
+  NCO/ncap2
+
 ## [6.0.24] - 2020-11-25
 
 ### Fixed
