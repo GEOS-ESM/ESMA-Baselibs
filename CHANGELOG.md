@@ -6,6 +6,17 @@
 ### Fixed
 ### Changed
 
+## [6.0.26] - 2020-12-09
+
+### Updates
+
+* cURL 7.74.0
+* yaFyaml v0.4.2
+
+### Fixed
+
+* Fixes for GitHub Actions
+
 ## [6.0.25] - 2020-12-08
 
 ### Updates
