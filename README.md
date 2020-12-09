@@ -1,9 +1,9 @@
 # ESMA Baselibs
 
-![Build Baselibs](https://github.com/GEOS-ESM/ESMA-Baselibs/workflows/Build%20Baselibs/badge.svg?branch=master)
+![Build Baselibs](https://github.com/GEOS-ESM/ESMA-Baselibs/workflows/Build%20Baselibs/badge.svg)
 
 This git repository contains a simplified version of the "baselibs"
-module first developed by Gerhard Theurich and later matained by
+module first developed by Gerhard Theurich and later maintained by
 Eugene Mirvis, Denis Nadeau, and Matthew Thompson. The current version
 only includes a minimal set of libraries needed for building GEOS at
 NASA/GSFC.
@@ -45,8 +45,8 @@ NASA/GSFC.
 
 - C compiler, preferably gcc 
 
-- Fortran compiler. Tested compilers are GNU, Intel, and PGI. 
-  NAG support is under development
+- Fortran compiler. Tested compilers are GNU, Intel, and NAG.
+  PGI support was once available, but has not been tested in a while.
 
 - The MPI library. On a Linux desktop/laptop, Open MPI is recommended.
   Make sure mpicc, mpifort, etc is on your path. Try compiling a simple
@@ -64,7 +64,7 @@ NASA/GSFC.
   platforms, make sure you have "yacc" and "lex".
 
 - on Darwin, GNU sed is needed for ESMF Applications. This sed must be 
-  visible as sed (and not, say, gsed as installed by Macports)
+  visible as sed (and not, say, gsed as installed by Brew)
 
 - CMake of a recent vintage
 
@@ -80,7 +80,7 @@ git clone --recurse-submodules -b <TAG> https://github.com/GEOS-ESM/ESMA-Baselib
 #### Download non-git Libraries
 
 Note that there is an additional step needed for building a complete
-ESMA Baselibs. There are seven libraries that are not on git at present:
+ESMA Baselibs. There are six libraries that are not on git at present:
 
 * GSL
 * szlib
@@ -119,14 +119,14 @@ see `esmf/INSTALL` for more information.
 
 You can optionally pass in a `prefix` to determine where Baselibs will
 be built. If you don't, the system uses `config.guess` =>
-`x86_64-unknown-linux-gnu` to install to:
+`x86_64-pc-linux-gnu` to install to:
 ```
-../x86_64-unknown-linux-gnu/$FC/Linux
+../x86_64-pc-linux-gnu/$FC/Linux
 ```
 
 ### Customizing The Installation
 
-If the Baselib does not build out of the repository, then you will
+If the Baselibs do not build out of the repository, then you will
 need to customize a few things. For example, to choose the ifort
 compiler under Linux, just enter this
 

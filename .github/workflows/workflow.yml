@@ -48,5 +48,4 @@ jobs:
           make verify ESMF_COMM=openmpi ESMF_COMPILER=gfortran
       - name: Check directory structure
         run: |
-          cd ..
-          tree -L 2 x86_64-pc-linux-gnu/gfortran/Linux
+          ls ../x86_64-pc-linux-gnu/gfortran/Linux/*
