@@ -1,6 +1,6 @@
 # ESMA Baselibs
 
-![Build Baselibs](https://github.com/GEOS-ESM/ESMA-Baselibs/workflows/Build%20Baselibs/badge.svg)
+![Build Latest Release](https://github.com/GEOS-ESM/ESMA-Baselibs/workflows/Build%20Baselibs/badge.svg?event=release)
 
 This git repository contains a simplified version of the "baselibs"
 module first developed by Gerhard Theurich and later maintained by
