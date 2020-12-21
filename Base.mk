@@ -103,6 +103,14 @@
   CC_IS_CLANG := FALSE
   CC_FROM_ENV := FALSE
   ifneq ($(origin CC),undefined)
+    ifeq ($(findstring gcc,$(notdir $(CC))),gcc)
+      TEST_FOR_CC_CLANG := $(findstring clang, $(shell $(CC) --version))
+      ifeq ($(TEST_FOR_CC_CLANG),clang)
+         CC_IS_CLANG := TRUE
+      endif
+      ES_CC := $(CC)
+      CC_FROM_ENV := TRUE
+    else
     ifeq ($(findstring icc,$(notdir $(CC))),icc)
       ES_CC := $(CC)
       CC_FROM_ENV := TRUE
@@ -113,14 +121,6 @@
       CC_IS_CLANG := TRUE
     else
     ifeq ($(findstring pgcc,$(notdir $(CC))),pgcc)
-      ES_CC := $(CC)
-      CC_FROM_ENV := TRUE
-    else
-    ifeq ($(findstring gcc,$(notdir $(CC))),gcc)
-      TEST_FOR_CC_CLANG := $(findstring clang, $(shell $(CC) --version))
-      ifeq ($(TEST_FOR_CC_CLANG),clang)
-         CC_IS_CLANG := TRUE
-      endif
       ES_CC := $(CC)
       CC_FROM_ENV := TRUE
     endif
@@ -165,6 +165,14 @@
   CXX_IS_CLANG := FALSE
   CXX_FROM_ENV := FALSE
   ifneq ($(origin CXX),undefined)
+    ifeq ($(findstring g++,$(notdir $(CXX))),g++)
+      TEST_FOR_CXX_CLANG := $(findstring clang, $(shell $(CXX) --version))
+      ifeq ($(TEST_FOR_CXX_CLANG),clang)
+         CXX_IS_CLANG := TRUE
+      endif
+      ES_CXX := $(CXX)
+      CXX_FROM_ENV := TRUE
+    else
     ifeq ($(findstring icpc,$(notdir $(CXX))),icpc)
       ES_CXX := $(CXX)
       CXX_FROM_ENV := TRUE
@@ -174,15 +182,7 @@
       CXX_FROM_ENV := TRUE
       CXX_IS_CLANG := TRUE
     else
-    ifeq ($(findstring pgcc,$(notdir $(CXX))),pgcc)
-      ES_CXX := $(CXX)
-      CXX_FROM_ENV := TRUE
-    else
-    ifeq ($(findstring g++,$(notdir $(CXX))),g++)
-      TEST_FOR_CXX_CLANG := $(findstring clang, $(shell $(CXX) --version))
-      ifeq ($(TEST_FOR_CXX_CLANG),clang)
-         CXX_IS_CLANG := TRUE
-      endif
+    ifeq ($(findstring pgc++,$(notdir $(CXX))),pgc++)
       ES_CXX := $(CXX)
       CXX_FROM_ENV := TRUE
     endif

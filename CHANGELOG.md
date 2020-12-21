@@ -10,8 +10,8 @@
 
 ### Fixed
 
-- Use of ifort at NAS was broken by changes to make the GNU Make system
-  more robust. Updates to `Arch.mk` does extra `which ifort` etc. tests
+- Use of ifort at NAS was broken by changes to make the GNU Make
+  system more robust
 - HDF5 at NCCS with MPT requires an extra flag to compile
 
 ## [6.0.26] - 2020-12-09

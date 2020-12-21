@@ -88,19 +88,10 @@ ifeq ($(ARCH),Linux)
          FC_FROM_ENV := FALSE
       endif
       ifneq ($(wildcard $(shell which icc 2> /dev/null)),)
-         CC := icc
-         ES_CC := $(CC)
-         CC_FROM_ENV := FALSE
+         ES_CC := icc
       endif
       ifneq ($(wildcard $(shell which icpc 2> /dev/null)),)
-         CXX := icpc
-         ES_CXX := $(CXX)
-         CXX_FROM_ENV := FALSE
-      endif
-      ifeq ($(ESMF_COMPILER),intel)
-         ifeq ($(findstring g++,$(notdir $(CXX))),g++)
-            ESMF_COMPILER := intelgcc
-         endif
+         ES_CXX := icpc
       endif
    endif
 
