@@ -181,6 +181,15 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      endif
   endif
 
+# HDF5 and MPT at NCCS have an "issue" that needs an extra flag
+# -------------------------------------------------------------
+
+  ifeq ($(SITE),NCCS)
+    ifeq ($(ESMF_COMM),mpt)
+       HDF5_NCCS_MPT_CFLAG := -Wno-error=redundant-decls
+    endif
+  endif
+
 #-------------------------------------------------------------------------
 
 #                  --------------------------------
@@ -440,7 +449,7 @@ hdf5.config :: hdf5/README.txt szlib.install zlib.install
                       --disable-shared --disable-cxx\
                       --enable-hl --enable-fortran --disable-sharedlib-rpath \
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
-                      CFLAGS="$(CFLAGS)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	touch $@
 
 ifeq ($(FC),nagfor)
