@@ -4,6 +4,11 @@
 
 ### Updates
 ### Fixed
+
+- Use of ifort at NAS was broken by changes to make the GNU Make system
+  more robust. Updates to `Arch.mk` does extra `which ifort` etc. tests
+  now
+
 ### Changed
 
 ## [6.0.26] - 2020-12-09
