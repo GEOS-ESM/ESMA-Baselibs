@@ -9,6 +9,8 @@
 ### Fixed
 
 * Removed use of `-fcommon` workaround for nccmp (fixed in 1.8.9.0)
+* Remove cdo as buildable with NAG Fortran
+* Fixes for NAG detection
 
 ### Changed
 

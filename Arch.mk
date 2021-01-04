@@ -95,7 +95,7 @@ ifeq ($(ARCH),Linux)
       endif
    endif
 
-   ifeq ($(FC),gfortran)
+   ifeq ($(findstring gfortran,$(notdir $(FC))),gfortran)
       FFLAGS += -fno-second-underscore
       FCFLAGS += -fno-second-underscore
       CPPFLAGS += -DgFortran

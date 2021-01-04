@@ -206,6 +206,13 @@ ifeq ($(ARCH),Darwin)
    ALLDIRS := $(filter-out $(NO_DARWIN_DIRS),$(ALLDIRS))
 endif
 
+# NAG cannot build cdo
+# https://code.mpimet.mpg.de/boards/1/topics/9337
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+   NO_NAG_DIRS = cdo
+   ALLDIRS := $(filter-out $(NO_NAG_DIRS),$(ALLDIRS))
+endif
+
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf \
                  gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger FLAP
 
@@ -431,7 +438,7 @@ hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
-ifeq ($(FC),nagfor)
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
 hdf5.config :: hdf5/README.txt
 	@echo Patching HDF5 for NAG
 	patch -f -p1 < ./patches/hdf5/nag.configure.patch
@@ -452,7 +459,7 @@ hdf5.config :: hdf5/README.txt szlib.install zlib.install
                       CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	touch $@
 
-ifeq ($(FC),nagfor)
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
 hdf5.config :: hdf5/README.txt
 	@echo Unpatching HDF5 for NAG
 	patch -f -p1 -R < ./patches/hdf5/nag.configure.patch
