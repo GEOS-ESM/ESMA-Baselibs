@@ -640,7 +640,7 @@ nccmp.config: nccmp/configure netcdf.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
-          export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG) $(COMMON_FLAG)";\
+          export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG)";\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nccmp \
                       --with-netcdf=$(MKFILE_DIR)/netcdf \

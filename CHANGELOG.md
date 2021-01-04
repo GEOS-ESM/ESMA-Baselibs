@@ -3,7 +3,13 @@
 ## Unreleased
 
 ### Updates
+
+* nccmp 1.8.9.0
+
 ### Fixed
+
+* Removed use of `-fcommon` workaround for nccmp (fixed in 1.8.9.0)
+
 ### Changed
 
 ## [6.0.27] - 2020-12-21
