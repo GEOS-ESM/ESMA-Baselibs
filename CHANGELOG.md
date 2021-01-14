@@ -11,6 +11,9 @@
 * Removed use of `-fcommon` workaround for nccmp (fixed in 1.8.9.0)
 * Remove cdo as buildable with NAG Fortran
 * Fixes for NAG detection
+* Fixes for install targets that could use MPI. For some reason
+  triggered at Berkeley
+* Fixes to allow Intel icc on macOS
 
 ### Changed
 

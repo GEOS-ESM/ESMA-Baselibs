@@ -190,6 +190,17 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
     endif
   endif
 
+# Intel C on Darwin needs extra CFLAGS
+# http://intel.ly/3ioNecp
+# ------------------------------------
+
+  ifeq ($(findstring icc,$(notdir $(CC))),icc)
+     ifeq ($(ARCH),Darwin)
+        CFLAGS += -diag-error=147 -stdlib=libc++
+        export MMACOS_MIN
+     endif
+  endif
+
 #-------------------------------------------------------------------------
 
 #                  --------------------------------
@@ -822,7 +833,7 @@ hdf5.install: hdf5.config
 	@(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           "$(HDF5_DEEPBIND)" ;\
-          $(MAKE) install)
+          $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
 ifeq ($(GFORTRAN_VERSION_GTE_10),1)
@@ -840,7 +851,7 @@ netcdf.install :: netcdf.config
           export CPPFLAGS="$(CPPFLAGS) $(NC_CPPFLAGS) $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
           export LIBS="-L$(prefix)/lib $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
-          $(MAKE) install)
+          $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
 ifeq ($(GFORTRAN_VERSION_GTE_10),1)
@@ -858,7 +869,7 @@ netcdf-fortran.install : netcdf-fortran.config
           export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
-          make -j1 install)
+          make -j1 install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
 netcdf-cxx4.install : netcdf-cxx4.config
@@ -867,7 +878,21 @@ netcdf-cxx4.install : netcdf-cxx4.config
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
-          $(MAKE) install)
+          $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
+	@touch $@
+
+cdo.install: cdo.config
+	@echo "Installing cdo $*"
+	@(cd cdo; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
+	@touch $@
+
+nccmp.install: nccmp.config
+	@echo "Installing nccmp $*"
+	@(cd nccmp; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
 pFUnit.install: pFUnit.config
@@ -943,7 +968,7 @@ nco.install: nco.config
 	  ar r libnco.a *.o ;\
 	  mv libnco.a .libs/ ;\
 	  cd ../.. ;\
-	  $(MAKE) install )
+	  $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 else
 nco.install: nco.config
@@ -955,7 +980,7 @@ nco.install: nco.config
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
           export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
-	  $(MAKE) install )
+	  $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 endif
 
