@@ -62,6 +62,9 @@ ifeq ($(ARCH),Linux)
    ifneq ($(shell uname -n | egrep 'r[0-9]*i[0-9]n[0-9]*'),)
       SITE := NAS
    endif
+   ifneq ($(shell uname -n | egrep 'r[0-9]*c[0-9]*t[0-9]*n[0-9]*'),)
+      SITE := NAS
+   endif
    CFLAGS := -fPIC 
    export CFLAGS
 

@@ -14,6 +14,7 @@
 * Fixes for install targets that could use MPI. For some reason
   triggered at Berkeley
 * Fixes to allow Intel icc on macOS
+* Add support for Rome nodes at NAS
 
 ### Changed
 
