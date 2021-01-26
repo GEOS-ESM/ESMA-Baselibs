@@ -1178,13 +1178,7 @@ gFTL.check: gFTL.install pFUnit.install
 
 gFTL-shared.check: gFTL-shared.install pFUnit.install
 	@echo "Checking gFTL-shared"
-	@echo "This could require a new CMake for pFUnit, so we remove old build"
-	@rm -rf ./gFTL-shared/build
-	@mkdir -p ./gFTL-shared/build
-	@(cd ./gFTL-shared/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
-		$(MAKE) tests )
-	@touch $@
+	@echo "gFTL-shared has no checks"
 
 fArgParse.check: fArgParse.install pFUnit.install
 	@echo "Checking fArgParse"
