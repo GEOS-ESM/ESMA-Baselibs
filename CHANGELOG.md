@@ -15,6 +15,7 @@
   triggered at Berkeley
 * Fixes to allow Intel icc on macOS
 * Add support for Rome nodes at NAS
+* Fix esmf sub-make commands (missing `$(ESMF_COMPILER)`)
 
 ### Changed
 
