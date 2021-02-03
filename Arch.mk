@@ -59,7 +59,7 @@ ifeq ($(ARCH),Linux)
    SITE := $(patsubst borg%,NCCS,$(SITE))
    SITE := $(patsubst pfe%,NAS,$(SITE))
    # This detects compute nodes at NAS
-   ifneq ($(shell uname -n | egrep 'r[0-9]*i[0-9]n[0-9]*'),)
+   ifneq ($(shell uname -n | egrep 'r[0-9]*i[0-9]*n[0-9]*'),)
       SITE := NAS
    endif
    ifneq ($(shell uname -n | egrep 'r[0-9]*c[0-9]*t[0-9]*n[0-9]*'),)
@@ -89,12 +89,22 @@ ifeq ($(ARCH),Linux)
          ESMF_COMPILER := intel
          FLAP_COMPILER := intel
          FC_FROM_ENV := FALSE
+         ifeq ($(ESMF_COMM),intelmpi)
+            MPIFC := mpiifort
+            CPPDEFS += -DpgiFortran
+         endif
       endif
       ifneq ($(wildcard $(shell which icc 2> /dev/null)),)
          ES_CC := icc
+         ifeq ($(ESMF_COMM),intelmpi)
+            MPICC := mpiicc
+         endif
       endif
       ifneq ($(wildcard $(shell which icpc 2> /dev/null)),)
          ES_CXX := icpc
+         ifeq ($(ESMF_COMM),intelmpi)
+            MPICXX := mpiicc
+         endif
       endif
    endif
 
