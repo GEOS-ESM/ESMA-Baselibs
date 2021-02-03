@@ -1034,7 +1034,7 @@ hdfeos5.install: hdfeos5.config
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install ;\
-          $(MAKE) -C include install)
+          $(MAKE) -C include install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	touch $@
 
 SDPToolkit.install: SDPToolkit.config
@@ -1043,7 +1043,7 @@ SDPToolkit.install: SDPToolkit.config
 	@(cd SDPToolkit; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) ;\
-          $(MAKE) install)
+          $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	touch $@
 
 esmf.install : esmf_rules.mk
