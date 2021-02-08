@@ -3,6 +3,12 @@
 ## Unreleased
 
 ### Updates
+### Fixed
+### Changed
+
+## [6.0.28] - 2021-02-08
+
+### Updates
 
 * cURL 7.75.0
 * NCO 4.9.7
