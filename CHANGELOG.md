@@ -6,6 +6,7 @@
 
 * cURL 7.75.0
 * NCO 4.9.7
+* CDO 1.9.10
 * nccmp 1.8.9.0
 
 ### Fixed
