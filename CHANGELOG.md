@@ -4,6 +4,7 @@
 
 ### Updates
 
+* cURL 7.75.0
 * nccmp 1.8.9.0
 
 ### Fixed
