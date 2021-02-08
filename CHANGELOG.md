@@ -27,8 +27,6 @@
 * Fix esmf sub-make commands (missing `$(ESMF_COMPILER)`)
 * Remove gFTL-shared.check as it does nothing
 
-### Changed
-
 ## [6.0.27] - 2020-12-21
 
 ### Fixed
