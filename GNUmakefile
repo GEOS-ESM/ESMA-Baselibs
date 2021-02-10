@@ -174,10 +174,14 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      NO_IMPLICIT_FUNCTION_ERROR := -Wno-error=implicit-function-declaration
      export NO_IMPLICIT_FUNCTION_ERROR
 
-     # There is also an issue with clang and curl
      ifeq ($(ARCH),Darwin)
+        # There is an issue with clang and curl
         MMACOS_MIN := -mmacosx-version-min=10.13
         export MMACOS_MIN
+
+        # There is an issue with clang++ and cdo
+        CLANG_STDC11 := -std=c++11
+        export CLANG_STDC11
      endif
   endif
 

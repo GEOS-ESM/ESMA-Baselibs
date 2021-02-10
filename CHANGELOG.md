@@ -6,7 +6,15 @@
 ### Fixed
 ### Changed
 
+## [6.0.29] - 2021-02-10
+
+### Changed
+
 * Add new `BUILD=GFE` to build only GFE libraries.
+
+### Fixed
+
+* CDO with `clang++` requires a new flag
 
 ## [6.0.28] - 2021-02-08
 
