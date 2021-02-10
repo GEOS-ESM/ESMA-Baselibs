@@ -224,8 +224,10 @@ ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
    ALLDIRS := $(filter-out $(NO_NAG_DIRS),$(ALLDIRS))
 endif
 
+GFE_DIRS = gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger
+
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf \
-                 gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger FLAP
+                 $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
@@ -244,10 +246,14 @@ INC_SUPP :=  $(foreach subdir, \
             / /zlib /szlib /jpeg /hdf5 /hdf /netcdf,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 else
+ifeq ('$(BUILD)','GFE')
+SUBDIRS = $(GFE_DIRS)
+else
 SUBDIRS = $(ALLDIRS)
 INC_SUPP :=  $(foreach subdir, \
             / /zlib /szlib /jpeg /hdf5 /hdf /netcdf /udunits2 /gsl /antlr2,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
+endif
 endif
 
 TARGETS = all lib install

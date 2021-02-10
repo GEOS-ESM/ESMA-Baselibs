@@ -6,6 +6,8 @@
 ### Fixed
 ### Changed
 
+* Add new `BUILD=GFE` to build only GFE libraries.
+
 ## [6.0.28] - 2021-02-08
 
 ### Updates
