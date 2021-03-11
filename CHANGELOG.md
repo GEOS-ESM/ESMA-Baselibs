@@ -5,6 +5,13 @@
 ### Updates
 ### Fixed
 ### Changed
+### Removed
+
+## [6.0.30] - 2021-03-11
+
+### Updates
+
+* gFTL v1.2.8
 
 ## [6.0.29] - 2021-02-10
 
