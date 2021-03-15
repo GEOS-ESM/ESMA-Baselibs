@@ -7,6 +7,28 @@
 ### Changed
 ### Removed
 
+## [6.1.0] - 2021-03-16
+
+### Updates
+
+* Updates to GFE libraries. NOTE: Change to CMake linkage (see below)
+  * gFTL v1.3.1
+  * gFTL-shared v1.2.0
+  * pFUnit v4.2.0
+  * fArgParse v1.1.0
+  * yaFyaml v0.5.0
+  * pFlogger v1.5.0
+  * GFE libraries are now
+    *called* in a different way in projects that use GFE. For example,
+    before you used:
+    ```cmake
+    target_link_libraries (library PUBLIC gftl gftl-shared)
+    ```
+    you will now use a CMake namespace:
+    ```cmake
+    target_link_libraries (library PUBLIC GFTL::gftl GFTL_SHARED::gftl-shared)
+    ```
+
 ## [6.0.30] - 2021-03-11
 
 ### Updates

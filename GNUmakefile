@@ -657,7 +657,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
                       --with-udunits2=$(prefix) \
                       --disable-grib --disable-openmp \
                       --disable-shared --enable-static \
-                      FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CXXFLAGS="$(CLANG_STDC11)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 nccmp.config: nccmp/configure netcdf.install
