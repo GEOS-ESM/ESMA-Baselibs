@@ -29,6 +29,13 @@
     target_link_libraries (library PUBLIC GFTL::gftl GFTL_SHARED::gftl-shared)
     ```
 
+## [6.0.31] - 2021-03-17
+
+### Changed
+
+* Updated submodule URL for hdf4 to https://github.com/HDFGroup/hdf4.git
+  as that is now the official URL for hdf4
+
 ## [6.0.30] - 2021-03-11
 
 ### Updates
