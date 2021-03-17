@@ -30,7 +30,7 @@
 	url = https://gitlab.com/remikz/nccmp.git
 [submodule "hdf4"]
 	path = hdf4
-	url = https://bitbucket.hdfgroup.org/scm/hdffr/hdf4.git
+	url = https://github.com/HDFGroup/hdf4.git
 [submodule "pFUnit"]
 	path = pFUnit
 	url = https://github.com/Goddard-Fortran-Ecosystem/pFUnit.git
