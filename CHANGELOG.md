@@ -7,7 +7,7 @@
 ### Changed
 ### Removed
 
-## [6.1.0] - 2021-03-16
+## [6.x.x] - 2021-MM-DD
 
 ### Updates
 
