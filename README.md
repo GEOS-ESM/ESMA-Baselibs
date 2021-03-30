@@ -12,7 +12,7 @@ NASA/GSFC.
 
 | Library                                                                  | Version     |
 | ---                                                                      | ---         |
-| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                    | 8.0.1       |
+| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                    | 8.1.0       |
 | [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.7.4       |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.5.2       |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1       |
@@ -31,7 +31,7 @@ NASA/GSFC.
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                  | 2.1.1       |
 | [cURL](https://curl.haxx.se/)                                            | 7.75.0      |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                         | 2.2.26      |
-| [NCO](http://nco.sourceforge.net/)                                       | 4.9.7       |
+| [NCO](http://nco.sourceforge.net/)                                       | 4.9.8       |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 1.9.10      |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.8.9.0     |
 | [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.9.0 |
