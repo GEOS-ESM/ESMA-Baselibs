@@ -28,6 +28,17 @@
     ```cmake
     target_link_libraries (library PUBLIC GFTL::gftl GFTL_SHARED::gftl-shared)
     ```
+## [6.1.0] - 2021-03-30
+
+### Updates
+
+* ESMF 8.1.0
+* cURL 7.76.0
+* NCO 4.9.8
+
+### Fixed
+
+* Added patch for building ESMF 8.1.0 with NAG on Darwin
 
 ## [6.0.31] - 2021-03-17
 
