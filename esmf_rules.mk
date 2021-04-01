@@ -131,6 +131,16 @@ else
 endif
 	@touch esmf.check
 
+esmf.all_tests all_tests:
+	@echo "Customized ESMF build step $@..."
+	@(cd $(ESMF_DIR); make -e all_tests)
+ifneq ($(ARCH), Darwin)
+	@(cd $(ESMF_DIR)/src/addon/ESMPy; export PYTHONPATH=$(ESMF_INSTALL_PREFIX)/lib/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
+else
+	@echo "Due to issues with rpath on Darwin, not building ESMPy"
+endif
+	@touch esmf.all_tests
+
 esmf.examples:
 	@echo "Running ESMF Examples..."
 	@(cd $(ESMF_DIR); $(MAKE) -e examples)

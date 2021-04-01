@@ -14,6 +14,10 @@
 * ESMF 8.1.0
 * NCO 4.9.8
 
+### Fixed
+
+* Added patch for building ESMF 8.1.0 with NAG on Darwin
+
 ## [6.0.31] - 2021-03-17
 
 ### Changed

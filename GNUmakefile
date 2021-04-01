@@ -758,8 +758,20 @@ gsl.config : gsl.download gsl/configure
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-esmf.config : esmf_rules.mk netcdf-fortran.install
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+esmf.config :: esmf_rules.mk netcdf-fortran.install
+	@echo Patching ESMF for NAG
+	patch -f -p1 < ./patches/esmf/nag.build.patch
+endif
+
+esmf.config :: esmf_rules.mk netcdf-fortran.install
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
+
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+esmf.config :: esmf_rules.mk netcdf-fortran.install
+	@echo Unpatching ESMF for NAG
+	patch -f -p1 -R < ./patches/esmf/nag.build.patch
+endif
 
 hdfeos.download : scripts/download_hdfeos.bash
 	@echo "Downloading hdfeos"
@@ -1056,8 +1068,20 @@ SDPToolkit.install: SDPToolkit.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	touch $@
 
-esmf.install : esmf_rules.mk
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+esmf.install :: esmf_rules.mk
+	@echo Patching ESMF for NAG
+	patch -f -p1 < ./patches/esmf/nag.build.patch
+endif
+
+esmf.install :: esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) install
+
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+esmf.install :: esmf_rules.mk
+	@echo Unpatching ESMF for NAG
+	patch -f -p1 -R < ./patches/esmf/nag.build.patch
+endif
 
 esmf.info : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) info
@@ -1163,8 +1187,35 @@ curl.distclean:
 #                          Check
 #                          .....
 
-esmf.check : esmf_rules.mk
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+esmf.check :: esmf_rules.mk
+	@echo Patching ESMF for NAG
+	patch -f -p1 < ./patches/esmf/nag.build.patch
+endif
+
+esmf.check :: esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) check
+
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+esmf.check :: esmf_rules.mk
+	@echo Unpatching ESMF for NAG
+	patch -f -p1 -R < ./patches/esmf/nag.build.patch
+endif
+
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+esmf.all_tests :: esmf_rules.mk
+	@echo Patching ESMF for NAG
+	patch -f -p1 < ./patches/esmf/nag.build.patch
+endif
+
+esmf.all_tests :: esmf_rules.mk
+	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) all_tests
+
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+esmf.all_tests :: esmf_rules.mk
+	@echo Unpatching ESMF for NAG
+	patch -f -p1 -R < ./patches/esmf/nag.build.patch
+endif
 
 curl.check: curl.install
 	@echo "Checking curl"
