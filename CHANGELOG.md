@@ -12,6 +12,7 @@
 ### Updates
 
 * ESMF 8.1.0
+* cURL 7.76.0
 * NCO 4.9.8
 
 ### Fixed
