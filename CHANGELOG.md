@@ -16,7 +16,7 @@
   * gFTL-shared v1.2.0
   * pFUnit v4.2.1
   * fArgParse v1.1.0
-  * yaFyaml v0.5.0
+  * yaFyaml v0.5.1
   * pFlogger v1.5.0
   * GFE libraries are now
     *called* in a different way in projects that use GFE. For example,
