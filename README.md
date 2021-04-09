@@ -18,7 +18,7 @@ NASA/GSFC.
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1       |
 | [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.10.7      |
 | [HDF4](https://portal.hdfgroup.org/display/support)                      | 4.2.15      |
-| [pFUnit](https://github.com/Goddard-Fortran-Ecosystem/pFUnit)            | v4.2.0      |
+| [pFUnit](https://github.com/Goddard-Fortran-Ecosystem/pFUnit)            | v4.2.1      |
 | [gFTL](https://github.com/Goddard-Fortran-Ecosystem/gFTL)                | v1.3.1      |
 | [gFTL-shared](https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared)  | v1.2.0      |
 | [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)      | v1.1.0      |

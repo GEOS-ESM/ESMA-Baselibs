@@ -14,7 +14,7 @@
 * Updates to GFE libraries. NOTE: Change to CMake linkage (see below)
   * gFTL v1.3.1
   * gFTL-shared v1.2.0
-  * pFUnit v4.2.0
+  * pFUnit v4.2.1
   * fArgParse v1.1.0
   * yaFyaml v0.5.0
   * pFlogger v1.5.0
