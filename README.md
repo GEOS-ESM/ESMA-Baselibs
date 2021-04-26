@@ -105,7 +105,7 @@ If you are feeling lucky, building can be just as simple as
 ```
 cd ESMA-Baselibs
 make install ESMF_COMM=<mpistack> (prefix=<dir>)
-make verify
+make verify ESMF_COMM=<mpistack>
 ```
 where `<mpistack>` is one of the ESMF MPI stack names, such as:
 
