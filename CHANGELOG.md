@@ -11,8 +11,12 @@
 
 ### Updates
 
-* ESMF 8.1.0
+* ESMF 8.1.1
 * cURL 7.76.1
+
+### Fixed
+
+* Updated URL for GSL download
 
 ## [6.2.0] - 2021-04-26
 
@@ -35,6 +39,7 @@
     ```cmake
     target_link_libraries (library PUBLIC GFTL::gftl GFTL_SHARED::gftl-shared)
     ```
+
 ## [6.1.0] - 2021-03-30
 
 ### Updates
