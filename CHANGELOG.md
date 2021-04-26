@@ -18,6 +18,10 @@
 
 * Updated URL for GSL download
 
+### Changed
+
+* Removed patch for building ESMF with NAG on Darwin (fixed in ESMF 8.1.1)
+
 ## [6.2.0] - 2021-04-26
 
 ### Updates
