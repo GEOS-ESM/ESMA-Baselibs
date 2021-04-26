@@ -68,19 +68,35 @@ NASA/GSFC.
 
 - CMake of a recent vintage
 
+### Obtaining ESMA Baselibs
 
-### Cloning ESMA Baselibs
+ESMA Baselibs can be obtained in two ways via a tarball or through git.
 
-   ESMA Baselibs is based on submodules so you need to clone with:
+#### Tarball
+
+Recent releases of ESMA Baselibs have a complete tarball uploaded as an
+asset on the Releases page. These are the files denoted by:
+```
+ESMA-Baselibs-x.y.z.COMPLETE.tar.xz
+```
+
+The `COMPLETE` indicates that they have completed all the steps needed
+to get Baselibs via git (see below). Note that to save space, this
+tarball is tarred with `--exclude-vcs` so the libraries that are
+normally git repositories, will not be in this tarball.
+
+#### Git Clone
+
+ESMA Baselibs is based on submodules so you need to clone with:
 
 ```
 git clone --recurse-submodules -b <TAG> https://github.com/GEOS-ESM/ESMA-Baselibs.git
 ```
 
-#### Download non-git Libraries
+##### Download non-git Libraries
 
 Note that there is an additional step needed for building a complete
-ESMA Baselibs. There are six libraries that are not on git at present:
+ESMA Baselibs when retrieved via Git. There are six libraries that are not on git at present:
 
 * GSL
 * szlib
