@@ -7,6 +7,12 @@
 ### Changed
 ### Removed
 
+## [6.0.32] - 2021-05-18
+
+### Changed
+
+* Updated URL for GSL download
+
 ## [6.0.31] - 2021-03-17
 
 ### Changed
