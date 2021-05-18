@@ -800,7 +800,8 @@ hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos5 \
                       --disable-shared --enable-static \
-                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC="$(H5_CC)" FC=$(H5_FC) CXX=$(NC_CXX) F77=$(H5_FC) )
+                      --enable-fortran \
+                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC="$(H5_CC)" FC=$(H5_FC) F77=$(H5_FC) )
 	@touch $@
 
 INC_SUPP_SDP :=  $(foreach subdir, \
@@ -1041,7 +1042,7 @@ hdfeos5.install: hdfeos5.config
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install ;\
-          $(MAKE) -C include install CC=$(H5_CC) FC=$(H5_FC) CXX=$(NC_CXX) F77=$(H5_FC))
+          $(MAKE) -C include install CC=$(H5_CC) FC=$(H5_FC) F77=$(H5_FC))
 	touch $@
 
 SDPToolkit.install: SDPToolkit.config
