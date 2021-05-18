@@ -1,6 +1,3 @@
-[submodule "zlib"]
-	path = zlib
-	url = https://github.com/madler/zlib.git
 [submodule "jpeg"]
 	path = jpeg
 	url = https://github.com/libjpeg-turbo/ijg.git
@@ -58,3 +55,6 @@
 [submodule "antlr2"]
 	path = antlr2
 	url = https://github.com/nco/antlr2.git
+[submodule "zlib-ng"]
+	path = zlib-ng
+	url = https://github.com/zlib-ng/zlib-ng.git
