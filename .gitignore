@@ -12,9 +12,11 @@ cdo-*/
 cdo
 
 hdfeos/
-hdfeos5/
-TOOLKIT/
 
+hdf-eos5-*/
+hdfeos5
+
+TOOLKIT/
 SDPToolkit
 
 gsl-*/

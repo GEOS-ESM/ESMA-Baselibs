@@ -795,15 +795,12 @@ hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
 	@echo "Configuring hdfeos5 $*"
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
-          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -Df2cFortran";\
+          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos5 \
-                      --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
-                      --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
-                      --with-hdf5=$(prefix)/include/hdf5,$(prefix)/lib \
                       --disable-shared --enable-static \
-                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC="$(H5_CC) -Df2cFortran" FC=$(H5_FC) CXX=$(NC_CXX) F77=$(H5_FC) )
+                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC="$(H5_CC)" FC=$(H5_FC) CXX=$(NC_CXX) F77=$(H5_FC) )
 	@touch $@
 
 INC_SUPP_SDP :=  $(foreach subdir, \
@@ -1044,7 +1041,7 @@ hdfeos5.install: hdfeos5.config
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install ;\
-          $(MAKE) -C include install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
+          $(MAKE) -C include install CC=$(H5_CC) FC=$(H5_FC) CXX=$(NC_CXX) F77=$(H5_FC))
 	touch $@
 
 SDPToolkit.install: SDPToolkit.config

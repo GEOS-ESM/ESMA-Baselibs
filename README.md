@@ -36,7 +36,7 @@ NASA/GSFC.
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.8.9.0     |
 | [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.9.0 |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                  | 2.20        |
-| [HDF-EOS5](https://wiki.earthdata.nasa.gov/display/DAS)                  | 1.16        |
+| [HDF-EOS5](https://wiki.earthdata.nasa.gov/display/DAS)                  | 2.0         |
 | [SDP Toolkit](https://wiki.earthdata.nasa.gov/display/DAS)               | 5.2.20      |
 
 ## Installation Instructions

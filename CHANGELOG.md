@@ -3,6 +3,9 @@
 ## Unreleased
 
 ### Updates
+
+* HDF-EOS5 v2.0
+
 ### Fixed
 ### Changed
 ### Removed
