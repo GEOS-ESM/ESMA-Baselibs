@@ -7,6 +7,12 @@
 ### Changed
 ### Removed
 
+* Remove unmaintained zlib library
+
+### Added
+
+* zlib-ng 2.0.3
+
 ## [6.2.1] - 2021-04-26
 
 ### Updates
