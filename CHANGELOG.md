@@ -10,6 +10,12 @@
 ### Changed
 ### Removed
 
+## [6.2.2] - 2021-06-XX
+
+### Updates
+
+* cURL 7.77.0
+
 ## [6.2.1] - 2021-04-26
 
 ### Updates
