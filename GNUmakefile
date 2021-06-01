@@ -770,16 +770,13 @@ hdfeos.config: hdfeos.download hdfeos/configure hdf4.install
 	@echo "Configuring hdfeos $*"
 	@(cd hdfeos; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
-          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -Df2cFortran";\
+          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos \
-                      --with-jpeg=$(prefix)/include/jpeg,$(prefix)/lib \
-                      --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
-                      --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
-                      --with-hdf4=$(prefix)/include/hdf,$(prefix)/lib \
                       --disable-shared --enable-static \
-                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS)" CC="$(H4_CC) -Df2cFortran" FC=$(H4_FC) CXX=$(CXX) F77=$(H4_FC) )
+                      --enable-fortran \
+                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS)" CC="$(H4_CC)" FC=$(H4_FC) F77=$(H4_FC) )
 	@touch $@
 
 hdfeos5.download : scripts/download_hdfeos5.bash
@@ -1033,7 +1030,7 @@ hdfeos.install: hdfeos.config
 	@(cd hdfeos; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install ;\
-          $(MAKE) -C include install)
+          $(MAKE) -C include install CC=$(H4_CC) FC=$(H4_FC) F77=$(H4_FC))
 	touch $@
 
 hdfeos5.install: hdfeos5.config

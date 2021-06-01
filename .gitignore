@@ -11,7 +11,8 @@ szlib
 cdo-*/
 cdo
 
-hdfeos/
+hdf-eos2-*/
+hdfeos
 
 hdf-eos5-*/
 hdfeos5

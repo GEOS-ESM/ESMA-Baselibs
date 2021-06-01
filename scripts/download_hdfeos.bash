@@ -5,8 +5,8 @@
 # --------------
 
 package_name='hdfeos'
-tarball='HDF-EOS2.20v1.00.tar.Z'
-base_url='https://git.earthdata.nasa.gov/rest/git-lfs/storage/DAS/hdfeos/cb0f900d2732ab01e51284d6c9e90d0e852d61bba9bce3b43af0430ab5414903?response-content-disposition=attachment%3B%20filename%3D%22HDF-EOS2.20v1.00.tar.Z%22%3B%20filename*%3Dutf-8%27%27HDF-EOS2.20v1.00.tar.Z'
+tarball='hdf-eos2-3.0-src.tar.gz'
+base_url='https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos/raw/hdf-eos2-3.0-src.tar.gz?at=refs%2Fheads%2FHDFEOS2_3.0'
 
 export LMOD_SH_DBG_ON=0
 
@@ -71,12 +71,26 @@ fi
 # ----------------
 
 # Get the name of the directory the tar command will make
-tar_dir_name=$(tar tzf $SCRIPTDIR/$tarball | head -1 | cut -f2 -d"/")
+tar_dir_name=$(tar tzf $SCRIPTDIR/$tarball | head -1 | cut -f1 -d"/")
 
 # Untar to MAINDIR
 if [[ ! -d $MAINDIR/$tar_dir_name ]]
 then
    tar xf $SCRIPTDIR/$tarball -C $MAINDIR
+fi
+
+# Link untarred source to the name Baselibs expects
+
+if [[ ! -L $MAINDIR/$package_name ]]
+then
+   if [[ ! -e $MAINDIR/$package_name ]]
+   then
+      cd $MAINDIR
+      ln -s $tar_dir_name $package_name
+   else
+      echo "If you got here, this means you have a broken symlink, I think"
+      exit 1
+   fi
 fi
 
 exit 0
