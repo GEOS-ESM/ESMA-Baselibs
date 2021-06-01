@@ -3,9 +3,6 @@
 ## Unreleased
 
 ### Updates
-
-* HDF-EOS5 v2.0
-
 ### Fixed
 ### Changed
 ### Removed
@@ -15,6 +12,7 @@
 ### Updates
 
 * cURL 7.77.0
+* HDF-EOS5 v2.0
 
 ## [6.2.1] - 2021-04-26
 
