@@ -11,7 +11,7 @@
 
 ### Fixed
 
-* Fixed bug with cURL as [7.77.0 now requires an SSL library to be explicitly chosen](https://daniel.haxx.se/blog/2021/04/23/please-select-your-tls/), or none at all. On Linux, we supply `--with-openssl` as this works at NCCS, NAS, and on GMAO Desktops. On Darwin, we build with `--with-secure-transport` as there is no guarantee for OpenSSL and even if installed with, say, brew, might be in a non-standard location on every system.
+* Fixed bug with cURL as [7.77.0 now requires an SSL library to be explicitly chosen](https://daniel.haxx.se/blog/2021/04/23/please-select-your-tls/), or none at all. On Linux, we supply `--with-openssl` as this works at NCCS, NAS, and on GMAO Desktops. On Darwin, we build with `--without-ssl` as there is no guarantee for OpenSSL and even if installed with, say, brew, might be in a non-standard location on every system. Tests were done with `--with-secure-transport` but led to build failures with netCDF
 
 ## [6.2.3] - 2021-06-02
 

@@ -129,8 +129,9 @@ endif
 ifeq ($(ARCH),Darwin)
 
    # On Darwin, you can't assume an Open SSL exists or where
-   # so we use secure transport
-   CURL_SSL := --with-secure-transport
+   # so we disable ssl. Secure transport was tried, but netCDF
+	# would not link
+   CURL_SSL := --without-ssl
    export CURL_SSL
 
 endif
