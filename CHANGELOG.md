@@ -7,6 +7,12 @@
 ### Changed
 ### Removed
 
+## [6.2.4] - 2021-06-02
+
+### Fixed
+
+* Fixed bug with cURL as 7.77.0 now requires an SSL library to be explicitly chosen, or none at all. On Linux, we supply `--with-openssl` as this works at NCCS, NAS, and on GMAO Desktops. On Darwin, we build with `--with-secure-transport` as there is no guarantee for OpenSSL and even if installed with, say, brew, might be in a non-standard location on every system.
+
 ## [6.2.3] - 2021-06-02
 
 ### Fixed

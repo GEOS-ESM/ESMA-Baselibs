@@ -74,6 +74,10 @@ ifeq ($(ARCH),Linux)
       LIB_EXTRA += -ltirpc
    endif
 
+   # On Linux, assume standard OpenSSL (works at NCCS, NAS, GMAO)
+   CURL_SSL := --with-openssl
+   export CURL_SSL
+
    ifeq ($(SITE),NCCS)
       ENABLE_GPFS = --enable-gpfs
       LINK_GPFS = -lgpfs
@@ -116,3 +120,17 @@ ifeq ($(ARCH),Linux)
 
 endif
 
+#
+#                            ----------------
+#                                 Darwin
+#                            ----------------
+#
+
+ifeq ($(ARCH),Darwin)
+
+   # On Darwin, you can't assume an Open SSL exists or where
+   # so we use secure transport
+   CURL_SSL := --with-secure-transport
+   export CURL_SSL
+
+endif
