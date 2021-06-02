@@ -7,7 +7,13 @@
 ### Changed
 ### Removed
 
-## [6.2.2] - 2021-06-XX
+## [6.2.3] - 2021-06-02
+
+### Fixed
+
+* Fixed make bug with SDPToolkit and new hdf-eos2 (was not installing some needed include files)
+
+## [6.2.2] - 2021-06-02
 
 ### Updates
 

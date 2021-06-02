@@ -1030,7 +1030,8 @@ hdfeos.install: hdfeos.config
 	@(cd hdfeos; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install ;\
-          $(MAKE) -C include install CC=$(H4_CC) FC=$(H4_FC) F77=$(H4_FC))
+          $(MAKE) -C include install CC=$(H4_CC) FC=$(H4_FC) F77=$(H4_FC) ;\
+          cp include/*.h $(prefix)/include/hdfeos)
 	touch $@
 
 hdfeos5.install: hdfeos5.config
