@@ -217,7 +217,7 @@ ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf
           FLAP hdfeos hdfeos5 SDPToolkit
 
 ifeq ($(ARCH),Darwin)
-   NO_DARWIN_DIRS = hdfeos hdfeos5 SDPToolkit
+   NO_DARWIN_DIRS = netcdf-cxx4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_DARWIN_DIRS),$(ALLDIRS))
 endif
 
