@@ -132,5 +132,7 @@ ifeq ($(ARCH),Darwin)
    # so we use SecureTransport
    CURL_SSL := --with-secure-transport
    export CURL_SSL
+   DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration -framework Security
+   export DARWIN_ST_LIBS
 
 endif

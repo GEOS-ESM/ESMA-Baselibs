@@ -488,7 +488,7 @@ endif
 
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
 BUILD_DAP = --enable-dap
-LIB_CURL = $(shell $(prefix)/bin/curl-config --libs)	
+LIB_CURL = $(shell $(prefix)/bin/curl-config --libs) $(DARWIN_ST_LIBS)
 else
 BUILD_DAP = --disable-dap
 LIB_CURL =
@@ -628,6 +628,8 @@ curl.config : curl/configure.ac zlib.install
                       --with-zlib=$(prefix) \
                       --disable-ldap \
                       --enable-manual \
+                      --disable-shared \
+                      --enable-static \
                       --without-libidn \
                       --without-libidn2 \
                       --without-nghttp2 \
