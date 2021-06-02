@@ -628,8 +628,6 @@ curl.config : curl/configure.ac zlib.install
                       --with-zlib=$(prefix) \
                       --disable-ldap \
                       --enable-manual \
-                      --disable-shared \
-                      --enable-static \
                       --without-libidn \
                       --without-libidn2 \
                       --without-nghttp2 \
