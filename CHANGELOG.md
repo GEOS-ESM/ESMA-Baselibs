@@ -11,6 +11,10 @@
 
 ### Updates
 
+* ESMF 8_2_0_beta_snapshot_10
+  * This beta is being used due to it fixing two bugs
+    1. Fix for errors with alarms during replay
+    2. Fix for regridding very-high resolution files
 * cURL 7.77.0
 * NCO 4.9.9
 * HDF-EOS2 v3.0
