@@ -15,7 +15,7 @@
   * On Linux, we supply `--with-openssl` as this works at NCCS, NAS, and on GMAO Desktops.
   * On macOS, there is no guarantee of OpenSSL (and even with Brew might be in a non-standard location)
     * If Clang is the C compiler, we can use SecureTransport and build with `--with-secure-transport`
-    * If GCC is the C compiler, there is a bug with the Security Framework, so we build without SSL, `--without-ssl`
+    * If GCC is the C compiler, there is a [bug with the Security Framework](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93082), so we build without SSL, `--without-ssl`
 * Disable netcdf-cxx4 build on Darwin. Has issues and is not a required-by-GEOS library
 * cURL 7.77.0 on macOS 11.0 needs a different `-mmacosx-version-min`
 
