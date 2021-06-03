@@ -222,7 +222,6 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 
   ifeq ($(ARCH),Darwin)
     # On Darwin, you can't assume an Open SSL exists
-    # gcc on macOS cannot link to frameworks because of a bug
     ifeq ($(CC_IS_CLANG),TRUE)
       # If we are using Clang we can use SecureTransport
       CURL_SSL := --with-secure-transport
