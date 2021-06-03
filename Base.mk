@@ -359,3 +359,11 @@ endif
   CONFIG_SETUP = $(notdir $(FC))
   prefix := $(ROOTDIR)/$(SYSNAME)/$(CONFIG_SETUP)/$(ARCH)
 
+# Check to make sure prefix has ARCH because GEOS requires it still
+# -----------------------------------------------------------------
+
+  LAST_NODE_IN_PREFIX = $(lastword $(subst /, ,$(prefix)))
+  ifneq ($(findstring $(ARCH),$(LAST_NODE_IN_PREFIX)),$(ARCH))
+     $(error The last directory of the installation prefix $(prefix) must be $(ARCH) due to limitations in GEOS)
+  endif
+

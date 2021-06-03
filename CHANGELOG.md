@@ -15,6 +15,10 @@
 * Disable netcdf-cxx4 build on Darwin. Has issues and is not a required-by-GEOS library
 * cURL 7.77.0 on macOS 11.0 needs a different `-mmacosx-version-min`
 
+### Changed
+
+* Added a check to make sure the `prefix` Baselibs installs to ends in the `uname -s` "arch". This is still required by some GEOS scripts
+
 ## [6.2.3] - 2021-06-02
 
 ### Fixed
