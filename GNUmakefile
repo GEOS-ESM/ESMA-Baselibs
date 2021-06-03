@@ -207,8 +207,39 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
   ifeq ($(findstring icc,$(notdir $(CC))),icc)
      ifeq ($(ARCH),Darwin)
         CFLAGS += -diag-error=147 -stdlib=libc++
-        export MMACOS_MIN
+        export CFLAGS
      endif
+  endif
+
+# cURL is now more complicated with SSL
+# -------------------------------------
+
+  ifeq ($(ARCH),Linux)
+    # On Linux, assume standard OpenSSL (works at NCCS, NAS, GMAO)
+    CURL_SSL := --with-openssl
+    export CURL_SSL
+  endif
+
+  ifeq ($(ARCH),Darwin)
+    # On Darwin, you can't assume an Open SSL exists
+    # gcc on macOS cannot link to frameworks because of a bug
+    ifeq ($(CC_IS_CLANG),TRUE)
+      # If we are using Clang we can use SecureTransport
+      CURL_SSL := --with-secure-transport
+      export CURL_SSL
+
+      DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration -framework Security
+      export DARWIN_ST_LIBS
+    else
+      # There is a bug with gcc and Apple Security Framework:
+      # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93082
+      # so we don't do SSL
+      CURL_SSL := --without-ssl
+      export CURL_SSL
+
+      DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration
+      export DARWIN_ST_LIBS
+    endif
   endif
 
 #-------------------------------------------------------------------------

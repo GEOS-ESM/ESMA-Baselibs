@@ -11,7 +11,11 @@
 
 ### Fixed
 
-* Fixed bug with cURL as [7.77.0 now requires an SSL library to be explicitly chosen](https://daniel.haxx.se/blog/2021/04/23/please-select-your-tls/), or none at all. On Linux, we supply `--with-openssl` as this works at NCCS, NAS, and on GMAO Desktops. On Darwin, we build with `--with-secure-transport` as there is no guarantee for OpenSSL and even if installed with, say, brew, might be in a non-standard location on every system.
+* Fixed bug with cURL as [7.77.0 now requires an SSL library to be explicitly chosen](https://daniel.haxx.se/blog/2021/04/23/please-select-your-tls/), or none at all.
+  * On Linux, we supply `--with-openssl` as this works at NCCS, NAS, and on GMAO Desktops.
+  * On macOS, there is no guarantee of OpenSSL (and even with Brew might be in a non-standard location)
+    * If Clang is the C compiler, we can use SecureTransport and build with `--with-secure-transport`
+    * If GCC is the C compiler, there is a bug with the Security Framework, so we build without SSL, `--without-ssl`
 * Disable netcdf-cxx4 build on Darwin. Has issues and is not a required-by-GEOS library
 * cURL 7.77.0 on macOS 11.0 needs a different `-mmacosx-version-min`
 
