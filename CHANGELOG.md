@@ -4,6 +4,9 @@
 
 ### Updates
 ### Fixed
+
+* Fixed bug with ESMF and dynamic libraries. The "fix" is to run `make install` for ESMF twice until ESMF itself can be fixed.
+
 ### Changed
 ### Removed
 
