@@ -4,11 +4,14 @@
 
 ### Updates
 ### Fixed
-
-* Fixed bug with ESMF and dynamic libraries. The "fix" is to run `make install` for ESMF twice until ESMF itself can be fixed.
-
 ### Changed
 ### Removed
+
+## [6.2.5] - 2021-06-08
+
+### Fixed
+
+* Fixed bug with ESMF and dynamic libraries. The "fix" is to run `make install` for ESMF twice until ESMF itself can be fixed.
 
 ## [6.2.4] - 2021-06-02
 
