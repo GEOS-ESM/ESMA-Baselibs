@@ -175,14 +175,10 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      export NO_IMPLICIT_FUNCTION_ERROR
 
      ifeq ($(ARCH),Darwin)
-        # There is an issue with clang and curl
-        MACOS_VERSION_GTE_11 := $(shell expr `sw_vers -productVersion | cut -f1 -d.` \>= 11)
-        export MACOS_VERSION_GTE_11
-        ifeq ($(MACOS_VERSION_GTE_11),1)
-           MMACOS_MIN := -mmacosx-version-min=11.0
-        else
-           MMACOS_MIN := -mmacosx-version-min=10.13
-        endif
+        # There is an issue with clang and curl, need to pass in a macos version min
+        MACOS_VERSION := $(shell sw_vers -productVersion | awk -F . '{print $$1 "." $$2}')
+        export MACOS_VERSION
+        MMACOS_MIN := -mmacosx-version-min=$(MACOS_VERSION)
         export MMACOS_MIN
 
         # There is an issue with clang++ and cdo
@@ -310,7 +306,7 @@ verify:
 	@echo SUBDIRS = $(SUBDIRS)
 	@echo BUILD_DAP = $(BUILD_DAP)
 	@echo GFORTRAN_VERSION_GTE_10 = $(GFORTRAN_VERSION_GTE_10)
-	@echo MACOS_VERSION_GTE_11 = $(MACOS_VERSION_GTE_11)
+	@echo MACOS_VERSION = $(MACOS_VERSION)
 	@echo MMACOS_MIN = $(MMACOS_MIN)
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)

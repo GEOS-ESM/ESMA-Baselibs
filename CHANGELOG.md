@@ -4,6 +4,10 @@
 
 ### Updates
 ### Fixed
+
+* Fixed bug with `-mmacosx-version-min` passed into curl. Now it tries to figure out what your macOS version is and use that
+  (major.minor)
+
 ### Changed
 ### Removed
 
