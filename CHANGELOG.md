@@ -4,6 +4,9 @@
 
 ### Updates
 ### Fixed
+
+- Make system updates to support NVHPC (still not complete and working)
+
 ### Changed
 ### Removed
 
