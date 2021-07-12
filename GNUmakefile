@@ -381,7 +381,7 @@ baselibs-config: baselibs-config.mk
 	@cp CHANGELOG.md $(prefix)/etc
 	@cp ChangeLog-preV6 $(prefix)/etc
 	@cp README.md $(prefix)/etc
-	@$(if $(LOADEDMODULES),$(shell echo $(LOADEDMODULES) >& $(prefix)/etc/MODULES),echo "Modules not found")
+	@$(if $(LOADEDMODULES),$(shell echo $(LOADEDMODULES) | tr ':' ' ' >& $(prefix)/etc/MODULES),echo "Modules not found")
 	@rm -f $(prefix)/etc/CONFIG
 	@echo "CC: $(CC)" >> $(prefix)/etc/CONFIG
 	@echo "CC --version: $(shell $(CC) --version 2>&1)" >> $(prefix)/etc/CONFIG

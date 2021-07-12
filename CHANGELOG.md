@@ -8,6 +8,9 @@
 - Make system updates to support NVHPC (still not complete and working)
 
 ### Changed
+
+- Convert colons to spaces when making `MODULES` file for ease of re-use
+
 ### Removed
 
 ## [6.2.6] - 2021-07-09
