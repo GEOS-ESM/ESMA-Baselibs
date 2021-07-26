@@ -7,6 +7,7 @@
 * GSL 2.7
 * jpeg 9d
 * curl 7.78.0
+* nccmp 1.9.0.1
 
 ### Fixed
 
