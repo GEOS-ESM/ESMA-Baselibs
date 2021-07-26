@@ -876,15 +876,7 @@ hdf5.install: hdf5.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
-ifeq ($(GFORTRAN_VERSION_GTE_10),1)
-ifeq ("$(BUILD_DAP)","--enable-dap")
-netcdf.install :: netcdf.config
-	@echo Patching netCDF-C ocprint for GCC 10
-	patch -f -p1 < ./patches/netcdf/netcdf.ocprint.patch
-endif
-endif
-
-netcdf.install :: netcdf.config
+netcdf.install : netcdf.config
 	@echo "Installing netcdf $*"
 	@(cd netcdf; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -893,14 +885,6 @@ netcdf.install :: netcdf.config
           export LIBS="-L$(prefix)/lib $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
-
-ifeq ($(GFORTRAN_VERSION_GTE_10),1)
-ifeq ("$(BUILD_DAP)","--enable-dap")
-netcdf.install :: netcdf.config
-	@echo Unpatching netCDF-C ocprint for GCC 10
-	patch -f -p1 -R < ./patches/netcdf/netcdf.ocprint.patch
-endif
-endif
 
 netcdf-fortran.install : netcdf-fortran.config
 	@echo "Installing netcdf-fortran $*"
