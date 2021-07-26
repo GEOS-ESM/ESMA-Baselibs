@@ -5,6 +5,7 @@
 ### Updates
 
 * GSL 2.7
+* jpeg 9d
 * curl 7.78.0
 
 ### Fixed
