@@ -8,6 +8,7 @@
 * jpeg 9d
 * curl 7.78.0
 * netCDF-C 4.8.0
+* ESMF 8_2_0_beta_snapshot_14
 * nccmp 1.9.0.1
 
 ### Fixed
