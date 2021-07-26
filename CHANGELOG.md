@@ -5,6 +5,7 @@
 ### Updates
 
 * GSL 2.7
+* curl 7.78.0
 
 ### Fixed
 
