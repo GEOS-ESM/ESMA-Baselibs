@@ -3,6 +3,13 @@
 ## Unreleased
 
 ### Updates
+### Fixed
+### Changed
+### Removed
+
+## [6.2.7] - 2021-08-03
+
+### Updates
 
 * GSL 2.7
 * jpeg 9d
@@ -13,13 +20,15 @@
 
 ### Fixed
 
-- Make system updates to support NVHPC (still not complete and working)
+- Update Make System to support NVHPC (preliminary, not working)
 
 ### Changed
 
 - Convert colons to spaces when making `MODULES` file for ease of re-use
 
 ### Removed
+
+- Removed the ocprint patch used for netCDF-C and GCC 10 as it isn't needed with netCDF-C 4.8.0
 
 ## [6.2.6] - 2021-07-09
 
