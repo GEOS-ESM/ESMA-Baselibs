@@ -58,3 +58,6 @@
 [submodule "antlr2"]
 	path = antlr2
 	url = https://github.com/nco/antlr2.git
+[submodule "FMS"]
+	path = FMS
+	url = https://github.com/NOAA-GFDL/FMS.git

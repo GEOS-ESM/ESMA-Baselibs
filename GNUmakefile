@@ -244,7 +244,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp esmf \
+          udunits2 nco cdo nccmp FMS esmf \
           gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger \
           FLAP hdfeos hdfeos5 SDPToolkit
 
@@ -262,7 +262,7 @@ endif
 
 GFE_DIRS = gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf \
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran FMS esmf \
                  $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
@@ -717,6 +717,13 @@ pFUnit.config: gFTL.install gFTL-shared.install fArgParse.install
 		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. )
 	@touch $@
 
+FMS.config: netcdf.install netcdf-fortran.install
+	@echo "Configuring FMS"
+	@mkdir -p ./FMS/build
+	@(cd ./FMS/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf .. )
+	@touch $@
+
 gFTL.config:
 	@echo "Configuring gFTL"
 	@mkdir -p ./gFTL/build
@@ -925,6 +932,12 @@ pFUnit.install: pFUnit.config
 		$(MAKE) install )
 	@touch $@
 
+FMS.install: FMS.config
+	@echo "Installing FMS"
+	@(cd ./FMS/build; \
+		$(MAKE) install )
+	@touch $@
+
 gFTL.install: gFTL.config
 	@echo "Installing gFTL"
 	@(cd ./gFTL/build; \
@@ -1112,6 +1125,14 @@ pFUnit.distclean:
 	@echo "Cleaning pFUnit"
 	@rm -rf ./pFUnit/build
 
+FMS.clean:
+	@echo "Cleaning gFTL"
+	@rm -rf ./gFTL/build
+
+FMS.distclean:
+	@echo "Cleaning gFTL"
+	@rm -rf ./gFTL/build
+
 gFTL.clean:
 	@echo "Cleaning gFTL"
 	@rm -rf ./gFTL/build
@@ -1187,6 +1208,10 @@ esmf.all_tests : esmf_rules.mk
 curl.check: curl.install
 	@echo "Checking curl"
 	@echo "We explicitly do not check cURL due to how long it takes"
+
+FMS.check: FMS.install
+	@echo "Checking FMS"
+	@echo "We do not check FMS."
 
 pFUnit.check: pFUnit.install
 	@echo "Checking pFUnit"
