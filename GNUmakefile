@@ -248,22 +248,24 @@ ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf
           gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger \
           FLAP hdfeos hdfeos5 SDPToolkit
 
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran FMS esmf \
+                 $(GFE_DIRS) FLAP
+
 ifeq ($(ARCH),Darwin)
    NO_DARWIN_DIRS = netcdf-cxx4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_DARWIN_DIRS),$(ALLDIRS))
 endif
 
 # NAG cannot build cdo
-# https://code.mpimet.mpg.de/boards/1/topics/9337
+#    https://code.mpimet.mpg.de/boards/1/topics/9337
+# or FMS due to cray pointers
 ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-   NO_NAG_DIRS = cdo
+   NO_NAG_DIRS = cdo FMS
    ALLDIRS := $(filter-out $(NO_NAG_DIRS),$(ALLDIRS))
+   ESSENTIAL_DIRS := $(filter-out $(NO_NAG_DIRS),$(ESSENTIAL_DIRS))
 endif
 
 GFE_DIRS = gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger
-
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran FMS esmf \
-                 $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
