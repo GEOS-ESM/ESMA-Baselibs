@@ -945,7 +945,7 @@ FMS.install: FMS.config
 	@echo "Installing FMS"
 	@(cd ./FMS; \
 		export PATH="$(prefix)/bin:$(PATH)" ;\
-		$(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+		$(MAKE) -j 1 install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 gFTL.install: gFTL.config
