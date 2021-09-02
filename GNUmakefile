@@ -721,16 +721,9 @@ pFUnit.config: gFTL.install gFTL-shared.install fArgParse.install
 
 FMS.config: netcdf.install netcdf-fortran.install
 	@echo "Configuring FMS"
-	@(cd FMS; \
-          export PATH="$(prefix)/bin:$(PATH)" ;\
-          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
-          export LDFLAGS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
-          autoreconf -f -v -i;\
-          ./configure --prefix=$(prefix) \
-                      --includedir=$(prefix)/include/FMS \
-                      --enable-mixed-mode --disable-openmp \
-                      FCFLAGS="$(NAG_FCFLAGS) $(INC_SUPP)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+	@mkdir -p ./FMS/build
+	@(cd ./FMS/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf .. )
 	@touch $@
 
 gFTL.config:
@@ -943,9 +936,8 @@ pFUnit.install: pFUnit.config
 
 FMS.install: FMS.config
 	@echo "Installing FMS"
-	@(cd ./FMS; \
-		export PATH="$(prefix)/bin:$(PATH)" ;\
-		$(MAKE) -j 1 install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+	@(cd ./FMS/build; \
+		$(MAKE) install )
 	@touch $@
 
 gFTL.install: gFTL.config
@@ -1134,6 +1126,14 @@ pFUnit.clean:
 pFUnit.distclean: 
 	@echo "Cleaning pFUnit"
 	@rm -rf ./pFUnit/build
+
+FMS.clean:
+	@echo "Cleaning FMS"
+	@rm -rf ./FMS/build
+
+FMS.distclean:
+	@echo "Cleaning gFTL"
+	@rm -rf ./gFTL/build
 
 gFTL.clean:
 	@echo "Cleaning gFTL"
