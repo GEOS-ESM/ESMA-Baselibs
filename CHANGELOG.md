@@ -4,7 +4,7 @@
 
 ### Added
 
-* FMS 2021.03
+* FMS geos/2021.03 (on GEOS-ESM fork)
 
 ### Updates
 ### Fixed
