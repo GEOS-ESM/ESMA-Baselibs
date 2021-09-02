@@ -723,7 +723,7 @@ FMS.config: netcdf.install netcdf-fortran.install
 	@echo "Configuring FMS"
 	@mkdir -p ./FMS/build
 	@(cd ./FMS/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf .. )
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DMAPL_MODE=ON -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf .. )
 	@touch $@
 
 gFTL.config:
