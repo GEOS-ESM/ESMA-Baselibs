@@ -3,6 +3,9 @@
 ## Unreleased
 
 ### Updates
+
+* curl 7.79.1
+
 ### Fixed
 ### Changed
 ### Removed
