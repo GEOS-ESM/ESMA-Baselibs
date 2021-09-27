@@ -7,6 +7,7 @@
 * curl 7.79.1
 * netCDF-C 4.8.1
 * nco 5.0.2
+* gFTL v1.5.0
 
 ### Fixed
 ### Changed
