@@ -523,6 +523,9 @@ endif
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
 BUILD_DAP = --enable-dap
 LIB_CURL = $(shell $(prefix)/bin/curl-config --libs) $(DARWIN_ST_LIBS)
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+LIB_CURL := $(filter-out -pthread,$(LIB_CURL))
+endif
 else
 BUILD_DAP = --disable-dap
 LIB_CURL =
@@ -546,6 +549,9 @@ netcdf.config : netcdf/configure
 	@touch $@
 
 LIB_NETCDF = $(shell $(prefix)/bin/nc-config --libs)
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+LIB_NETCDF := $(filter-out -pthread,$(LIB_NETCDF))
+endif
 netcdf-fortran.config : netcdf-fortran/configure netcdf.install
 	@echo "Configuring netcdf-fortran $*"
 	@(cd netcdf-fortran; \

@@ -11,6 +11,9 @@
 * yaFyaml v1.0-beta
 
 ### Fixed
+
+* Added a fix to remove `-pthread` when compiling with NAG
+
 ### Changed
 ### Removed
 
