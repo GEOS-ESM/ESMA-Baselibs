@@ -8,7 +8,7 @@
 * netCDF-C 4.8.1
 * nco 5.0.2
 * gFTL v1.5.1
-* yaFyaml v1.0-beta2
+* yaFyaml v1.0-beta3
 
 ### Fixed
 
