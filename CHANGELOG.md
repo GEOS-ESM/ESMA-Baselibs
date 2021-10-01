@@ -18,6 +18,12 @@
 * Added a fix to remove `-pthread` when compiling with NAG
 
 ### Changed
+
+* When installing ESMF, don't make success or failure of ESMPy required to touch the `esmf.install` file. This is because ESMPy is
+  very twitchy and might not work on all platforms (e.g., AWS with limited Python). If ESMPy builds successfully, then an
+  `esmf.python` file will be touched. (NOTE: It is much easier to get ESMPy via conda than via Baselibs in almost all
+  circumstances.)
+
 ### Removed
 
 ## [6.2.7] - 2021-08-03
