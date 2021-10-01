@@ -7,6 +7,7 @@
 * curl 7.79.1
 * netCDF-C 4.8.1
 * nco 5.0.2
+* ESMF 8_2_0_beta_snapshot_20
 * gFTL v1.5.1
 * gFTL-shared v1.3.2
 * yaFyaml v1.0-beta3
