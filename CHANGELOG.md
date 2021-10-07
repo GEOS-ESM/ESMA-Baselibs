@@ -3,6 +3,13 @@
 ## Unreleased
 
 ### Updates
+### Fixed
+### Changed
+### Removed
+
+## [6.2.8] - 2021-10-07
+
+### Updates
 
 * curl 7.79.1
 * netCDF-C 4.8.1
@@ -23,8 +30,6 @@
   very twitchy and might not work on all platforms (e.g., AWS with limited Python). If ESMPy builds successfully, then an
   `esmf.python` file will be touched. (NOTE: It is much easier to get ESMPy via conda than via Baselibs in almost all
   circumstances.)
-
-### Removed
 
 ## [6.2.7] - 2021-08-03
 
