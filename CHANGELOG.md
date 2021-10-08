@@ -6,6 +6,9 @@
 ### Fixed
 ### Changed
 ### Removed
+### Added
+
+- Added release tarball GitHub Action
 
 ## [6.2.8] - 2021-10-07
 
