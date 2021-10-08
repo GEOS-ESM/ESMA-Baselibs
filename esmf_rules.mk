@@ -155,9 +155,10 @@ esmf.install install: esmf.config
 ifeq ($(ARCH), Darwin)
 	@(cd $(ESMF_DIR); $(MAKE) -e install)
 endif
-	@(cd $(ESMF_DIR)/src/addon/ESMPy; $(ESMF_PYTHON) setup.py build --ESMFMKFILE=$(ESMF_INSTALL_LIBDIR)/esmf.mk; $(ESMF_PYTHON) setup.py install --prefix=$(ESMF_INSTALL_PREFIX))
 	@cp -pr $(ESMF_DIR)/cmake/*    $(ESMF_INSTALL_HEADERDIR)
 	@touch esmf.install
+	@(cd $(ESMF_DIR)/src/addon/ESMPy; $(ESMF_PYTHON) setup.py build --ESMFMKFILE=$(ESMF_INSTALL_LIBDIR)/esmf.mk; $(ESMF_PYTHON) setup.py install --prefix=$(ESMF_INSTALL_PREFIX))
+	@touch esmf.python
 
 # There once was an Intel 16 bug fixed, the ESMF apps can be built separately
 esmf.python python: esmf.install

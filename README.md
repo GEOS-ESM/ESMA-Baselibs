@@ -12,27 +12,27 @@ NASA/GSFC.
 
 | Library                                                                 | Version      |
 | ---                                                                     | ---          |
-| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | 8.2.0beta14  |
+| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | 8.2.0beta20  |
 | [FMS](https://github.com/GEOS-ESM/FMS/)                                 | geos/2021.03 |
-| [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.8.0        |
+| [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.8.1        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.5.2        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                    | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                     | 1.10.7       |
 | [HDF4](https://portal.hdfgroup.org/display/support)                     | 4.2.15       |
 | [pFUnit](https://github.com/Goddard-Fortran-Ecosystem/pFUnit)           | v4.2.1       |
-| [gFTL](https://github.com/Goddard-Fortran-Ecosystem/gFTL)               | v1.4.1       |
-| [gFTL-shared](https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared) | v1.3.0       |
+| [gFTL](https://github.com/Goddard-Fortran-Ecosystem/gFTL)               | v1.5.1       |
+| [gFTL-shared](https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared) | v1.3.2       |
 | [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)     | v1.1.0       |
-| [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)         | v0.5.1       |
-| [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)       | v1.5.0       |
+| [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)         | v1.0-beta3   |
+| [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)       | v1.6.0       |
 | [antlr2](https://www.antlr2.org/)                                       | 2.7.7        |
 | [GSL](https://www.gnu.org/software/gsl/)                                | 2.7          |
 | [jpeg](http://www.ijg.org/)                                             | 9d           |
 | [zlib](http://www.zlib.net/)                                            | 1.2.11       |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                 | 2.1.1        |
-| [cURL](https://curl.haxx.se/)                                           | 7.78.0       |
+| [cURL](https://curl.haxx.se/)                                           | 7.79.1       |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                        | 2.2.26       |
-| [NCO](http://nco.sourceforge.net/)                                      | 4.9.9        |
+| [NCO](http://nco.sourceforge.net/)                                      | 5.0.3        |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                          | 1.9.10       |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                | 1.9.0.1      |
 | [FLAP](https://github.com/mathomp4/FLAP)                                | geos/v1.9.0  |
