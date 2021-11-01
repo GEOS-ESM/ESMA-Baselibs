@@ -3,6 +3,9 @@
 ## Unreleased
 
 ### Updates
+
+* ESMF 8_2_0
+
 ### Fixed
 ### Changed
 ### Removed
