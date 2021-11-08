@@ -5,6 +5,7 @@
 ### Updates
 
 * ESMF 8_2_0
+* yaFyaml v1.0-beta4
 
 ### Fixed
 ### Changed
