@@ -7,6 +7,7 @@
 * HDF5 1.10.8
 * ESMF 8_2_0
 * CDO 2.0.0
+* gFTL-shared v1.3.3
 * yaFyaml v1.0-beta4
 
 ### Fixed
