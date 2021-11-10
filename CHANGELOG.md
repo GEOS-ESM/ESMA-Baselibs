@@ -4,6 +4,7 @@
 
 ### Updates
 
+* curl 7.80.0
 * HDF5 1.10.8
 * ESMF 8_2_0
 * CDO 2.0.0
