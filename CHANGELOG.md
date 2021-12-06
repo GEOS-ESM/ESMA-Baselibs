@@ -3,6 +3,14 @@
 ## Unreleased
 
 ### Updates
+### Fixed
+### Changed
+### Removed
+### Added
+
+## [6.2.9] - 2021-12-06
+
+### Updates
 
 * curl 7.80.0
 * HDF5 1.10.8
@@ -17,9 +25,6 @@
 * pFlogger v1.6.1
 * fArgParse v1.1.2
 
-### Fixed
-### Changed
-### Removed
 ### Added
 
 - Added release tarball GitHub Action
