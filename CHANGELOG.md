@@ -11,6 +11,7 @@
 * CDO 2.0.0
 * gFTL-shared v1.3.6
 * yaFyaml v1.0-beta4
+* pFUnit v4.2.2
 * pFlogger v1.6.1
 
 ### Fixed
