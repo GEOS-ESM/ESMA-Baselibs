@@ -32,7 +32,7 @@ NASA/GSFC.
 | [cURL](https://curl.haxx.se/)                                            | 7.80.0      |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                         | 2.2.26      |
 | [NCO](http://nco.sourceforge.net/)                                       | 5.0.4       |
-| [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.0.0       |
+| [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.0.1       |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.9.0.1     |
 | [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.9.0 |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                  | 3.0         |
@@ -43,7 +43,7 @@ NASA/GSFC.
 
 ### Requirements
 
-- C compiler, preferably gcc 
+- C compiler, preferably gcc
 
 - Fortran compiler. Tested compilers are GNU, Intel, and NAG.
   PGI support was once available, but has not been tested in a while.
@@ -54,7 +54,7 @@ NASA/GSFC.
   to set your LD_LIBRARY_PATH so that the runtime MPI libraries can be
   found.
 
-  Linux Note: many Linux distributions now have Open MPI packages. 
+  Linux Note: many Linux distributions now have Open MPI packages.
               However these either lack Fortran altogether or
               use gfortran. You must have Open MPI with Fortran
               support, and the Fortran compiler used to build MPI
@@ -63,7 +63,7 @@ NASA/GSFC.
 - on Linux, make sure "bison" and "flex" are installed; on generic Unix
   platforms, make sure you have "yacc" and "lex".
 
-- on Darwin, GNU sed is needed for ESMF Applications. This sed must be 
+- on Darwin, GNU sed is needed for ESMF Applications. This sed must be
   visible as sed (and not, say, gsed as installed by Brew)
 
 - CMake of a recent vintage
@@ -147,21 +147,21 @@ need to customize a few things. For example, to choose the ifort
 compiler under Linux, just enter this
 
 - `BUILD=ESSENTIALS`
-  
+
   Use this to only build the libraries essential for building and
   running GEOS GCM
 
 - `CONFIG_SETUP`
-  
+
   This is to help detail what combination of compiler and
   MPI was used. If unspecified, the default is the value
   of `FC`
 
 - `ROOTDIR`
-  
+
   Root directory for installing the binaries; the installation directory
   will be at
-  
+
   ```
   prefix = $(ROOTDIR)/$(SYSNAME)/$(CONFIG_SETUP)/$(ARCH)
   ```
@@ -169,7 +169,7 @@ compiler under Linux, just enter this
   where $(ARCH) is the result of `uname -s`, e.g., Linux.
 
 - `prefix`
-  
+
   Bypass the definition above and install at this directory. It is no
   recommended that you specify this - specify ROOTDIR instead
 
