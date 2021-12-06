@@ -13,6 +13,7 @@
 * yaFyaml v1.0-beta4
 * pFUnit v4.2.2
 * pFlogger v1.6.1
+* fArgParse v1.1.2
 
 ### Fixed
 ### Changed
