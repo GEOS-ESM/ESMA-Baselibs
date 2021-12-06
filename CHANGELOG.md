@@ -9,6 +9,7 @@
 * nco 5.0.4
 * ESMF 8_2_0
 * CDO 2.0.1
+* nccmp 1.9.1.0
 * gFTL v1.5.3
 * gFTL-shared v1.3.6
 * yaFyaml v1.0-beta4
