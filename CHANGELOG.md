@@ -6,6 +6,7 @@
 
 * curl 7.80.0
 * HDF5 1.10.8
+* nco 5.0.4
 * ESMF 8_2_0
 * CDO 2.0.0
 * gFTL-shared v1.3.3
