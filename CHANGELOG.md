@@ -8,7 +8,7 @@
 * HDF5 1.10.8
 * nco 5.0.4
 * ESMF 8_2_0
-* CDO 2.0.0
+* CDO 2.0.1
 * gFTL v1.5.3
 * gFTL-shared v1.3.6
 * yaFyaml v1.0-beta4
