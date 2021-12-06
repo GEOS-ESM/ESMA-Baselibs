@@ -1,5 +1,5 @@
 # Changelog
- 
+
 ## Unreleased
 
 ### Added
@@ -10,6 +10,29 @@
 ### Fixed
 ### Changed
 ### Removed
+### Added
+
+## [6.2.9] - 2021-12-06
+
+### Updates
+
+* curl 7.80.0
+* HDF5 1.10.8
+* nco 5.0.4
+* ESMF 8_2_0
+* CDO 2.0.1
+* nccmp 1.9.1.0
+* gFTL v1.5.3
+* gFTL-shared v1.3.6
+* yaFyaml v1.0-beta4
+* pFUnit v4.2.2
+* pFlogger v1.6.1
+* fArgParse v1.1.2
+
+### Added
+
+- Added release tarball GitHub Action
+- Added `.editorconfig` file
 
 ## [6.2.8] - 2021-10-07
 
@@ -338,7 +361,7 @@
 
 * gFTL v1.2.7
 * fArgParse v1.0.1
- 
+
 ## [6.0.15] - 2020-08-25
 
 ### Updates
@@ -368,7 +391,7 @@
 ### Changed
 
 * Download URLs for HDF-EOS2, HDF-EOS5, and SDP Toolkit have changed due to changes in hosting.
- 
+
 ## [6.0.13] - 2020-05-22
 
 ### Updates

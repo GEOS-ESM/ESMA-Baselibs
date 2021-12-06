@@ -10,41 +10,41 @@ NASA/GSFC.
 
 ## Current State of Libraries
 
-| Library                                                                 | Version      |
-| ---                                                                     | ---          |
-| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | 8.2.0beta20  |
-| [FMS](https://github.com/GEOS-ESM/FMS/)                                 | geos/2021.03 |
-| [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.8.1        |
-| [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.5.2        |
-| [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                    | 4.3.1        |
-| [HDF5](https://portal.hdfgroup.org/display/support)                     | 1.10.7       |
-| [HDF4](https://portal.hdfgroup.org/display/support)                     | 4.2.15       |
-| [pFUnit](https://github.com/Goddard-Fortran-Ecosystem/pFUnit)           | v4.2.1       |
-| [gFTL](https://github.com/Goddard-Fortran-Ecosystem/gFTL)               | v1.5.1       |
-| [gFTL-shared](https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared) | v1.3.2       |
-| [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)     | v1.1.0       |
-| [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)         | v1.0-beta3   |
-| [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)       | v1.6.0       |
-| [antlr2](https://www.antlr2.org/)                                       | 2.7.7        |
-| [GSL](https://www.gnu.org/software/gsl/)                                | 2.7          |
-| [jpeg](http://www.ijg.org/)                                             | 9d           |
-| [zlib](http://www.zlib.net/)                                            | 1.2.11       |
-| [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                 | 2.1.1        |
-| [cURL](https://curl.haxx.se/)                                           | 7.79.1       |
-| [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                        | 2.2.26       |
-| [NCO](http://nco.sourceforge.net/)                                      | 5.0.3        |
-| [CDO](https://code.mpimet.mpg.de/projects/cdo)                          | 1.9.10       |
-| [nccmp](https://gitlab.com/remikz/nccmp)                                | 1.9.0.1      |
-| [FLAP](https://github.com/mathomp4/FLAP)                                | geos/v1.9.0  |
-| [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                 | 3.0          |
-| [HDF-EOS5](https://wiki.earthdata.nasa.gov/display/DAS)                 | 2.0          |
-| [SDP Toolkit](https://wiki.earthdata.nasa.gov/display/DAS)              | 5.2.20       |
+| Library                                                                  | Version      |
+| ---                                                                      | ---          |
+| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                    | 8.2.0        |
+| [FMS](https://github.com/GEOS-ESM/FMS/)                                  | geos/2021.03 |
+| [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.8.1        |
+| [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.5.2        |
+| [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1        |
+| [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.10.8       |
+| [HDF4](https://portal.hdfgroup.org/display/support)                      | 4.2.15       |
+| [pFUnit](https://github.com/Goddard-Fortran-Ecosystem/pFUnit)            | v4.2.2       |
+| [gFTL](https://github.com/Goddard-Fortran-Ecosystem/gFTL)                | v1.5.3       |
+| [gFTL-shared](https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared)  | v1.3.6       |
+| [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)      | v1.1.2       |
+| [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)          | v1.0-beta4   |
+| [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)        | v1.6.1       |
+| [antlr2](https://www.antlr2.org/)                                        | 2.7.7        |
+| [GSL](https://www.gnu.org/software/gsl/)                                 | 2.7          |
+| [jpeg](http://www.ijg.org/)                                              | 9d           |
+| [zlib](http://www.zlib.net/)                                             | 1.2.11       |
+| [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                  | 2.1.1        |
+| [cURL](https://curl.haxx.se/)                                            | 7.80.0       |
+| [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                         | 2.2.26       |
+| [NCO](http://nco.sourceforge.net/)                                       | 5.0.4        |
+| [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.0.1        |
+| [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.9.1.0      |
+| [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.9.0  |
+| [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                  | 3.0          |
+| [HDF-EOS5](https://wiki.earthdata.nasa.gov/display/DAS)                  | 2.0          |
+| [SDP Toolkit](https://wiki.earthdata.nasa.gov/display/DAS)               | 5.2.20       |
 
 ## Installation Instructions
 
 ### Requirements
 
-- C compiler, preferably gcc 
+- C compiler, preferably gcc
 
 - Fortran compiler. Tested compilers are GNU, Intel, and NAG.
   PGI support was once available, but has not been tested in a while.
@@ -55,7 +55,7 @@ NASA/GSFC.
   to set your LD_LIBRARY_PATH so that the runtime MPI libraries can be
   found.
 
-  Linux Note: many Linux distributions now have Open MPI packages. 
+  Linux Note: many Linux distributions now have Open MPI packages.
               However these either lack Fortran altogether or
               use gfortran. You must have Open MPI with Fortran
               support, and the Fortran compiler used to build MPI
@@ -64,7 +64,7 @@ NASA/GSFC.
 - on Linux, make sure "bison" and "flex" are installed; on generic Unix
   platforms, make sure you have "yacc" and "lex".
 
-- on Darwin, GNU sed is needed for ESMF Applications. This sed must be 
+- on Darwin, GNU sed is needed for ESMF Applications. This sed must be
   visible as sed (and not, say, gsed as installed by Brew)
 
 - CMake of a recent vintage
@@ -148,21 +148,21 @@ need to customize a few things. For example, to choose the ifort
 compiler under Linux, just enter this
 
 - `BUILD=ESSENTIALS`
-  
+
   Use this to only build the libraries essential for building and
   running GEOS GCM
 
 - `CONFIG_SETUP`
-  
+
   This is to help detail what combination of compiler and
   MPI was used. If unspecified, the default is the value
   of `FC`
 
 - `ROOTDIR`
-  
+
   Root directory for installing the binaries; the installation directory
   will be at
-  
+
   ```
   prefix = $(ROOTDIR)/$(SYSNAME)/$(CONFIG_SETUP)/$(ARCH)
   ```
@@ -170,7 +170,7 @@ compiler under Linux, just enter this
   where $(ARCH) is the result of `uname -s`, e.g., Linux.
 
 - `prefix`
-  
+
   Bypass the definition above and install at this directory. It is no
   recommended that you specify this - specify ROOTDIR instead
 
