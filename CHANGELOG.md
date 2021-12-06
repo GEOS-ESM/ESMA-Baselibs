@@ -22,6 +22,7 @@
 ### Added
 
 - Added release tarball GitHub Action
+- Added `.editorconfig` file
 
 ## [6.2.8] - 2021-10-07
 
