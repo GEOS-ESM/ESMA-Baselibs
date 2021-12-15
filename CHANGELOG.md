@@ -8,6 +8,12 @@
 ### Removed
 ### Added
 
+## [6.2.10] - 2021-12-15
+
+### Fixed
+
+- CDO 2 now requires C++14 standard on Darwin
+
 ## [6.2.9] - 2021-12-06
 
 ### Updates
