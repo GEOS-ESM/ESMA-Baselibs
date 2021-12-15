@@ -12,7 +12,7 @@
 
 ### Fixed
 
-- CDO 2 now requires C++14 standard on Darwin
+- CDO 2 now requires C++14 standard on Darwin when using `clang++`
 
 ## [6.2.9] - 2021-12-06
 
