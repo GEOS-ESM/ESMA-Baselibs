@@ -1,10 +1,10 @@
 #
-# RecursiveGNU makefile for Baselibs. 
+# RecursiveGNU makefile for Baselibs.
 #
 # NOTE: If you would like to add new packages, look at module
 #       supplibs under the opengrads CVS repository on sourceforge:
 #
-#            http://sourceforge.net/cvs/?group_id=161773 
+#            http://sourceforge.net/cvs/?group_id=161773
 #
 # Packages such as NetCDF-4, HDF-5 and OPeNDAP have already been implemented
 # there in a structure very similar to this one.
@@ -12,7 +12,7 @@
 # !REVISION HISTORY:
 #
 #  25Jul2007  da Silva  First implementation
-#  11Aug2008  da Silva  Aded Base.mk/Arch.mk to simplify CM. 
+#  11Aug2008  da Silva  Aded Base.mk/Arch.mk to simplify CM.
 #
 #-------------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
         LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz,\
            $(prefix)/lib/lib$(lib).a) )
         NC_ENABLE_HDF5 = --enable-netcdf-4 --with-hdf5=$(prefix)
-        NC_LIBS = $(LIB_HDF5) $(LINK_GPFS) -lm 
+        NC_LIBS = $(LIB_HDF5) $(LINK_GPFS) -lm
         ifeq ($(H5_PARALLEL),--enable-parallel)
            NC_CC  = $(MPICC)
            NC_FC  = $(MPIFC)
@@ -67,7 +67,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
            H5_CC  = $(prefix)/bin/h5pcc
            H5_FC  = $(prefix)/bin/h5pfc
         endif
-        
+
         ifeq ($(H5_PARALLEL),--disable-parallel)
            H5_CC  = $(prefix)/bin/h5cc
            H5_FC  = $(prefix)/bin/h5fc
@@ -142,7 +142,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      NAG_DUSTY := -dusty
   endif
 
-# Building with PGI on Darwin (Community Edition) does not quite work. 
+# Building with PGI on Darwin (Community Edition) does not quite work.
 # Fixes are needed. NDEBUG from netcdf list
 # -------------------------------------------------------------------
 
@@ -182,8 +182,8 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
         export MMACOS_MIN
 
         # There is an issue with clang++ and cdo
-        CLANG_STDC11 := -std=c++11
-        export CLANG_STDC11
+        CLANG_STDC14 := -std=c++14
+        export CLANG_STDC14
      endif
   endif
 
@@ -301,7 +301,7 @@ download: gsl.download szlib.download cdo.download hdfeos.download hdfeos5.downl
 dist: download
 	tar -czf $(RELEASE_DIR)/$(RELEASE_FILE).tar.gz -C $(RELEASE_DIR) $(MKFILE_DIRNAME)
 
-verify: 
+verify:
 	@echo MKFILE_PATH = $(MKFILE_PATH)
 	@echo MKFILE_DIR = $(MKFILE_DIR)
 	@echo MKFILE_DIRNAME = $(MKFILE_DIRNAME)
@@ -434,13 +434,13 @@ $(TARGETS): prelim
 	  done
 	$(MAKE) make_baselibs_mk
 
-clean: 
+clean:
 	@ t=$@; argv="$(SUBDIRS)" ;\
 	  for d in $$argv; do			      \
 	    ( $(MAKE) $$d.$$t ) \
 	  done
 
-distclean: 
+distclean:
 	@/bin/rm -rf *.config *.install *.check
 	@ t=$@; argv="$(SUBDIRS)" ;\
 	  for d in $$argv; do			      \
@@ -700,7 +700,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
                       --with-udunits2=$(prefix) \
                       --disable-grib --disable-openmp \
                       --disable-shared --enable-static \
-                      CXXFLAGS="$(CLANG_STDC11)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CXXFLAGS="$(CLANG_STDC14)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 nccmp.config: nccmp/configure netcdf.install
@@ -984,7 +984,7 @@ FLAP.install: FLAP.config
 
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup
 #      in nco. If you just run nco, it never makes the libnco.a library, or at least
-#      does not make it correctly. As the nco/m4/libtool.m4 and, say, the 
+#      does not make it correctly. As the nco/m4/libtool.m4 and, say, the
 #      netcdf/m4/libtool.m4 files are nearly the same, this seems to be an issue in
 #      NCO. Until NCO can solve this issue the solution is a three-part run:
 #
@@ -1117,19 +1117,19 @@ esmf.clean : esmf_rules.mk
 esmf.distclean : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) distclean
 
-netcdf-cxx4.clean: 
+netcdf-cxx4.clean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
-netcdf-cxx4.distclean: 
+netcdf-cxx4.distclean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
-pFUnit.clean: 
+pFUnit.clean:
 	@echo "Cleaning pFUnit"
 	@rm -rf ./pFUnit/build
 
-pFUnit.distclean: 
+pFUnit.distclean:
 	@echo "Cleaning pFUnit"
 	@rm -rf ./pFUnit/build
 
@@ -1189,17 +1189,17 @@ FLAP.distclean:
 	@echo "Cleaning FLAP"
 	@rm -rf ./FLAP/build
 
-antlr2.clean: 
+antlr2.clean:
 	@echo "Cleaning antlr2"
 	@rm -rf ./antlr2/build
 
-antlr2.distclean: 
+antlr2.distclean:
 	@echo "Cleaning antlr2"
 	@rm -rf ./antlr2/build
 
 # MAT There seems to be some issue in curl with distclean
 #     as it goes into some sort of infinite loop?
-curl.distclean: 
+curl.distclean:
 	@echo "Cleaning curl"
 	@(cd curl; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
