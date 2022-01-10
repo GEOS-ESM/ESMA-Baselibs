@@ -6,6 +6,7 @@
 
 * curl 7.81.0
 * netCDF-Fortran 4.5.4
+* CDO 2.0.2
 
 ### Fixed
 ### Changed
