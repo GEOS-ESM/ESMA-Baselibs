@@ -3,6 +3,9 @@
 ## Unreleased
 
 ### Updates
+
+- netCDF-Fortran 4.5.4
+
 ### Fixed
 ### Changed
 ### Removed
