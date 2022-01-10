@@ -4,7 +4,8 @@
 
 ### Updates
 
-- netCDF-Fortran 4.5.4
+* curl 7.81.0
+* netCDF-Fortran 4.5.4
 
 ### Fixed
 ### Changed
