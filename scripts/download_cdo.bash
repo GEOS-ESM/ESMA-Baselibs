@@ -5,9 +5,9 @@
 # --------------
 
 package_name='cdo'
-tarball='cdo-2.0.2.tar.gz'
+tarball='cdo-2.0.3.tar.gz'
 # NOTE NOTE The last node of this URL changes with each new version
-base_url='https://code.mpimet.mpg.de/attachments/download/26654/'
+base_url='https://code.mpimet.mpg.de/attachments/download/26676/'
 
 export LMOD_SH_DBG_ON=0
 
