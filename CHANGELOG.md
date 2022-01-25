@@ -4,7 +4,6 @@
 
 ### Updates
 
-* curl 7.81.0
 * netCDF-Fortran 4.5.4
 * nco 5.0.5
 * CDO 2.0.3
