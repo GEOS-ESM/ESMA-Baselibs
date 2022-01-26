@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased
+## [Unreleased]
+
+### Updates
+### Fixed
+### Changed
+### Removed
+### Added
+
+## [6.2.11] - 2022-01-26
 
 ### Updates
 
@@ -8,11 +16,6 @@
 * nco 5.0.5
 * CDO 2.0.3
 * gFTL v1.5.4
-
-### Fixed
-### Changed
-### Removed
-### Added
 
 ## [6.2.10] - 2021-12-15
 
