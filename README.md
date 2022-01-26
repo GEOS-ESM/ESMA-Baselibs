@@ -15,12 +15,12 @@ NASA/GSFC.
 | [ESMF](https://www.earthsystemcog.org/projects/esmf/)                    | 8.2.0        |
 | [FMS](https://github.com/GEOS-ESM/FMS/)                                  | geos/2021.04 |
 | [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.8.1        |
-| [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.5.2        |
+| [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.5.4        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.10.8       |
 | [HDF4](https://portal.hdfgroup.org/display/support)                      | 4.2.15       |
 | [pFUnit](https://github.com/Goddard-Fortran-Ecosystem/pFUnit)            | v4.2.2       |
-| [gFTL](https://github.com/Goddard-Fortran-Ecosystem/gFTL)                | v1.5.3       |
+| [gFTL](https://github.com/Goddard-Fortran-Ecosystem/gFTL)                | v1.5.4       |
 | [gFTL-shared](https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared)  | v1.3.6       |
 | [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)      | v1.1.2       |
 | [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)          | v1.0-beta4   |
@@ -32,8 +32,8 @@ NASA/GSFC.
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                  | 2.1.1        |
 | [cURL](https://curl.haxx.se/)                                            | 7.80.0       |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                         | 2.2.26       |
-| [NCO](http://nco.sourceforge.net/)                                       | 5.0.4        |
-| [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.0.1        |
+| [NCO](http://nco.sourceforge.net/)                                       | 5.0.5        |
+| [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.0.3        |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.9.1.0      |
 | [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.9.0  |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                  | 3.0          |
