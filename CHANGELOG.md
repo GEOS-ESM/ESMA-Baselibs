@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 ### Updates
+
+* FLAP geos/v1.10.0 (fix for NVHPC)
+
 ### Fixed
 ### Changed
 ### Removed
