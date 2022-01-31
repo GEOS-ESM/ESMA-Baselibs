@@ -7,6 +7,9 @@
 * FLAP geos/v1.10.0 (fix for NVHPC)
 
 ### Fixed
+
+* Remove SDPToolkit as buildable with NVHPC
+
 ### Changed
 ### Removed
 ### Added
