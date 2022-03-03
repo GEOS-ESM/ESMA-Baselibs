@@ -12,6 +12,7 @@
 
 ### Updates
 
+* ESMF v8.3.0b08
 * jpeg 9d
 * nco 5.0.6
 * CDO 2.0.4
