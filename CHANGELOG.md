@@ -8,6 +8,12 @@
 ### Removed
 ### Added
 
+## [6.2.12] - 2022-03-XX
+
+### Updates
+
+* jpeg 9d
+
 ## [6.2.11] - 2022-01-26
 
 ### Updates
