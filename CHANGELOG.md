@@ -16,6 +16,11 @@
 * jpeg 9d
 * nco 5.0.6
 * CDO 2.0.4
+* FLAP geos/v1.10.0 (fix for NVHPC)
+
+### Fixed
+
+* Remove SDPToolkit as buildable with NVHPC
 
 ## [6.2.11] - 2022-01-26
 
