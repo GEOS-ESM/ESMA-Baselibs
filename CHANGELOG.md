@@ -6,6 +6,13 @@
 ### Fixed
 ### Changed
 ### Removed
+
+* Remove unmaintained zlib library
+
+### Added
+
+* zlib-ng 2.0.6
+
 ### Added
 
 ## [6.2.12] - 2022-03-04
@@ -153,12 +160,6 @@
 * NCO 4.9.9
 * HDF-EOS2 v3.0
 * HDF-EOS5 v2.0
-
-* Remove unmaintained zlib library
-
-### Added
-
-* zlib-ng 2.0.3
 
 ## [6.2.1] - 2021-04-26
 
