@@ -23,6 +23,11 @@
 
 # PGI
 # ---
+  ifneq ($(wildcard $(shell which nvfortran 2> /dev/null)),)
+       CPPFLAGS += -DpgiFortran
+       PGI_FLAG = -PGI
+  endif
+
   ifneq ($(wildcard $(shell which pgfortran 2> /dev/null)),)
        CPPFLAGS += -DpgiFortran
        PGI_FLAG = -PGI

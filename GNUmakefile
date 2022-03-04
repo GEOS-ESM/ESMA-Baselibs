@@ -1,10 +1,10 @@
 #
-# RecursiveGNU makefile for Baselibs. 
+# RecursiveGNU makefile for Baselibs.
 #
 # NOTE: If you would like to add new packages, look at module
 #       supplibs under the opengrads CVS repository on sourceforge:
 #
-#            http://sourceforge.net/cvs/?group_id=161773 
+#            http://sourceforge.net/cvs/?group_id=161773
 #
 # Packages such as NetCDF-4, HDF-5 and OPeNDAP have already been implemented
 # there in a structure very similar to this one.
@@ -12,7 +12,7 @@
 # !REVISION HISTORY:
 #
 #  25Jul2007  da Silva  First implementation
-#  11Aug2008  da Silva  Aded Base.mk/Arch.mk to simplify CM. 
+#  11Aug2008  da Silva  Aded Base.mk/Arch.mk to simplify CM.
 #
 #-------------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
         LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz,\
            $(prefix)/lib/lib$(lib).a) )
         NC_ENABLE_HDF5 = --enable-netcdf-4 --with-hdf5=$(prefix)
-        NC_LIBS = $(LIB_HDF5) $(LINK_GPFS) -lm 
+        NC_LIBS = $(LIB_HDF5) $(LINK_GPFS) -lm
         ifeq ($(H5_PARALLEL),--enable-parallel)
            NC_CC  = $(MPICC)
            NC_FC  = $(MPIFC)
@@ -67,7 +67,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
            H5_CC  = $(prefix)/bin/h5pcc
            H5_FC  = $(prefix)/bin/h5pfc
         endif
-        
+
         ifeq ($(H5_PARALLEL),--disable-parallel)
            H5_CC  = $(prefix)/bin/h5cc
            H5_FC  = $(prefix)/bin/h5fc
@@ -142,7 +142,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      NAG_DUSTY := -dusty
   endif
 
-# Building with PGI on Darwin (Community Edition) does not quite work. 
+# Building with PGI on Darwin (Community Edition) does not quite work.
 # Fixes are needed. NDEBUG from netcdf list
 # -------------------------------------------------------------------
 
@@ -175,13 +175,15 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      export NO_IMPLICIT_FUNCTION_ERROR
 
      ifeq ($(ARCH),Darwin)
-        # There is an issue with clang and curl
-        MMACOS_MIN := -mmacosx-version-min=10.13
+        # There is an issue with clang and curl, need to pass in a macos version min
+        MACOS_VERSION := $(shell sw_vers -productVersion | awk -F . '{print $$1 "." $$2}')
+        export MACOS_VERSION
+        MMACOS_MIN := -mmacosx-version-min=$(MACOS_VERSION)
         export MMACOS_MIN
 
         # There is an issue with clang++ and cdo
-        CLANG_STDC11 := -std=c++11
-        export CLANG_STDC11
+        CLANG_STDC14 := -std=c++14
+        export CLANG_STDC14
      endif
   endif
 
@@ -201,8 +203,38 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
   ifeq ($(findstring icc,$(notdir $(CC))),icc)
      ifeq ($(ARCH),Darwin)
         CFLAGS += -diag-error=147 -stdlib=libc++
-        export MMACOS_MIN
+        export CFLAGS
      endif
+  endif
+
+# cURL is now more complicated with SSL
+# -------------------------------------
+
+  ifeq ($(ARCH),Linux)
+    # On Linux, assume standard OpenSSL (works at NCCS, NAS, GMAO)
+    CURL_SSL := --with-openssl
+    export CURL_SSL
+  endif
+
+  ifeq ($(ARCH),Darwin)
+    # On Darwin, you can't assume an Open SSL exists
+    ifeq ($(CC_IS_CLANG),TRUE)
+      # If we are using Clang we can use SecureTransport
+      CURL_SSL := --with-secure-transport
+      export CURL_SSL
+
+      DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration -framework Security
+      export DARWIN_ST_LIBS
+    else
+      # There is a bug with gcc and Apple Security Framework:
+      # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93082
+      # so we don't do SSL
+      CURL_SSL := --without-ssl
+      export CURL_SSL
+
+      DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration
+      export DARWIN_ST_LIBS
+    endif
   endif
 
 #-------------------------------------------------------------------------
@@ -217,7 +249,7 @@ ALLDIRS = antlr2 gsl jpeg zlib-ng szlib curl hdf4 hdf5 netcdf netcdf-fortran net
           FLAP hdfeos hdfeos5 SDPToolkit
 
 ifeq ($(ARCH),Darwin)
-   NO_DARWIN_DIRS = hdfeos hdfeos5 SDPToolkit
+   NO_DARWIN_DIRS = netcdf-cxx4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_DARWIN_DIRS),$(ALLDIRS))
 endif
 
@@ -267,13 +299,15 @@ download: gsl.download szlib.download cdo.download hdfeos.download hdfeos5.downl
 dist: download
 	tar -czf $(RELEASE_DIR)/$(RELEASE_FILE).tar.gz -C $(RELEASE_DIR) $(MKFILE_DIRNAME)
 
-verify: 
+verify:
 	@echo MKFILE_PATH = $(MKFILE_PATH)
 	@echo MKFILE_DIR = $(MKFILE_DIR)
 	@echo MKFILE_DIRNAME = $(MKFILE_DIRNAME)
 	@echo SUBDIRS = $(SUBDIRS)
 	@echo BUILD_DAP = $(BUILD_DAP)
 	@echo GFORTRAN_VERSION_GTE_10 = $(GFORTRAN_VERSION_GTE_10)
+	@echo MACOS_VERSION = $(MACOS_VERSION)
+	@echo MMACOS_MIN = $(MMACOS_MIN)
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
@@ -347,7 +381,7 @@ baselibs-config: baselibs-config.mk
 	@cp CHANGELOG.md $(prefix)/etc
 	@cp ChangeLog-preV6 $(prefix)/etc
 	@cp README.md $(prefix)/etc
-	@$(if $(LOADEDMODULES),$(shell echo $(LOADEDMODULES) >& $(prefix)/etc/MODULES),echo "Modules not found")
+	@$(if $(LOADEDMODULES),$(shell echo $(LOADEDMODULES) | tr ':' ' ' >& $(prefix)/etc/MODULES),echo "Modules not found")
 	@rm -f $(prefix)/etc/CONFIG
 	@echo "CC: $(CC)" >> $(prefix)/etc/CONFIG
 	@echo "CC --version: $(shell $(CC) --version 2>&1)" >> $(prefix)/etc/CONFIG
@@ -398,13 +432,13 @@ $(TARGETS): prelim
 	  done
 	$(MAKE) make_baselibs_mk
 
-clean: 
+clean:
 	@ t=$@; argv="$(SUBDIRS)" ;\
 	  for d in $$argv; do			      \
 	    ( $(MAKE) $$d.$$t ) \
 	  done
 
-distclean: 
+distclean:
 	@/bin/rm -rf *.config *.install *.check
 	@ t=$@; argv="$(SUBDIRS)" ;\
 	  for d in $$argv; do			      \
@@ -488,7 +522,10 @@ endif
 
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
 BUILD_DAP = --enable-dap
-LIB_CURL = $(shell $(prefix)/bin/curl-config --libs)	
+LIB_CURL = $(shell $(prefix)/bin/curl-config --libs) $(DARWIN_ST_LIBS)
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+LIB_CURL := $(filter-out -pthread,$(LIB_CURL))
+endif
 else
 BUILD_DAP = --disable-dap
 LIB_CURL =
@@ -512,6 +549,9 @@ netcdf.config : netcdf/configure
 	@touch $@
 
 LIB_NETCDF = $(shell $(prefix)/bin/nc-config --libs)
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+LIB_NETCDF := $(filter-out -pthread,$(LIB_NETCDF))
+endif
 netcdf-fortran.config : netcdf-fortran/configure netcdf.install
 	@echo "Configuring netcdf-fortran $*"
 	@(cd netcdf-fortran; \
@@ -634,6 +674,7 @@ curl.config : curl/configure.ac zlib-ng.install
                       --without-libidn2 \
                       --without-nghttp2 \
                       --without-nghttp3 \
+                      $(CURL_SSL) \
                       CFLAGS="$(CFLAGS) $(MMACOS_MIN)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
@@ -657,7 +698,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
                       --with-udunits2=$(prefix) \
                       --disable-grib --disable-openmp \
                       --disable-shared --enable-static \
-                      CXXFLAGS="$(CLANG_STDC11)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CXXFLAGS="$(CLANG_STDC14)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 nccmp.config: nccmp/configure netcdf.install
@@ -770,16 +811,13 @@ hdfeos.config: hdfeos.download hdfeos/configure hdf4.install
 	@echo "Configuring hdfeos $*"
 	@(cd hdfeos; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
-          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -Df2cFortran";\
+          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos \
-                      --with-jpeg=$(prefix)/include/jpeg,$(prefix)/lib \
-                      --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
-                      --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
-                      --with-hdf4=$(prefix)/include/hdf,$(prefix)/lib \
                       --disable-shared --enable-static \
-                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS)" CC="$(H4_CC) -Df2cFortran" FC=$(H4_FC) CXX=$(CXX) F77=$(H4_FC) )
+                      --enable-fortran \
+                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS)" CC="$(H4_CC)" FC=$(H4_FC) F77=$(H4_FC) )
 	@touch $@
 
 hdfeos5.download : scripts/download_hdfeos5.bash
@@ -795,15 +833,13 @@ hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
 	@echo "Configuring hdfeos5 $*"
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
-          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -Df2cFortran";\
+          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos5 \
-                      --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
-                      --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
-                      --with-hdf5=$(prefix)/include/hdf5,$(prefix)/lib \
                       --disable-shared --enable-static \
-                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC="$(H5_CC) -Df2cFortran" FC=$(H5_FC) CXX=$(NC_CXX) F77=$(H5_FC) )
+                      --enable-fortran \
+                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC="$(H5_CC)" FC=$(H5_FC) F77=$(H5_FC) )
 	@touch $@
 
 INC_SUPP_SDP :=  $(foreach subdir, \
@@ -846,15 +882,7 @@ hdf5.install: hdf5.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
-ifeq ($(GFORTRAN_VERSION_GTE_10),1)
-ifeq ("$(BUILD_DAP)","--enable-dap")
-netcdf.install :: netcdf.config
-	@echo Patching netCDF-C ocprint for GCC 10
-	patch -f -p1 < ./patches/netcdf/netcdf.ocprint.patch
-endif
-endif
-
-netcdf.install :: netcdf.config
+netcdf.install : netcdf.config
 	@echo "Installing netcdf $*"
 	@(cd netcdf; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -863,14 +891,6 @@ netcdf.install :: netcdf.config
           export LIBS="-L$(prefix)/lib $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
-
-ifeq ($(GFORTRAN_VERSION_GTE_10),1)
-ifeq ("$(BUILD_DAP)","--enable-dap")
-netcdf.install :: netcdf.config
-	@echo Unpatching netCDF-C ocprint for GCC 10
-	patch -f -p1 -R < ./patches/netcdf/netcdf.ocprint.patch
-endif
-endif
 
 netcdf-fortran.install : netcdf-fortran.config
 	@echo "Installing netcdf-fortran $*"
@@ -949,7 +969,7 @@ FLAP.install: FLAP.config
 
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup
 #      in nco. If you just run nco, it never makes the libnco.a library, or at least
-#      does not make it correctly. As the nco/m4/libtool.m4 and, say, the 
+#      does not make it correctly. As the nco/m4/libtool.m4 and, say, the
 #      netcdf/m4/libtool.m4 files are nearly the same, this seems to be an issue in
 #      NCO. Until NCO can solve this issue the solution is a three-part run:
 #
@@ -1035,7 +1055,8 @@ hdfeos.install: hdfeos.config
 	@(cd hdfeos; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install ;\
-          $(MAKE) -C include install)
+          $(MAKE) -C include install CC=$(H4_CC) FC=$(H4_FC) F77=$(H4_FC) ;\
+          cp include/*.h $(prefix)/include/hdfeos)
 	touch $@
 
 hdfeos5.install: hdfeos5.config
@@ -1044,7 +1065,7 @@ hdfeos5.install: hdfeos5.config
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install ;\
-          $(MAKE) -C include install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
+          $(MAKE) -C include install CC=$(H5_CC) FC=$(H5_FC) F77=$(H5_FC))
 	touch $@
 
 SDPToolkit.install: SDPToolkit.config
@@ -1081,19 +1102,19 @@ esmf.clean : esmf_rules.mk
 esmf.distclean : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) distclean
 
-netcdf-cxx4.clean: 
+netcdf-cxx4.clean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
-netcdf-cxx4.distclean: 
+netcdf-cxx4.distclean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
-pFUnit.clean: 
+pFUnit.clean:
 	@echo "Cleaning pFUnit"
 	@rm -rf ./pFUnit/build
 
-pFUnit.distclean: 
+pFUnit.distclean:
 	@echo "Cleaning pFUnit"
 	@rm -rf ./pFUnit/build
 
@@ -1145,17 +1166,17 @@ FLAP.distclean:
 	@echo "Cleaning FLAP"
 	@rm -rf ./FLAP/build
 
-antlr2.clean: 
+antlr2.clean:
 	@echo "Cleaning antlr2"
 	@rm -rf ./antlr2/build
 
-antlr2.distclean: 
+antlr2.distclean:
 	@echo "Cleaning antlr2"
 	@rm -rf ./antlr2/build
 
 # MAT There seems to be some issue in curl with distclean
 #     as it goes into some sort of infinite loop?
-curl.distclean: 
+curl.distclean:
 	@echo "Cleaning curl"
 	@(cd curl; \
           export PATH="$(prefix)/bin:$(PATH)" ;\

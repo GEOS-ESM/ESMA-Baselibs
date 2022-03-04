@@ -1,11 +1,144 @@
 # Changelog
- 
-## Unreleased
+
+## [Unreleased]
 
 ### Updates
 ### Fixed
 ### Changed
 ### Removed
+### Added
+
+## [6.2.11] - 2022-01-26
+
+### Updates
+
+* netCDF-Fortran 4.5.4
+* nco 5.0.5
+* CDO 2.0.3
+* gFTL v1.5.4
+
+## [6.2.10] - 2021-12-15
+
+### Fixed
+
+- CDO 2 now requires C++14 standard on Darwin when using `clang++`
+
+## [6.2.9] - 2021-12-06
+
+### Updates
+
+* curl 7.80.0
+* HDF5 1.10.8
+* nco 5.0.4
+* ESMF 8_2_0
+* CDO 2.0.1
+* nccmp 1.9.1.0
+* gFTL v1.5.3
+* gFTL-shared v1.3.6
+* yaFyaml v1.0-beta4
+* pFUnit v4.2.2
+* pFlogger v1.6.1
+* fArgParse v1.1.2
+
+### Added
+
+- Added release tarball GitHub Action
+- Added `.editorconfig` file
+
+## [6.2.8] - 2021-10-07
+
+### Updates
+
+* curl 7.79.1
+* netCDF-C 4.8.1
+* nco 5.0.3
+* ESMF 8_2_0_beta_snapshot_20
+* gFTL v1.5.1
+* gFTL-shared v1.3.2
+* yaFyaml v1.0-beta3
+* pFlogger v1.6.0
+
+### Fixed
+
+* Added a fix to remove `-pthread` when compiling with NAG
+
+### Changed
+
+* When installing ESMF, don't make success or failure of ESMPy required to touch the `esmf.install` file. This is because ESMPy is
+  very twitchy and might not work on all platforms (e.g., AWS with limited Python). If ESMPy builds successfully, then an
+  `esmf.python` file will be touched. (NOTE: It is much easier to get ESMPy via conda than via Baselibs in almost all
+  circumstances.)
+
+## [6.2.7] - 2021-08-03
+
+### Updates
+
+* GSL 2.7
+* jpeg 9d
+* curl 7.78.0
+* netCDF-C 4.8.0
+* ESMF 8_2_0_beta_snapshot_14
+* nccmp 1.9.0.1
+
+### Fixed
+
+- Update Make System to support NVHPC (preliminary, not working)
+
+### Changed
+
+- Convert colons to spaces when making `MODULES` file for ease of re-use
+
+### Removed
+
+- Removed the ocprint patch used for netCDF-C and GCC 10 as it isn't needed with netCDF-C 4.8.0
+
+## [6.2.6] - 2021-07-09
+
+### Fixed
+
+* Fixed bug with `-mmacosx-version-min` passed into curl. Now it tries to figure out what your macOS version is and use that
+  (major.minor)
+
+## [6.2.5] - 2021-06-08
+
+### Fixed
+
+* Fixed bug with ESMF and dynamic libraries. The "fix" is to run `make install` for ESMF twice until ESMF itself can be fixed.
+
+## [6.2.4] - 2021-06-02
+
+### Fixed
+
+* Fixed bug with cURL as [7.77.0 now requires an SSL library to be explicitly chosen](https://daniel.haxx.se/blog/2021/04/23/please-select-your-tls/), or none at all.
+  * On Linux, we supply `--with-openssl` as this works at NCCS, NAS, and on GMAO Desktops.
+  * On macOS, there is no guarantee of OpenSSL (and even with Brew might be in a non-standard location)
+    * If Clang is the C compiler, we can use SecureTransport and build with `--with-secure-transport`
+    * If GCC is the C compiler, there is a [bug with the Security Framework](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93082), so we build without SSL, `--without-ssl`
+* Disable netcdf-cxx4 build on Darwin. Has issues and is not a required-by-GEOS library
+* cURL 7.77.0 on macOS 11.0 needs a different `-mmacosx-version-min`
+
+### Changed
+
+* Added a check to make sure the `prefix` Baselibs installs to ends in the `uname -s` "arch". This is still required by some GEOS scripts
+
+## [6.2.3] - 2021-06-02
+
+### Fixed
+
+* Fixed make bug with SDPToolkit and new hdf-eos2 (was not installing some needed include files)
+
+## [6.2.2] - 2021-06-02
+
+### Updates
+
+* ESMF 8_2_0_beta_snapshot_10
+  * This beta is being used due to it fixing two bugs
+    1. Fix for errors with alarms during replay
+    2. Fix for regridding very-high resolution files
+* cURL 7.77.0
+* NCO 4.9.9
+* HDF-EOS2 v3.0
+* HDF-EOS5 v2.0
 
 * Remove unmaintained zlib library
 
@@ -245,7 +378,7 @@
 
 * gFTL v1.2.7
 * fArgParse v1.0.1
- 
+
 ## [6.0.15] - 2020-08-25
 
 ### Updates
@@ -275,7 +408,7 @@
 ### Changed
 
 * Download URLs for HDF-EOS2, HDF-EOS5, and SDP Toolkit have changed due to changes in hosting.
- 
+
 ## [6.0.13] - 2020-05-22
 
 ### Updates

@@ -33,6 +33,12 @@
 # --------------------------
   FC_FROM_ENV := FALSE
   ifneq ($(origin FC),undefined)
+    ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
+      ES_FC := $(FC)
+      ESMF_COMPILER := nvhpc
+      FLAP_COMPILER := pgi
+      FC_FROM_ENV := TRUE
+    else
     ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
       ES_FC := $(FC)
       ESMF_COMPILER := nag
@@ -61,6 +67,13 @@
     endif
     endif
     endif
+    endif
+  else
+  ifneq ($(wildcard $(shell which nvfortran 2> /dev/null)),)
+    FC := nvfortran
+    ES_FC := $(FC)
+    ESMF_COMPILER := nvhpc
+    FLAP_COMPILER := pgi
   else
   ifneq ($(wildcard $(shell which nagfor 2> /dev/null)),)
     FC := nagfor
@@ -94,6 +107,7 @@
   endif
   endif
   endif
+  endif
 
   F77 := $(FC)
   F90 := $(FC)
@@ -108,6 +122,10 @@
       ifeq ($(TEST_FOR_CC_CLANG),clang)
          CC_IS_CLANG := TRUE
       endif
+      ES_CC := $(CC)
+      CC_FROM_ENV := TRUE
+    else
+    ifeq ($(findstring nvc,$(notdir $(CC))),nvc)
       ES_CC := $(CC)
       CC_FROM_ENV := TRUE
     else
@@ -127,6 +145,7 @@
     endif
     endif
     endif
+    endif
   else
   ifneq ($(wildcard $(shell which gcc 2> /dev/null)),)
     CC := gcc
@@ -138,6 +157,10 @@
       CC := clang
       CC_IS_CLANG := TRUE
     endif
+    ES_CC := $(CC)
+  else
+  ifneq ($(wildcard $(shell which nvc 2> /dev/null)),)
+    CC := nvc
     ES_CC := $(CC)
   else
   ifneq ($(wildcard $(shell which icc 2> /dev/null)),)
@@ -159,6 +182,7 @@
   endif
   endif
   endif
+  endif
 
 # C++ compiler detection
 # ----------------------
@@ -170,6 +194,10 @@
       ifeq ($(TEST_FOR_CXX_CLANG),clang)
          CXX_IS_CLANG := TRUE
       endif
+      ES_CXX := $(CXX)
+      CXX_FROM_ENV := TRUE
+    else
+    ifeq ($(findstring nvc++,$(notdir $(CXX))),nvc++)
       ES_CXX := $(CXX)
       CXX_FROM_ENV := TRUE
     else
@@ -189,6 +217,7 @@
     endif
     endif
     endif
+    endif
   else
   ifneq ($(wildcard $(shell which g++ 2> /dev/null)),)
     CXX := g++
@@ -202,6 +231,10 @@
     endif
     ES_CXX := $(CXX)
   else
+  ifneq ($(wildcard $(shell which nvc++ 2> /dev/null)),)
+    CXX := nvc++
+    ES_CXX := $(CXX)
+  else
   ifneq ($(wildcard $(shell which icpc 2> /dev/null)),)
     CXX := icpc
     ES_CXX := $(CXX)
@@ -212,6 +245,7 @@
   else
     CXX := UNKNOWN
     ES_CXX := $(CXX)
+  endif
   endif
   endif
   endif
@@ -358,4 +392,12 @@ endif
 
   CONFIG_SETUP = $(notdir $(FC))
   prefix := $(ROOTDIR)/$(SYSNAME)/$(CONFIG_SETUP)/$(ARCH)
+
+# Check to make sure prefix has ARCH because GEOS requires it still
+# -----------------------------------------------------------------
+
+  LAST_NODE_IN_PREFIX = $(lastword $(subst /, ,$(prefix)))
+  ifneq ($(findstring $(ARCH),$(LAST_NODE_IN_PREFIX)),$(ARCH))
+     $(error The last directory of the installation prefix $(prefix) must be $(ARCH) due to limitations in GEOS)
+  endif
 

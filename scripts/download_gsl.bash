@@ -5,7 +5,7 @@
 # --------------
 
 package_name='gsl'
-tarball='gsl-2.6.tar.gz'
+tarball='gsl-2.7.tar.gz'
 base_url='http://mirrors.ibiblio.org/gnu/gsl/'
 
 export LMOD_SH_DBG_ON=0

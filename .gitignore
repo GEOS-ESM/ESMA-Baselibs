@@ -11,10 +11,13 @@ szlib
 cdo-*/
 cdo
 
-hdfeos/
-hdfeos5/
-TOOLKIT/
+hdf-eos2-*/
+hdfeos
 
+hdf-eos5-*/
+hdfeos5
+
+TOOLKIT/
 SDPToolkit
 
 gsl-*/

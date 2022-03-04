@@ -124,21 +124,13 @@ esmf.script_info script_info:
 esmf.check check:
 	@echo "Customized ESMF build step $@..."
 	@(cd $(ESMF_DIR); make -e check)
-ifneq ($(ARCH), Darwin)
 	@(cd $(ESMF_DIR)/src/addon/ESMPy; export PYTHONPATH=$(ESMF_INSTALL_PREFIX)/lib/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
-else
-	@echo "Due to issues with rpath on Darwin, not building ESMPy"
-endif
 	@touch esmf.check
 
 esmf.all_tests all_tests:
 	@echo "Customized ESMF build step $@..."
 	@(cd $(ESMF_DIR); make -e all_tests)
-ifneq ($(ARCH), Darwin)
 	@(cd $(ESMF_DIR)/src/addon/ESMPy; export PYTHONPATH=$(ESMF_INSTALL_PREFIX)/lib/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
-else
-	@echo "Due to issues with rpath on Darwin, not building ESMPy"
-endif
 	@touch esmf.all_tests
 
 esmf.examples:
@@ -153,17 +145,20 @@ esmf.distclean distclean:
 	@echo "Customized ESMF build step $@..."
 	@(cd $(ESMF_DIR); $(MAKE) -e distclean)
 
+# Note we run 'make install' twice on Darwin due to a make bug in ESMF
+# Running it twice allows install_name_tool to correctly work on installed
+# dynamic libraries
 esmf.install install: esmf.config
 	@echo "Customized ESMF build step $@..."
 	@(cd $(ESMF_DIR); $(MAKE) -e lib)
 	@(cd $(ESMF_DIR); $(MAKE) -e install)
-ifneq ($(ARCH), Darwin)
-	@(cd $(ESMF_DIR)/src/addon/ESMPy; $(ESMF_PYTHON) setup.py build --ESMFMKFILE=$(ESMF_INSTALL_LIBDIR)/esmf.mk; $(ESMF_PYTHON) setup.py install --prefix=$(ESMF_INSTALL_PREFIX))
-else
-	@echo "Due to issues with rpath on Darwin, not building ESMPy"
+ifeq ($(ARCH), Darwin)
+	@(cd $(ESMF_DIR); $(MAKE) -e install)
 endif
 	@cp -pr $(ESMF_DIR)/cmake/*    $(ESMF_INSTALL_HEADERDIR)
 	@touch esmf.install
+	@(cd $(ESMF_DIR)/src/addon/ESMPy; $(ESMF_PYTHON) setup.py build --ESMFMKFILE=$(ESMF_INSTALL_LIBDIR)/esmf.mk; $(ESMF_PYTHON) setup.py install --prefix=$(ESMF_INSTALL_PREFIX))
+	@touch esmf.python
 
 # There once was an Intel 16 bug fixed, the ESMF apps can be built separately
 esmf.python python: esmf.install
