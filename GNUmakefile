@@ -265,6 +265,12 @@ ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
    ESSENTIAL_DIRS := $(filter-out $(NO_NAG_DIRS),$(ESSENTIAL_DIRS))
 endif
 
+# NVHPC seems to have issues with SDPToolkit
+ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
+   NO_NVHPC_DIRS = SDPToolkit
+   ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
+endif
+
 GFE_DIRS = gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger
 
 ifeq ($(MACH),aarch64)
