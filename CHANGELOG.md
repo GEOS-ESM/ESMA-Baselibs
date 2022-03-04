@@ -8,12 +8,12 @@
 ### Removed
 ### Added
 
-## [6.2.12] - 2022-03-XX
+## [6.2.12] - 2022-03-04
 
 ### Updates
 
-* ESMF v8.3.0b08
-* jpeg 9d
+* ESMF v8.3.0b08 (fix for NVHPC)
+* jpeg 9e
 * nco 5.0.6
 * CDO 2.0.4
 * FLAP geos/v1.10.0 (fix for NVHPC)
