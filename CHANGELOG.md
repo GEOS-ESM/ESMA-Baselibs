@@ -14,6 +14,20 @@
 ### Removed
 ### Added
 
+## [6.2.12] - 2022-03-04
+
+### Updates
+
+* ESMF v8.3.0b08 (fix for NVHPC)
+* jpeg 9e
+* nco 5.0.6
+* CDO 2.0.4
+* FLAP geos/v1.10.0 (fix for NVHPC)
+
+### Fixed
+
+* Remove SDPToolkit as buildable with NVHPC
+
 ## [6.2.11] - 2022-01-26
 
 ### Updates
