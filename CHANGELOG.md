@@ -14,6 +14,7 @@
 
 * ESMF v8.3.0b09 (fix for macOS)
 * gFTL v1.5.5
+* yaFyaml v1.0-beta5
 
 ## [6.2.12] - 2022-03-04
 
