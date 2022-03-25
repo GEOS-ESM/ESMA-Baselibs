@@ -8,6 +8,8 @@
 ### Removed
 ### Added
 
+- Added preliminary ifx support to `Arch.mk` and `Base.mk`
+
 ## [6.2.13] - 2022-03-XX
 
 ### Updates

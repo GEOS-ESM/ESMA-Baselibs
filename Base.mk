@@ -45,6 +45,12 @@
       FLAP_COMPILER := nag
       FC_FROM_ENV := TRUE
     else
+    ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
+      ES_FC := $(FC)
+      ESMF_COMPILER := intelifx
+      FLAP_COMPILER := intel
+      FC_FROM_ENV := TRUE
+    else
     ifeq ($(findstring ifort,$(notdir $(FC))),ifort)
       ES_FC := $(FC)
       ESMF_COMPILER := intel
@@ -63,6 +69,7 @@
       ESMF_COMPILER := gfortran
       FLAP_COMPILER := gnu
       FC_FROM_ENV := TRUE
+    endif
     endif
     endif
     endif
@@ -129,6 +136,10 @@
       ES_CC := $(CC)
       CC_FROM_ENV := TRUE
     else
+    ifeq ($(findstring icx,$(notdir $(CC))),icx)
+      ES_CC := $(CC)
+      CC_FROM_ENV := TRUE
+    else
     ifeq ($(findstring icc,$(notdir $(CC))),icc)
       ES_CC := $(CC)
       CC_FROM_ENV := TRUE
@@ -141,6 +152,7 @@
     ifeq ($(findstring pgcc,$(notdir $(CC))),pgcc)
       ES_CC := $(CC)
       CC_FROM_ENV := TRUE
+    endif
     endif
     endif
     endif
@@ -201,6 +213,10 @@
       ES_CXX := $(CXX)
       CXX_FROM_ENV := TRUE
     else
+    ifeq ($(findstring icpx,$(notdir $(CXX))),icpx)
+      ES_CXX := $(CXX)
+      CXX_FROM_ENV := TRUE
+    else
     ifeq ($(findstring icpc,$(notdir $(CXX))),icpc)
       ES_CXX := $(CXX)
       CXX_FROM_ENV := TRUE
@@ -213,6 +229,7 @@
     ifeq ($(findstring pgc++,$(notdir $(CXX))),pgc++)
       ES_CXX := $(CXX)
       CXX_FROM_ENV := TRUE
+    endif
     endif
     endif
     endif

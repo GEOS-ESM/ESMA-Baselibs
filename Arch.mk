@@ -21,6 +21,10 @@
        CPPFLAGS += -DpgiFortran
   endif
 
+  ifneq ($(wildcard $(shell which ifx 2> /dev/null)),)
+       CPPFLAGS += -DpgiFortran
+  endif
+
 # PGI
 # ---
   ifneq ($(wildcard $(shell which nvfortran 2> /dev/null)),)
@@ -70,7 +74,7 @@ ifeq ($(ARCH),Linux)
    ifneq ($(shell uname -n | egrep 'r[0-9]*c[0-9]*t[0-9]*n[0-9]*'),)
       SITE := NAS
    endif
-   CFLAGS := -fPIC 
+   CFLAGS := -fPIC
    export CFLAGS
 
    # Gentoo and Fedora put tiprc files in a weird place
