@@ -14,6 +14,9 @@
 * yaFyaml v1.0-beta6
 
 ### Fixed
+
+- Fix build bug with zlib and Intel-Clang on Darwin
+
 ### Changed
 ### Removed
 ### Added

@@ -655,6 +655,7 @@ zlib.config : zlib/configure
 	@echo Configuring zlib
 	@(cd zlib; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
+          export cc="$(CC)" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/zlib \
                       --libdir=$(prefix)/lib )
