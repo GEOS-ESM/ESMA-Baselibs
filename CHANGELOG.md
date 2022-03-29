@@ -5,6 +5,7 @@
 ### Updates
 
 * zlib v1.2.12
+* CDO 2.0.5
 
 ### Fixed
 ### Changed
