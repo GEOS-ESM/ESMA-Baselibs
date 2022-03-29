@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 ### Updates
+
+* zlib v1.2.12
+
 ### Fixed
 ### Changed
 ### Removed
