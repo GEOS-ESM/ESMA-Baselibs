@@ -6,6 +6,7 @@
 
 * zlib v1.2.12
 * CDO 2.0.5
+* pFUnit v4.2.4
 
 ### Fixed
 ### Changed
