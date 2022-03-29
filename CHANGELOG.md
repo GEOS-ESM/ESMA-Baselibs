@@ -7,6 +7,7 @@
 * zlib v1.2.12
 * CDO 2.0.5
 * gFTL v1.6.0
+* gFTL-shared v1.4.1
 * pFUnit v4.2.4
 
 ### Fixed
