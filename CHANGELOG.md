@@ -6,7 +6,18 @@
 ### Fixed
 ### Changed
 ### Removed
+
+- Remove separate GFE repos for omnibus GFE repo. Packages removed:
+  - gFTL
+  - gFTL-shared
+  - fArgParse
+  - pFlogger
+  - pFUnit
+  - yaFyaml
+
 ### Added
+
+- GFE 1.0.0
 
 ## [6.2.13] - 2022-03-XX
 
