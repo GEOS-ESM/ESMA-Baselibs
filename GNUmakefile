@@ -1097,17 +1097,10 @@ curl.check: curl.install
 
 GFE.check: GFE.install
 	@echo "Checking GFE"
-	@(cd ./GFE/build; \
-		$(MAKE) tests )
-	@touch $@
-
-GFE.check: GFE.install
-	@echo "Checking GFE"
 	@echo "This requires a re-CMake to enable testing"
 	@(cd ./GFE/build; \
-		cmake -DBUILD_TESTING=TRUE -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
-		$(MAKE) tests;\
-		ctest )
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
+		$(MAKE) tests)
 	@touch $@
 
 FLAP.check: FLAP.install
