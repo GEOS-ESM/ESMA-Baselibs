@@ -18,7 +18,7 @@ NASA/GSFC.
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                    | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                     | 1.10.8       |
 | [HDF4](https://portal.hdfgroup.org/display/support)                     | 4.2.15       |
-| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.0.1       |
+| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.0.2       |
 | [antlr2](https://www.antlr2.org/)                                       | 2.7.7        |
 | [GSL](https://www.gnu.org/software/gsl/)                                | 2.7          |
 | [jpeg](http://www.ijg.org/)                                             | 9e           |
