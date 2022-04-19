@@ -6,6 +6,11 @@
 ### Fixed
 ### Changed
 ### Removed
+### Added
+
+## [7.0.0] - 2022-MM-DD
+
+### Removed
 
 - Remove separate GFE repos for omnibus GFE repo. Packages removed:
   - gFTL
