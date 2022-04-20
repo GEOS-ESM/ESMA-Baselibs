@@ -22,7 +22,7 @@
 
 ### Added
 
-- GFE v1.0.3
+- GFE v1.1.0
   - gFTL v1.7.0
   - gFTL-shared v1.4.1
   - fArgParse v1.2.0
