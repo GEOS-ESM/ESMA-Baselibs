@@ -22,7 +22,13 @@
 
 ### Added
 
-- GFE v1.0.2
+- GFE v1.0.3
+  - gFTL v1.7.0
+  - gFTL-shared v1.4.1
+  - fArgParse v1.2.0
+  - pFlogger v1.8.0
+  - pFUnit v4.2.7
+  - yaFyaml v1.0-beta8
 
 ## [6.2.13] - 2022-03-09
 
