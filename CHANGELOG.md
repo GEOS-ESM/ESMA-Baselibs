@@ -8,7 +8,7 @@
 ### Removed
 ### Added
 
-## [7.0.0] - 2022-MM-DD
+## [7.0.0] - 2022-04-21
 
 ### Removed
 
@@ -29,6 +29,7 @@
   - pFlogger v1.8.0
   - pFUnit v4.2.7
   - yaFyaml v1.0-beta8
+    - NOTE: This update to yaFyaml is *incompatible* to previous versions. This has caused the tick in the major number for Baselibs
 
 ## [6.2.13] - 2022-03-09
 
