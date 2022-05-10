@@ -245,7 +245,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
           udunits2 nco cdo nccmp esmf \
-          gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger \
+          GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
 
 ifeq ($(ARCH),Darwin)
@@ -266,7 +266,7 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif
 
-GFE_DIRS = gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger
+GFE_DIRS = GFE
 
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf \
                  $(GFE_DIRS) FLAP
@@ -722,46 +722,11 @@ nccmp.config: nccmp/configure netcdf.install
                       FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
-pFUnit.config: gFTL.install gFTL-shared.install fArgParse.install
-	@echo "Configuring pFUnit"
-	@mkdir -p ./pFUnit/build
-	@(cd ./pFUnit/build; \
+GFE.config:
+	@echo "Configuring GFE"
+	@mkdir -p ./GFE/build
+	@(cd ./GFE/build; \
 		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. )
-	@touch $@
-
-gFTL.config:
-	@echo "Configuring gFTL"
-	@mkdir -p ./gFTL/build
-	@(cd ./gFTL/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
-	@touch $@
-
-gFTL-shared.config: gFTL.install
-	@echo "Configuring gFTL-shared"
-	@mkdir -p ./gFTL-shared/build
-	@(cd ./gFTL-shared/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
-	@touch $@
-
-fArgParse.config: gFTL.install gFTL-shared.install
-	@echo "Configuring fArgParse"
-	@mkdir -p ./fArgParse/build
-	@(cd ./fArgParse/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
-	@touch $@
-
-pFlogger.config: gFTL.install gFTL-shared.install yaFyaml.install
-	@echo "Configuring pFlogger"
-	@mkdir -p ./pFlogger/build
-	@(cd ./pFlogger/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_BUILD_TYPE=Release .. )
-	@touch $@
-
-yaFyaml.config: gFTL.install gFTL-shared.install
-	@echo "Configuring yaFyaml"
-	@mkdir -p ./yaFyaml/build
-	@(cd ./yaFyaml/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
 	@touch $@
 
 FLAP.config:
@@ -931,39 +896,9 @@ nccmp.install: nccmp.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
-pFUnit.install: pFUnit.config
-	@echo "Installing pFUnit"
-	@(cd ./pFUnit/build; \
-		$(MAKE) install )
-	@touch $@
-
-gFTL.install: gFTL.config
-	@echo "Installing gFTL"
-	@(cd ./gFTL/build; \
-		$(MAKE) install )
-	@touch $@
-
-gFTL-shared.install: gFTL-shared.config
-	@echo "Installing gFTL-shared"
-	@(cd ./gFTL-shared/build; \
-		$(MAKE) install )
-	@touch $@
-
-fArgParse.install: fArgParse.config
-	@echo "Installing fArgParse"
-	@(cd ./fArgParse/build; \
-		$(MAKE) install )
-	@touch $@
-
-pFlogger.install: pFlogger.config
-	@echo "Installing pFlogger"
-	@(cd ./pFlogger/build; \
-		$(MAKE) install )
-	@touch $@
-
-yaFyaml.install: yaFyaml.config
-	@echo "Installing yaFyaml"
-	@(cd ./yaFyaml/build; \
+GFE.install: GFE.config
+	@echo "Installing GFE"
+	@(cd ./GFE/build; \
 		$(MAKE) install )
 	@touch $@
 
@@ -1116,53 +1051,13 @@ netcdf-cxx4.distclean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
-pFUnit.clean:
-	@echo "Cleaning pFUnit"
-	@rm -rf ./pFUnit/build
+GFE.clean:
+	@echo "Cleaning GFE"
+	@rm -rf ./GFE/build
 
-pFUnit.distclean:
-	@echo "Cleaning pFUnit"
-	@rm -rf ./pFUnit/build
-
-gFTL.clean:
-	@echo "Cleaning gFTL"
-	@rm -rf ./gFTL/build
-
-gFTL.distclean:
-	@echo "Cleaning gFTL"
-	@rm -rf ./gFTL/build
-
-gFTL-shared.clean:
-	@echo "Cleaning gFTL-shared"
-	@rm -rf ./gFTL-shared/build
-
-gFTL-shared.distclean:
-	@echo "Cleaning gFTL-shared"
-	@rm -rf ./gFTL-shared/build
-
-fArgParse.clean:
-	@echo "Cleaning fArgParse"
-	@rm -rf ./fArgParse/build
-
-fArgParse.distclean:
-	@echo "Cleaning fArgParse"
-	@rm -rf ./fArgParse/build
-
-pFlogger.clean:
-	@echo "Cleaning pFlogger"
-	@rm -rf ./pFlogger/build
-
-pFlogger.distclean:
-	@echo "Cleaning pFlogger"
-	@rm -rf ./pFlogger/build
-
-yaFyaml.clean:
-	@echo "Cleaning yaFyaml"
-	@rm -rf ./yaFyaml/build
-
-yaFyaml.distclean:
-	@echo "Cleaning yaFyaml"
-	@rm -rf ./yaFyaml/build
+GFE.distclean:
+	@echo "Cleaning GFE"
+	@rm -rf ./GFE/build
 
 FLAP.clean:
 	@echo "Cleaning FLAP"
@@ -1200,54 +1095,12 @@ curl.check: curl.install
 	@echo "Checking curl"
 	@echo "We explicitly do not check cURL due to how long it takes"
 
-pFUnit.check: pFUnit.install
-	@echo "Checking pFUnit"
-	@(cd ./pFUnit/build; \
-		$(MAKE) tests )
-	@touch $@
-
-gFTL.check: gFTL.install pFUnit.install
-	@echo "Checking gFTL"
-	@echo "This could require a new CMake for pFUnit, so we remove old build"
-	@rm -rf ./gFTL/build
-	@mkdir -p ./gFTL/build
-	@(cd ./gFTL/build; \
+GFE.check: GFE.install
+	@echo "Checking GFE"
+	@echo "This requires a re-CMake to enable testing"
+	@(cd ./GFE/build; \
 		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
-		$(MAKE) tests )
-	@touch $@
-
-gFTL-shared.check: gFTL-shared.install pFUnit.install
-	@echo "Checking gFTL-shared"
-	@echo "gFTL-shared has no checks"
-
-fArgParse.check: fArgParse.install pFUnit.install
-	@echo "Checking fArgParse"
-	@echo "This requires a new CMake, so we remove old build"
-	@rm -rf ./fArgParse/build
-	@mkdir -p ./fArgParse/build
-	@(cd ./fArgParse/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
-		$(MAKE) tests )
-	@touch $@
-
-pFlogger.check: pFlogger.install pFUnit.install
-	@echo "Checking pFlogger"
-	@echo "This could require a new CMake for pFUnit, so we remove old build"
-	@rm -rf ./pFlogger/build
-	@mkdir -p ./pFlogger/build
-	@(cd ./pFlogger/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_BUILD_TYPE=Release .. ;\
-		$(MAKE) tests )
-	@touch $@
-
-yaFyaml.check: yaFyaml.install pFUnit.install
-	@echo "Checking yaFyaml"
-	@echo "This could require a new CMake for pFUnit, so we remove old build"
-	@rm -rf ./yaFyaml/build
-	@mkdir -p ./yaFyaml/build
-	@(cd ./yaFyaml/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
-		$(MAKE) tests )
+		$(MAKE) tests)
 	@touch $@
 
 FLAP.check: FLAP.install
