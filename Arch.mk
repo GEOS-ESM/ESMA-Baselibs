@@ -21,6 +21,10 @@
        CPPFLAGS += -DpgiFortran
   endif
 
+  ifneq ($(wildcard $(shell which ifx 2> /dev/null)),)
+       CPPFLAGS += -DpgiFortran
+  endif
+
 # PGI
 # ---
   ifneq ($(wildcard $(shell which nvfortran 2> /dev/null)),)

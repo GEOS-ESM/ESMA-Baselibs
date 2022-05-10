@@ -8,6 +8,16 @@
 ### Removed
 ### Added
 
+## [7.1.0] - 2022-05-10
+
+### Updates
+
+- GFE v1.2.0
+
+### Added
+
+- Added preliminary ifx support to `Arch.mk` and `Base.mk`
+
 ## [7.0.0] - 2022-04-21
 
 ### Removed
