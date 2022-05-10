@@ -15,6 +15,37 @@
 
 ### Added
 
+## [7.0.0] - 2022-04-21
+
+### Removed
+
+- Remove separate GFE repos for omnibus GFE repo. Packages removed:
+  - gFTL
+  - gFTL-shared
+  - fArgParse
+  - pFlogger
+  - pFUnit
+  - yaFyaml
+
+### Added
+
+- GFE v1.1.0
+  - gFTL v1.7.0
+  - gFTL-shared v1.4.1
+  - fArgParse v1.2.0
+  - pFlogger v1.8.0
+  - pFUnit v4.2.7
+  - yaFyaml v1.0-beta8
+    - NOTE: This update to yaFyaml is *incompatible* to previous versions. This has caused the tick in the major number for Baselibs
+
+## [6.2.13] - 2022-03-09
+
+### Updates
+
+* ESMF v8.3.0b09 (fix for macOS)
+* gFTL v1.5.5
+* yaFyaml v1.0-beta5
+
 ## [6.2.12] - 2022-03-04
 
 ### Updates

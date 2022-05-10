@@ -12,18 +12,13 @@ NASA/GSFC.
 
 | Library                                                                 | Version      |
 | ---                                                                     | ---          |
-| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | v8.3.0b08    |
+| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | v8.3.0b09    |
 | [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.8.1        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.5.4        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                    | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                     | 1.10.8       |
 | [HDF4](https://portal.hdfgroup.org/display/support)                     | 4.2.15       |
-| [pFUnit](https://github.com/Goddard-Fortran-Ecosystem/pFUnit)           | v4.2.2       |
-| [gFTL](https://github.com/Goddard-Fortran-Ecosystem/gFTL)               | v1.5.4       |
-| [gFTL-shared](https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared) | v1.3.6       |
-| [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)     | v1.1.2       |
-| [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)         | v1.0-beta4   |
-| [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)       | v1.6.1       |
+| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.1.0       |
 | [antlr2](https://www.antlr2.org/)                                       | 2.7.7        |
 | [GSL](https://www.gnu.org/software/gsl/)                                | 2.7          |
 | [jpeg](http://www.ijg.org/)                                             | 9e           |
