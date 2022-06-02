@@ -43,3 +43,6 @@
 [submodule "GFE"]
 	path = GFE
 	url = https://github.com/Goddard-Fortran-Ecosystem/GFE.git
+[submodule "xgboost"]
+	path = xgboost
+	url = https://github.com/dmlc/xgboost.git
