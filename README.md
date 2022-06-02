@@ -24,6 +24,7 @@ NASA/GSFC.
 | [fArgParse](https://github.com/Goddard-Fortran-Ecosystem/fArgParse)     | v1.1.2       |
 | [yaFyaml](https://github.com/Goddard-Fortran-Ecosystem/yaFyaml)         | v1.0-beta5   |
 | [pFlogger](https://github.com/Goddard-Fortran-Ecosystem/pFlogger)       | v1.6.1       |
+| [xgboost](https://github.com/dmlc/xgboost)                              | v1.6.0       |
 | [antlr2](https://www.antlr2.org/)                                       | 2.7.7        |
 | [GSL](https://www.gnu.org/software/gsl/)                                | 2.7          |
 | [jpeg](http://www.ijg.org/)                                             | 9e           |
