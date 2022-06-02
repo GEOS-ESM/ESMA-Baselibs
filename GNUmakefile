@@ -500,12 +500,12 @@ hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
 	touch $@
 
 ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-hdf5.config :: hdf5/README.txt
+hdf5.config :: hdf5/README.md
 	@echo Patching HDF5 for NAG
 	patch -f -p1 < ./patches/hdf5/nag.configure.patch
 endif
 
-hdf5.config :: hdf5/README.txt szlib.install zlib.install
+hdf5.config :: hdf5/README.md szlib.install zlib.install
 	echo Configuring hdf5
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -521,7 +521,7 @@ hdf5.config :: hdf5/README.txt szlib.install zlib.install
 	touch $@
 
 ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-hdf5.config :: hdf5/README.txt
+hdf5.config :: hdf5/README.md
 	@echo Unpatching HDF5 for NAG
 	patch -f -p1 -R < ./patches/hdf5/nag.configure.patch
 endif
