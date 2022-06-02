@@ -12,6 +12,7 @@
 
 ### Updates
 
+* GFE v1.3.0
 * curl 7.83.1
 * HDF5 1.10.9
 * NCO 5.0.7
