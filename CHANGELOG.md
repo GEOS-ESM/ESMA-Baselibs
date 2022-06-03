@@ -8,6 +8,24 @@
 ### Removed
 ### Added
 
+## [7.2.0] - 2022-06-03
+
+### Added
+
+* xgboost v1.6.0
+
+### Updates
+
+* GFE v1.3.1
+* curl 7.83.1
+* HDF5 1.10.9
+* NCO 5.0.7
+* CDO 2.0.5
+
+### Removed
+
+- Removed NAG HDF5 patch as 1.10.9 does not seem to need it anymore
+
 ## [7.1.0] - 2022-05-10
 
 ### Updates

@@ -244,7 +244,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp esmf \
+          udunits2 nco cdo nccmp esmf xgboost \
           GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
 
@@ -268,7 +268,7 @@ endif
 
 GFE_DIRS = GFE
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf \
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf xgboost \
                  $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
@@ -445,7 +445,7 @@ clean:
 	  done
 
 distclean:
-	@/bin/rm -rf *.config *.install *.check
+	@/bin/rm -rf *.config *.install *.check *.python
 	@ t=$@; argv="$(SUBDIRS)" ;\
 	  for d in $$argv; do			      \
 	    ( $(MAKE) $$d.$$t ) \
@@ -499,13 +499,7 @@ hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
-ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-hdf5.config :: hdf5/README.txt
-	@echo Patching HDF5 for NAG
-	patch -f -p1 < ./patches/hdf5/nag.configure.patch
-endif
-
-hdf5.config :: hdf5/README.txt szlib.install zlib.install
+hdf5.config :: hdf5/README.md szlib.install zlib.install
 	echo Configuring hdf5
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -519,12 +513,6 @@ hdf5.config :: hdf5/README.txt szlib.install zlib.install
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
                       CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	touch $@
-
-ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-hdf5.config :: hdf5/README.txt
-	@echo Unpatching HDF5 for NAG
-	patch -f -p1 -R < ./patches/hdf5/nag.configure.patch
-endif
 
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
 BUILD_DAP = --enable-dap
@@ -722,6 +710,13 @@ nccmp.config: nccmp/configure netcdf.install
                       FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
+xgboost.config:
+	@echo "Configuring xgboost"
+	@mkdir -p ./xgboost/build
+	@(cd ./xgboost/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) .. )
+	@touch $@
+
 GFE.config:
 	@echo "Configuring GFE"
 	@mkdir -p ./GFE/build
@@ -896,6 +891,12 @@ nccmp.install: nccmp.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
+xgboost.install: xgboost.config
+	@echo "Installing xgboost"
+	@(cd ./xgboost/build; \
+		$(MAKE) install )
+	@touch $@
+
 GFE.install: GFE.config
 	@echo "Installing GFE"
 	@(cd ./GFE/build; \
@@ -1051,6 +1052,14 @@ netcdf-cxx4.distclean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
+xgboost.clean:
+	@echo "Cleaning xgboost"
+	@rm -rf ./xgboost/build
+
+xgboost.distclean:
+	@echo "Cleaning xgboost"
+	@rm -rf ./xgboost/build
+
 GFE.clean:
 	@echo "Cleaning GFE"
 	@rm -rf ./GFE/build
@@ -1094,6 +1103,9 @@ esmf.all_tests : esmf_rules.mk
 curl.check: curl.install
 	@echo "Checking curl"
 	@echo "We explicitly do not check cURL due to how long it takes"
+
+xgboost.check: xgboost.install
+	@echo "Not sure how to check xgboost"
 
 GFE.check: GFE.install
 	@echo "Checking GFE"
