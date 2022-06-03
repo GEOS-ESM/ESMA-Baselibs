@@ -58,3 +58,6 @@
 [submodule "antlr2"]
 	path = antlr2
 	url = https://github.com/nco/antlr2.git
+[submodule "xgboost"]
+	path = xgboost
+	url = https://github.com/dmlc/xgboost.git
