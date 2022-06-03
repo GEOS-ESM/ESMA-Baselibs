@@ -499,12 +499,6 @@ hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
-ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-hdf5.config :: hdf5/README.md
-	@echo Patching HDF5 for NAG
-	patch -f -p1 < ./patches/hdf5/nag.configure.patch
-endif
-
 hdf5.config :: hdf5/README.md szlib.install zlib.install
 	echo Configuring hdf5
 	(cd hdf5; \
@@ -519,12 +513,6 @@ hdf5.config :: hdf5/README.md szlib.install zlib.install
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
                       CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	touch $@
-
-ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-hdf5.config :: hdf5/README.md
-	@echo Unpatching HDF5 for NAG
-	patch -f -p1 -R < ./patches/hdf5/nag.configure.patch
-endif
 
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
 BUILD_DAP = --enable-dap
