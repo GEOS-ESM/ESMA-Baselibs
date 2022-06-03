@@ -244,7 +244,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp esmf \
+          udunits2 nco cdo nccmp esmf xgboost \
           gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger \
           FLAP hdfeos hdfeos5 SDPToolkit
 
@@ -268,7 +268,7 @@ endif
 
 GFE_DIRS = gFTL gFTL-shared fArgParse pFUnit yaFyaml pFlogger
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf \
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf xgboost \
                  $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
@@ -722,6 +722,13 @@ nccmp.config: nccmp/configure netcdf.install
                       FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
+xgboost.config:
+	@echo "Configuring xgboost"
+	@mkdir -p ./xgboost/build
+	@(cd ./xgboost/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) .. )
+	@touch $@
+
 pFUnit.config: gFTL.install gFTL-shared.install fArgParse.install
 	@echo "Configuring pFUnit"
 	@mkdir -p ./pFUnit/build
@@ -931,6 +938,12 @@ nccmp.install: nccmp.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
+xgboost.install: xgboost.config
+	@echo "Installing xgboost"
+	@(cd ./xgboost/build; \
+		$(MAKE) install )
+	@touch $@
+
 pFUnit.install: pFUnit.config
 	@echo "Installing pFUnit"
 	@(cd ./pFUnit/build; \
@@ -1116,6 +1129,14 @@ netcdf-cxx4.distclean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
+xgboost.clean:
+	@echo "Cleaning xgboost"
+	@rm -rf ./xgboost/build
+
+xgboost.distclean:
+	@echo "Cleaning xgboost"
+	@rm -rf ./xgboost/build
+
 pFUnit.clean:
 	@echo "Cleaning pFUnit"
 	@rm -rf ./pFUnit/build
@@ -1199,6 +1220,9 @@ esmf.all_tests : esmf_rules.mk
 curl.check: curl.install
 	@echo "Checking curl"
 	@echo "We explicitly do not check cURL due to how long it takes"
+
+xgboost.check: xgboost.install
+	@echo "Not sure how to check xgboost"
 
 pFUnit.check: pFUnit.install
 	@echo "Checking pFUnit"
