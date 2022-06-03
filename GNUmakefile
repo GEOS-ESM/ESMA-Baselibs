@@ -445,7 +445,7 @@ clean:
 	  done
 
 distclean:
-	@/bin/rm -rf *.config *.install *.check
+	@/bin/rm -rf *.config *.install *.check *.python
 	@ t=$@; argv="$(SUBDIRS)" ;\
 	  for d in $$argv; do			      \
 	    ( $(MAKE) $$d.$$t ) \
