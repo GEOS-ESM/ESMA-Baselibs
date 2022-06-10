@@ -41,14 +41,16 @@ endif
         export ESMF_MPILAUNCHOPTIONS
       endif
     endif
-  endif 
+  endif
 
-# ESMF_COMM=mpt expects mpicxx to be icpc
-# ---------------------------------------
+# ESMF_COMM=mpt expects mpicxx to be icpc and mpicc to be icc
+# -----------------------------------------------------------
   ifeq ($(ESMF_COMPILER), intel)
     ifeq ($(ESMF_COMM), mpt)
       MPICXX_CXX=icpc
       export MPICXX_CXX
+      MPICC_CC=icc
+      export MPICC_CC
     endif
   endif
 
@@ -74,7 +76,7 @@ endif
   $(warning Using $(ESMF_F90COMPILEOPTS)  as the ESMF F90COMPILEOPTS)
   $(warning Using $(ESMF_ABI)  as the ESMF ABI)
 
-#      ESMF_COMM 
+#      ESMF_COMM
 #      ESMF_ABI
 #      ESMF_OS
 
@@ -100,7 +102,7 @@ endif
 
 export ESMF_DIR ESMF_BOPT ESMF_COMPILER ESMF_INSTALL_PREFIX ESMF_OS ESMF_INSTALL_HEADERDIR ESMF_INSTALL_MODDIR ESMF_INSTALL_LIBDIR ESMF_INSTALL_BINDIR ESMF_F90COMPILEOPTS ESMF_ABI
 
-esmf.config config: 
+esmf.config config:
 	@echo "Customized ESMF build step $@..."
 	@touch esmf.config
 
@@ -171,7 +173,7 @@ esmf.pythoncheck pythoncheck: esmf.install
 	@echo "Customized ESMF build step $@..."
 	@(cd $(ESMF_DIR)/src/addon/ESMPy; export PYTHONPATH=$(ESMF_INSTALL_LIBDIR)/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
 
-%: 
+%:
 	@echo "Customized ESMF build step $@..."
 	@(cd $(ESMF_DIR); $(MAKE) -e $@)
 
