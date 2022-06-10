@@ -8,6 +8,12 @@
 ### Removed
 ### Added
 
+## [6.3.1] - 2022-06-10
+
+### Fixed
+
+- Fixed issue with building ESMF with MPT
+
 ## [6.3.0] - 2022-06-09
 
 ### Updates
