@@ -1110,8 +1110,10 @@ xgboost.check: xgboost.install
 GFE.check: GFE.install
 	@echo "Checking GFE"
 	@echo "This requires a re-CMake to enable testing"
+	@rm -rf ./GFE/build
+	@mkdir -p ./GFE/build
 	@(cd ./GFE/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. ;\
 		$(MAKE) tests)
 	@touch $@
 

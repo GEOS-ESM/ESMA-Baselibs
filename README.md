@@ -18,14 +18,14 @@ NASA/GSFC.
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                    | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                     | 1.10.9       |
 | [HDF4](https://portal.hdfgroup.org/display/support)                     | 4.2.15       |
-| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.3.1       |
+| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.4.0       |
 | [xgboost](https://github.com/dmlc/xgboost)                              | v1.6.0       |
 | [antlr2](https://www.antlr2.org/)                                       | 2.7.7        |
 | [GSL](https://www.gnu.org/software/gsl/)                                | 2.7          |
 | [jpeg](http://www.ijg.org/)                                             | 9e           |
 | [zlib](http://www.zlib.net/)                                            | 1.2.11       |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                 | 2.1.1        |
-| [cURL](https://curl.haxx.se/)                                           | 7.83.1       |
+| [cURL](https://curl.haxx.se/)                                           | 7.84.0       |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                        | 2.2.26       |
 | [NCO](http://nco.sourceforge.net/)                                      | 5.0.7        |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                          | 2.0.5        |
