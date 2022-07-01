@@ -8,6 +8,13 @@
 ### Removed
 ### Added
 
+## [7.5.0] - 2022-07-01
+
+### Updates
+
+- Reverted curl to 7.83.1
+  - This is due to a bug compiling 7.84.0 with Intel `icc`
+
 ## [7.4.0] - 2022-07-01
 
 ### Updates
