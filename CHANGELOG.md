@@ -4,7 +4,13 @@
 
 ### Updates
 ### Fixed
+
+- Fixed issue with tarfile installer. Use `submodules: recursive` to get *all* submodules
+
 ### Changed
+
+- Renamed tarfile GitHub Action for consistency
+
 ### Removed
 ### Added
 
