@@ -48,30 +48,28 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
   NC_F77 = $(FC)
   H4_CC  = $(prefix)/bin/h4cc-hdf4
   H4_FC  = $(prefix)/bin/h4fc-hdf4
-  ifeq ($(wildcard hdf5),hdf5)
-        H5_PARALLEL=--enable-parallel
-        ifeq ($(ESMF_COMM),mpiuni)
-           H5_PARALLEL=--disable-parallel
-        endif
-        INC_HDF5 = $(prefix)/include/hdf5
-        LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz,\
-           $(prefix)/lib/lib$(lib).a) )
-        NC_ENABLE_HDF5 = --enable-netcdf-4 --with-hdf5=$(prefix)
-        NC_LIBS = $(LIB_HDF5) $(LINK_GPFS) -lm
-        ifeq ($(H5_PARALLEL),--enable-parallel)
-           NC_CC  = $(MPICC)
-           NC_FC  = $(MPIFC)
-           NC_F77 = $(MPIFC)
-           NC_CXX = $(MPICXX)
-           NC_PAR_TESTS = --enable-parallel-tests
-           H5_CC  = $(prefix)/bin/h5pcc
-           H5_FC  = $(prefix)/bin/h5pfc
-        endif
+  H5_PARALLEL=--enable-parallel
+  ifeq ($(ESMF_COMM),mpiuni)
+     H5_PARALLEL=--disable-parallel
+  endif
+  INC_HDF5 = $(prefix)/include/hdf5
+  LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz,\
+     $(prefix)/lib/lib$(lib).a) )
+  NC_ENABLE_HDF5 = --enable-netcdf-4 --with-hdf5=$(prefix)
+  NC_LIBS = $(LIB_HDF5) $(LINK_GPFS) -lm
+  ifeq ($(H5_PARALLEL),--enable-parallel)
+     NC_CC  = $(MPICC)
+     NC_FC  = $(MPIFC)
+     NC_F77 = $(MPIFC)
+     NC_CXX = $(MPICXX)
+     NC_PAR_TESTS = --enable-parallel-tests
+     H5_CC  = $(prefix)/bin/h5pcc
+     H5_FC  = $(prefix)/bin/h5pfc
+  endif
 
-        ifeq ($(H5_PARALLEL),--disable-parallel)
-           H5_CC  = $(prefix)/bin/h5cc
-           H5_FC  = $(prefix)/bin/h5fc
-        endif
+  ifeq ($(H5_PARALLEL),--disable-parallel)
+     H5_CC  = $(prefix)/bin/h5cc
+     H5_FC  = $(prefix)/bin/h5fc
   endif
 
 # Issue with NCO and nccmp with mpiuni and gcc
@@ -268,24 +266,18 @@ endif
 
 GFE_DIRS = GFE
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf xgboost \
+ESSENTIAL_DIRS = jpeg zlib szlib hdf5 netcdf netcdf-fortran esmf xgboost \
                  $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_ARM_DIRS),$(ALLDIRS))
-   ESSENTIAL_DIRS := $(filter-out hdf4,$(ESSENTIAL_DIRS))
-   ENABLE_HDF4 = --disable-hdf4
-   LIB_HDF4 =
-else
-   ENABLE_HDF4 = --enable-hdf4
-   LIB_HDF4 = -lmfhdf -ldf
 endif
 
 ifeq ('$(BUILD)','ESSENTIALS')
 SUBDIRS = $(ESSENTIAL_DIRS)
 INC_SUPP :=  $(foreach subdir, \
-            / /zlib /szlib /jpeg /hdf5 /hdf /netcdf,\
+            / /zlib /szlib /jpeg /hdf5 /netcdf,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 else
 ifeq ('$(BUILD)','GFE')
@@ -296,6 +288,16 @@ INC_SUPP :=  $(foreach subdir, \
             / /zlib /szlib /jpeg /hdf5 /hdf /netcdf /udunits2 /gsl /antlr2,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 endif
+endif
+
+ifeq ($(findstring hdf4,$(SUBDIRS)),hdf4)
+   ENABLE_HDF4 = --enable-hdf4
+   LIB_HDF4 = -lmfhdf -ldf
+else
+   ENABLE_HDF4 = --disable-hdf4
+   LIB_HDF4 =
+   # Also need to remove hdfeos if no hdf4
+   SUBDIRS := $(filter-out hdfeos,$(SUBDIRS))
 endif
 
 TARGETS = all lib install
@@ -336,6 +338,8 @@ verify:
 	@echo FORTRAN_VERSION = $(FORTRAN_VERSION)
 	@echo ESMF_COMM = $(ESMF_COMM)
 	@echo ESMF_COMPILER = $(ESMF_COMPILER)
+	@echo ENABLE_HDF4 = $(ENABLE_HDF4)
+	@echo LIB_HDF4 = $(LIB_HDF4)
 	@ argv="$(SUBDIRS)" ;\
         ( echo "-------+---------+---------+--------------" );  \
         ( echo "Config | Install |  Check  |   Package" );      \
