@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Added
+
+* FMS geos/2021.04 (on GEOS-ESM fork)
+  - Has GEOS/MAPL Constants
+  - Uses fPIC to build
+
 ### Updates
 ### Fixed
 

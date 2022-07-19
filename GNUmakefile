@@ -244,9 +244,12 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp esmf xgboost \
+          udunits2 nco cdo nccmp FMS esmf xgboost \
           GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
+
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran FMS esmf \
+                 $(GFE_DIRS) FLAP
 
 ifeq ($(ARCH),Darwin)
    NO_DARWIN_DIRS = netcdf-cxx4 hdfeos hdfeos5 SDPToolkit
@@ -254,10 +257,12 @@ ifeq ($(ARCH),Darwin)
 endif
 
 # NAG cannot build cdo
-# https://code.mpimet.mpg.de/boards/1/topics/9337
+#    https://code.mpimet.mpg.de/boards/1/topics/9337
+# or FMS due to cray pointers
 ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-   NO_NAG_DIRS = cdo
+   NO_NAG_DIRS = cdo FMS
    ALLDIRS := $(filter-out $(NO_NAG_DIRS),$(ALLDIRS))
+   ESSENTIAL_DIRS := $(filter-out $(NO_NAG_DIRS),$(ESSENTIAL_DIRS))
 endif
 
 # NVHPC seems to have issues with SDPToolkit
@@ -268,7 +273,7 @@ endif
 
 GFE_DIRS = GFE
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf xgboost \
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran FMS esmf xgboost \
                  $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
@@ -724,6 +729,13 @@ GFE.config:
 		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. )
 	@touch $@
 
+FMS.config: netcdf.install netcdf-fortran.install
+	@echo "Configuring FMS"
+	@mkdir -p ./FMS/build
+	@(cd ./FMS/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DMAPL_MODE=ON -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf .. )
+	@touch $@
+
 FLAP.config:
 	@echo "Configuring FLAP"
 	@mkdir -p $(prefix)/lib
@@ -903,6 +915,12 @@ GFE.install: GFE.config
 		$(MAKE) install )
 	@touch $@
 
+FMS.install: FMS.config
+	@echo "Installing FMS"
+	@(cd ./FMS/build; \
+		$(MAKE) install )
+	@touch $@
+
 FLAP.install: FLAP.config
 	@echo "Installing FLAP with CMake"
 	@(cd ./FLAP/build; \
@@ -1068,6 +1086,14 @@ GFE.distclean:
 	@echo "Cleaning GFE"
 	@rm -rf ./GFE/build
 
+FMS.clean:
+	@echo "Cleaning FMS"
+	@rm -rf ./FMS/build
+
+FMS.distclean:
+	@echo "Cleaning gFTL"
+	@rm -rf ./gFTL/build
+
 FLAP.clean:
 	@echo "Cleaning FLAP"
 	@rm -rf ./FLAP/build
@@ -1106,6 +1132,10 @@ curl.check: curl.install
 
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"
+
+FMS.check: FMS.install
+	@echo "Checking FMS"
+	@echo "We do not check FMS."
 
 GFE.check: GFE.install
 	@echo "Checking GFE"
