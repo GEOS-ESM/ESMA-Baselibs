@@ -164,6 +164,8 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
         ALLOW_INVALID_BOZ := -fallow-invalid-boz
         COMMON_FLAG := -fcommon
         export ALLOW_ARGUMENT_MISMATCH ALLOW_INVALID_BOZ
+        CMAKE_ALLOW_ARGUMENT_MISMATCH := "-DCMAKE_Fortran_FLAGS='$(ALLOW_ARGUMENT_MISMATCH)'"
+        export CMAKE_ALLOW_ARGUMENT_MISMATCH
      endif
   endif
 
@@ -320,6 +322,7 @@ verify:
 	@echo MACOS_VERSION = $(MACOS_VERSION)
 	@echo MMACOS_MIN = $(MMACOS_MIN)
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
+	@echo CMAKE_ALLOW_ARGUMENT_MISMATCH = $(CMAKE_ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
 	@echo NAG_FCFLAGS = $(NAG_FCFLAGS)
@@ -733,7 +736,7 @@ FMS.config: netcdf.install netcdf-fortran.install
 	@echo "Configuring FMS"
 	@mkdir -p ./FMS/build
 	@(cd ./FMS/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf .. )
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf $(CMAKE_ALLOW_ARGUMENT_MISMATCH) .. )
 	@touch $@
 
 FLAP.config:
