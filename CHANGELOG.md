@@ -4,7 +4,7 @@
 
 ### Added
 
-* FMS geos/2022.02 (on GEOS-ESM fork)
+* FMS 2022.02
   - Has GEOS/MAPL Constants
   - Uses fPIC to build
 
