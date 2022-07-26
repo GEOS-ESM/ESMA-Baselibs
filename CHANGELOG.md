@@ -16,6 +16,7 @@
 ### Changed
 
 - Renamed tarfile GitHub Action for consistency
+- Remove HDF4 from the essential libraries
 
 ### Removed
 ### Added
