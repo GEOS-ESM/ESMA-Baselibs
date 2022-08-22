@@ -4,6 +4,13 @@
 
 ### Updates
 ### Fixed
+### Changed
+### Removed
+### Added
+
+## [7.5.1] - 2022-08-22
+
+### Fixed
 
 - Fixed issue with tarfile installer. Use `submodules: recursive` to get *all* submodules
 
@@ -12,8 +19,6 @@
 - Renamed tarfile GitHub Action for consistency
 - Remove HDF4 from the essential libraries
 
-### Removed
-### Added
 
 ## [7.5.0] - 2022-07-01
 
