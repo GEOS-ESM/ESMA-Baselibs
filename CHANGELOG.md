@@ -6,7 +6,8 @@
 
 - zlib 1.2.13
 - curl 7.85.0
-* netCDF-C 4.9.0
+- netCDF-C 4.9.0
+- netCDF-Fortran 4.6.0
 
 ### Fixed
 ### Changed
