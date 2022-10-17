@@ -612,7 +612,7 @@ nco.config : nco/configure
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
           export CXXFLAGS="$(NCO_CXXFLAGS)";\
           export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG)";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nco \
                       --enable-ncoxx \
@@ -955,7 +955,7 @@ nco.install: nco.config
           export NETCDF_INC="$(prefix)/include/netcdf"; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
 	  $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 endif
