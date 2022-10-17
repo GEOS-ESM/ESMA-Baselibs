@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 ### Updates
+
+- zlib 1.2.13
+
 ### Fixed
 ### Changed
 ### Removed
@@ -18,7 +21,6 @@
 
 - Renamed tarfile GitHub Action for consistency
 - Remove HDF4 from the essential libraries
-
 
 ## [7.5.0] - 2022-07-01
 
