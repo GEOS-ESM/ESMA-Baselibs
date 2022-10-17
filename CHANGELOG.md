@@ -3,6 +3,14 @@
 ## [Unreleased]
 
 ### Updates
+### Fixed
+### Changed
+### Removed
+### Added
+
+## [7.6.0] - 2022-10-17
+
+### Updates
 
 - zlib 1.2.13
 - curl 7.85.0
@@ -10,11 +18,6 @@
 - netCDF-Fortran 4.6.0
 - NCO 5.1.0
 - CDO 2.1.0
-
-### Fixed
-### Changed
-### Removed
-### Added
 
 ## [7.5.1] - 2022-08-22
 
