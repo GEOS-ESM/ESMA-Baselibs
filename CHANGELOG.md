@@ -19,6 +19,10 @@
 - NCO 5.1.0
 - CDO 2.1.0
 
+### Fixed
+
+- CDO 2.1.0 requires `-std=c++17` to build with clang
+
 ## [7.5.1] - 2022-08-22
 
 ### Fixed
