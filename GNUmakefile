@@ -180,8 +180,8 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
         export MMACOS_MIN
 
         # There is an issue with clang++ and cdo
-        CLANG_STDC14 := -std=c++14
-        export CLANG_STDC14
+        CLANG_STDC17 := -std=c++17
+        export CLANG_STDC17
      endif
   endif
 
@@ -696,7 +696,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
                       --with-udunits2=$(prefix) \
                       --disable-grib --disable-openmp \
                       --disable-shared --enable-static \
-                      CXXFLAGS="$(CLANG_STDC14)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CXXFLAGS="$(CLANG_STDC17)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 nccmp.config: nccmp/configure netcdf.install
