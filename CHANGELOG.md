@@ -4,7 +4,7 @@
 
 ### Added
 
-* FMS 2022.02
+* FMS 2022.04
   - Has GEOS/MAPL Constants
   - Uses fPIC to build
 
