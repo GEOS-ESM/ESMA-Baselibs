@@ -244,7 +244,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp FMS esmf xgboost \
+          udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
           GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
 
@@ -273,7 +273,7 @@ endif
 
 GFE_DIRS = GFE
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf5 netcdf netcdf-fortran FMS esmf xgboost \
+ESSENTIAL_DIRS = jpeg zlib szlib hdf5 netcdf netcdf-fortran libyaml FMS esmf xgboost \
                  $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
@@ -736,7 +736,14 @@ GFE.config:
 		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. )
 	@touch $@
 
-FMS.config: netcdf.install netcdf-fortran.install
+libyaml.config:
+	@echo "Configuring libyaml"
+	@mkdir -p ./libyaml/build
+	@(cd ./libyaml/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
+	@touch $@
+
+FMS.config: netcdf.install netcdf-fortran.install libyaml.install
 	@echo "Configuring FMS"
 	@mkdir -p ./FMS/build
 	@(cd ./FMS/build; \
@@ -922,6 +929,12 @@ GFE.install: GFE.config
 		$(MAKE) install )
 	@touch $@
 
+libyaml.install: libyaml.config
+	@echo "Installing libyaml"
+	@(cd ./libyaml/build; \
+		$(MAKE) install )
+	@touch $@
+
 FMS.install: FMS.config
 	@echo "Installing FMS"
 	@(cd ./FMS/build; \
@@ -1093,13 +1106,21 @@ GFE.distclean:
 	@echo "Cleaning GFE"
 	@rm -rf ./GFE/build
 
+libyaml.clean:
+	@echo "Cleaning libyaml"
+	@rm -rf ./libyaml/build
+
+libyaml.distclean:
+	@echo "Cleaning libyaml"
+	@rm -rf ./libyaml/build
+
 FMS.clean:
 	@echo "Cleaning FMS"
 	@rm -rf ./FMS/build
 
 FMS.distclean:
-	@echo "Cleaning gFTL"
-	@rm -rf ./gFTL/build
+	@echo "Cleaning FMS"
+	@rm -rf ./FMS/build
 
 FLAP.clean:
 	@echo "Cleaning FLAP"
@@ -1139,6 +1160,10 @@ curl.check: curl.install
 
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"
+
+libyaml.check: libyaml.install
+	@echo "Checking libyaml"
+	@echo "We do not check libyaml not sure how."
 
 FMS.check: FMS.install
 	@echo "Checking FMS"

@@ -13,7 +13,7 @@ NASA/GSFC.
 | Library                                                                 | Version      |
 | ---                                                                     | ---          |
 | [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | v8.3.0       |
-| [FMS](https://github.com/NOAA-GFDL/FMS/)                                | 2022.02      |
+| [FMS](https://github.com/NOAA-GFDL/FMS/)                                | 2022.04      |
 | [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.8.1        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.5.4        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                    | 4.3.1        |
@@ -21,6 +21,7 @@ NASA/GSFC.
 | [HDF4](https://portal.hdfgroup.org/display/support)                     | 4.2.15       |
 | [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.4.0       |
 | [xgboost](https://github.com/dmlc/xgboost)                              | v1.6.0       |
+| [libyaml](https://github.com/yaml/libyaml.git)                          | 0.2.5        |
 | [antlr2](https://www.antlr2.org/)                                       | 2.7.7        |
 | [GSL](https://www.gnu.org/software/gsl/)                                | 2.7          |
 | [jpeg](http://www.ijg.org/)                                             | 9e           |
