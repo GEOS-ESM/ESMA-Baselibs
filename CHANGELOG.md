@@ -12,6 +12,7 @@
 
 ### Updates
 
+- ESMF v8.4.0
 - zlib 1.2.13
 - curl 7.85.0
 - netCDF-C 4.9.0
