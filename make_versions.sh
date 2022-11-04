@@ -51,11 +51,11 @@ then
    echo_version jpeg "$JPEG_VERSION" "$JPEG_VERSION_LOC"
 fi
 
-ZLIB_VERSION_LOC="zlib/zlib.h"
-if [[ -e $ZLIB_VERSION_LOC ]]
+ZLIBNG_VERSION_LOC="zlib-ng/zlib.h"
+if [[ -e $ZLIBNG_VERSION_LOC ]]
 then
-   ZLIB_VERSION=$(awk '/#define ZLIB_VERSION/ {print $3}' $ZLIB_VERSION_LOC | sed 's/"//g')
-   echo_version zlib "$ZLIB_VERSION" "$ZLIB_VERSION_LOC"
+   ZLIBNG_VERSION=$(awk '/#define ZLIBNG_VERSION/ {print $3}' $ZLIBNG_VERSION_LOC | sed 's/"//g')
+   echo_version zlib-ng "$ZLIBNG_VERSION" "$ZLIBNG_VERSION_LOC"
 fi
 
 SZLIB_VERSION_LOC="szlib/src/szlib.h"

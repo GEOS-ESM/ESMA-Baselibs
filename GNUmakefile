@@ -241,7 +241,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                   Recurse Make in Sub-directories
 #                  --------------------------------
 
-ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
+ALLDIRS = antlr2 gsl jpeg zlib-ng szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
           udunits2 nco cdo nccmp esmf xgboost \
           GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
@@ -266,7 +266,7 @@ endif
 
 GFE_DIRS = GFE
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf5 netcdf netcdf-fortran esmf xgboost \
+ESSENTIAL_DIRS = jpeg zlib-ng szlib hdf5 netcdf netcdf-fortran esmf xgboost \
                  $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
@@ -487,7 +487,7 @@ jpeg.config: jpeg/configure
 		      CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
+hdf4.config: hdf4/README.txt jpeg.install zlib-ng.install szlib.install
 	@echo Configuring hdf4
 	@(cd hdf4; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -503,7 +503,7 @@ hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
-hdf5.config :: hdf5/README.md szlib.install zlib.install
+hdf5.config :: hdf5/README.md szlib.install zlib-ng.install
 	echo Configuring hdf5
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -643,17 +643,17 @@ szlib.config : szlib.download szlib/configure
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-zlib.config : zlib/configure
-	@echo Configuring zlib
-	@(cd zlib; \
+zlib-ng.config : zlib-ng/configure
+	@echo Configuring zlib-ng
+	@(cd zlib-ng; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
-          ./configure --prefix=$(prefix) \
+          ./configure --zlib-compat --prefix=$(prefix) \
                       --includedir=$(prefix)/include/zlib \
                       --libdir=$(prefix)/lib )
 	touch $@
 
 
-curl.config : curl/configure.ac zlib.install
+curl.config : curl/configure.ac zlib-ng.install
 	@echo "Configuring curl"
 	@(cd curl; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
