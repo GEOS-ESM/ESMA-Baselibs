@@ -17,7 +17,7 @@
 - curl 7.86.0
 - netCDF-C 4.9.0
 - netCDF-Fortran 4.6.0
-- NCO 5.1.0
+- NCO 5.1.1
 - CDO 2.1.0
 
 ### Fixed
