@@ -15,6 +15,72 @@
 
 ### Added
 
+## [7.5.1] - 2022-08-22
+
+### Fixed
+
+- Fixed issue with tarfile installer. Use `submodules: recursive` to get *all* submodules
+
+### Changed
+
+- Renamed tarfile GitHub Action for consistency
+- Remove HDF4 from the essential libraries
+
+
+## [7.5.0] - 2022-07-01
+
+### Updates
+
+- Reverted curl to 7.83.1
+  - This is due to a bug compiling 7.84.0 with Intel `icc`
+
+## [7.4.0] - 2022-07-01
+
+### Updates
+
+* GFE v1.4.0
+* curl 7.84.0
+
+## [7.3.1] - 2022-06-10
+
+### Fixed
+
+- Fixed issue with building ESMF with MPT
+
+## [7.3.0] - 2022-06-09
+
+### Updates
+
+- ESMF v8.3.0
+
+## [7.2.0] - 2022-06-03
+
+### Added
+
+* xgboost v1.6.0
+
+### Updates
+
+* GFE v1.3.1
+* curl 7.83.1
+* HDF5 1.10.9
+* NCO 5.0.7
+* CDO 2.0.5
+
+### Removed
+
+- Removed NAG HDF5 patch as 1.10.9 does not seem to need it anymore
+
+## [7.1.0] - 2022-05-10
+
+### Updates
+
+- GFE v1.2.0
+
+### Added
+
+- Added preliminary ifx support to `Arch.mk` and `Base.mk`
+
 ## [7.0.0] - 2022-04-21
 
 ### Removed

@@ -48,30 +48,28 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
   NC_F77 = $(FC)
   H4_CC  = $(prefix)/bin/h4cc-hdf4
   H4_FC  = $(prefix)/bin/h4fc-hdf4
-  ifeq ($(wildcard hdf5),hdf5)
-        H5_PARALLEL=--enable-parallel
-        ifeq ($(ESMF_COMM),mpiuni)
-           H5_PARALLEL=--disable-parallel
-        endif
-        INC_HDF5 = $(prefix)/include/hdf5
-        LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz,\
-           $(prefix)/lib/lib$(lib).a) )
-        NC_ENABLE_HDF5 = --enable-netcdf-4 --with-hdf5=$(prefix)
-        NC_LIBS = $(LIB_HDF5) $(LINK_GPFS) -lm
-        ifeq ($(H5_PARALLEL),--enable-parallel)
-           NC_CC  = $(MPICC)
-           NC_FC  = $(MPIFC)
-           NC_F77 = $(MPIFC)
-           NC_CXX = $(MPICXX)
-           NC_PAR_TESTS = --enable-parallel-tests
-           H5_CC  = $(prefix)/bin/h5pcc
-           H5_FC  = $(prefix)/bin/h5pfc
-        endif
+  H5_PARALLEL=--enable-parallel
+  ifeq ($(ESMF_COMM),mpiuni)
+     H5_PARALLEL=--disable-parallel
+  endif
+  INC_HDF5 = $(prefix)/include/hdf5
+  LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz,\
+     $(prefix)/lib/lib$(lib).a) )
+  NC_ENABLE_HDF5 = --enable-netcdf-4 --with-hdf5=$(prefix)
+  NC_LIBS = $(LIB_HDF5) $(LINK_GPFS) -lm
+  ifeq ($(H5_PARALLEL),--enable-parallel)
+     NC_CC  = $(MPICC)
+     NC_FC  = $(MPIFC)
+     NC_F77 = $(MPIFC)
+     NC_CXX = $(MPICXX)
+     NC_PAR_TESTS = --enable-parallel-tests
+     H5_CC  = $(prefix)/bin/h5pcc
+     H5_FC  = $(prefix)/bin/h5pfc
+  endif
 
-        ifeq ($(H5_PARALLEL),--disable-parallel)
-           H5_CC  = $(prefix)/bin/h5cc
-           H5_FC  = $(prefix)/bin/h5fc
-        endif
+  ifeq ($(H5_PARALLEL),--disable-parallel)
+     H5_CC  = $(prefix)/bin/h5cc
+     H5_FC  = $(prefix)/bin/h5fc
   endif
 
 # Issue with NCO and nccmp with mpiuni and gcc
@@ -244,7 +242,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib-ng szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp esmf \
+          udunits2 nco cdo nccmp esmf xgboost \
           GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
 
@@ -268,24 +266,18 @@ endif
 
 GFE_DIRS = GFE
 
-ESSENTIAL_DIRS = jpeg zlib-ng szlib hdf4 hdf5 netcdf netcdf-fortran esmf \
+ESSENTIAL_DIRS = jpeg zlib-ng szlib hdf5 netcdf netcdf-fortran esmf xgboost \
                  $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_ARM_DIRS),$(ALLDIRS))
-   ESSENTIAL_DIRS := $(filter-out hdf4,$(ESSENTIAL_DIRS))
-   ENABLE_HDF4 = --disable-hdf4
-   LIB_HDF4 =
-else
-   ENABLE_HDF4 = --enable-hdf4
-   LIB_HDF4 = -lmfhdf -ldf
 endif
 
 ifeq ('$(BUILD)','ESSENTIALS')
 SUBDIRS = $(ESSENTIAL_DIRS)
 INC_SUPP :=  $(foreach subdir, \
-            / /zlib /szlib /jpeg /hdf5 /hdf /netcdf,\
+            / /zlib /szlib /jpeg /hdf5 /netcdf,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 else
 ifeq ('$(BUILD)','GFE')
@@ -296,6 +288,16 @@ INC_SUPP :=  $(foreach subdir, \
             / /zlib /szlib /jpeg /hdf5 /hdf /netcdf /udunits2 /gsl /antlr2,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 endif
+endif
+
+ifeq ($(findstring hdf4,$(SUBDIRS)),hdf4)
+   ENABLE_HDF4 = --enable-hdf4
+   LIB_HDF4 = -lmfhdf -ldf
+else
+   ENABLE_HDF4 = --disable-hdf4
+   LIB_HDF4 =
+   # Also need to remove hdfeos if no hdf4
+   SUBDIRS := $(filter-out hdfeos,$(SUBDIRS))
 endif
 
 TARGETS = all lib install
@@ -336,6 +338,8 @@ verify:
 	@echo FORTRAN_VERSION = $(FORTRAN_VERSION)
 	@echo ESMF_COMM = $(ESMF_COMM)
 	@echo ESMF_COMPILER = $(ESMF_COMPILER)
+	@echo ENABLE_HDF4 = $(ENABLE_HDF4)
+	@echo LIB_HDF4 = $(LIB_HDF4)
 	@ argv="$(SUBDIRS)" ;\
         ( echo "-------+---------+---------+--------------" );  \
         ( echo "Config | Install |  Check  |   Package" );      \
@@ -445,7 +449,7 @@ clean:
 	  done
 
 distclean:
-	@/bin/rm -rf *.config *.install *.check
+	@/bin/rm -rf *.config *.install *.check *.python
 	@ t=$@; argv="$(SUBDIRS)" ;\
 	  for d in $$argv; do			      \
 	    ( $(MAKE) $$d.$$t ) \
@@ -499,12 +503,6 @@ hdf4.config: hdf4/README.txt jpeg.install zlib-ng.install szlib.install
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
-ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-hdf5.config :: hdf5/README.txt
-	@echo Patching HDF5 for NAG
-	patch -f -p1 < ./patches/hdf5/nag.configure.patch
-endif
-
 hdf5.config :: hdf5/README.txt szlib.install zlib-ng.install
 	echo Configuring hdf5
 	(cd hdf5; \
@@ -519,12 +517,6 @@ hdf5.config :: hdf5/README.txt szlib.install zlib-ng.install
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
                       CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	touch $@
-
-ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-hdf5.config :: hdf5/README.txt
-	@echo Unpatching HDF5 for NAG
-	patch -f -p1 -R < ./patches/hdf5/nag.configure.patch
-endif
 
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
 BUILD_DAP = --enable-dap
@@ -722,6 +714,13 @@ nccmp.config: nccmp/configure netcdf.install
                       FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
+xgboost.config:
+	@echo "Configuring xgboost"
+	@mkdir -p ./xgboost/build
+	@(cd ./xgboost/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) .. )
+	@touch $@
+
 GFE.config:
 	@echo "Configuring GFE"
 	@mkdir -p ./GFE/build
@@ -896,6 +895,12 @@ nccmp.install: nccmp.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
+xgboost.install: xgboost.config
+	@echo "Installing xgboost"
+	@(cd ./xgboost/build; \
+		$(MAKE) install )
+	@touch $@
+
 GFE.install: GFE.config
 	@echo "Installing GFE"
 	@(cd ./GFE/build; \
@@ -1051,6 +1056,14 @@ netcdf-cxx4.distclean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
+xgboost.clean:
+	@echo "Cleaning xgboost"
+	@rm -rf ./xgboost/build
+
+xgboost.distclean:
+	@echo "Cleaning xgboost"
+	@rm -rf ./xgboost/build
+
 GFE.clean:
 	@echo "Cleaning GFE"
 	@rm -rf ./GFE/build
@@ -1095,11 +1108,16 @@ curl.check: curl.install
 	@echo "Checking curl"
 	@echo "We explicitly do not check cURL due to how long it takes"
 
+xgboost.check: xgboost.install
+	@echo "Not sure how to check xgboost"
+
 GFE.check: GFE.install
 	@echo "Checking GFE"
 	@echo "This requires a re-CMake to enable testing"
+	@rm -rf ./GFE/build
+	@mkdir -p ./GFE/build
 	@(cd ./GFE/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. ;\
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. ;\
 		$(MAKE) tests)
 	@touch $@
 
