@@ -503,7 +503,7 @@ hdf4.config: hdf4/README.txt jpeg.install zlib-ng.install szlib.install
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
-hdf5.config :: hdf5/README.txt szlib.install zlib-ng.install
+hdf5.config :: hdf5/README.md szlib.install zlib-ng.install
 	echo Configuring hdf5
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
