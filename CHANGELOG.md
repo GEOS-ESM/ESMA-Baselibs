@@ -7,7 +7,7 @@
 ### Changed
 ### Removed
 
-* Remove unmaintained zlib library
+* Remove zlib library
 
 ### Added
 
