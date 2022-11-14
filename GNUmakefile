@@ -266,18 +266,19 @@ endif
 
 GFE_DIRS = GFE
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf5 netcdf netcdf-fortran esmf xgboost \
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran esmf xgboost \
                  $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_ARM_DIRS),$(ALLDIRS))
+   ESSENTIAL_DIRS := $(filter-out hdf4,$(ESSENTIAL_DIRS))
 endif
 
 ifeq ('$(BUILD)','ESSENTIALS')
 SUBDIRS = $(ESSENTIAL_DIRS)
 INC_SUPP :=  $(foreach subdir, \
-            / /zlib /szlib /jpeg /hdf5 /netcdf,\
+            / /zlib /szlib /jpeg /hdf5 /hdf /netcdf,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 else
 ifeq ('$(BUILD)','GFE')

@@ -16,6 +16,12 @@
   - fArgParse v1.4.1
   - pFUnit v4.6.0
 
+## [7.6.1] - 2022-11-14
+
+### Changed
+
+- Restore HDF4 in the essential libraries
+
 ## [7.6.0] - 2022-11-04
 
 ### Updates
