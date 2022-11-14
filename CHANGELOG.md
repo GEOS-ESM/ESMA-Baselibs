@@ -8,6 +8,14 @@
 ### Removed
 ### Added
 
+## [7.7.0] - 2022-11-14
+
+### Updates
+
+- GFE v1.6.0
+  - fArgParse v1.4.1
+  - pFUnit v4.6.0
+
 ## [7.6.0] - 2022-11-04
 
 ### Updates
