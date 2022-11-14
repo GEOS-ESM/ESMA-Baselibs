@@ -8,6 +8,12 @@
 ### Removed
 ### Added
 
+## [7.6.1] - 2022-11-14
+
+### Changed
+
+- Restore HDF4 in the essential libraries
+
 ## [7.6.0] - 2022-11-04
 
 ### Updates
