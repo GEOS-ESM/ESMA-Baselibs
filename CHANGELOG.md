@@ -12,9 +12,9 @@
 
 ### Updates
 
-- GFE v1.6.0
+- GFE v1.7.0
   - fArgParse v1.4.1
-  - pFUnit v4.6.0
+  - pFUnit v4.6.1
 
 ## [7.6.1] - 2022-11-14
 
