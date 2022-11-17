@@ -13,6 +13,20 @@
 
 * zlib-ng 2.0.6
 
+## [7.7.0] - 2022-11-17
+
+### Updates
+
+- GFE v1.8.0
+  - fArgParse v1.4.1
+  - pFUnit v4.6.1
+
+## [7.6.1] - 2022-11-14
+
+### Changed
+
+- Restore HDF4 in the essential libraries
+
 ## [7.6.0] - 2022-11-04
 
 ### Updates
