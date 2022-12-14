@@ -182,8 +182,8 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
         export MMACOS_MIN
 
         # There is an issue with clang++ and cdo
-        CLANG_STDC14 := -std=c++14
-        export CLANG_STDC14
+        CLANG_STDC17 := -std=c++17
+        export CLANG_STDC17
      endif
   endif
 
@@ -273,18 +273,19 @@ endif
 
 GFE_DIRS = GFE
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf5 netcdf netcdf-fortran libyaml FMS esmf xgboost \
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS esmf xgboost \
                  $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_ARM_DIRS),$(ALLDIRS))
+   ESSENTIAL_DIRS := $(filter-out hdf4,$(ESSENTIAL_DIRS))
 endif
 
 ifeq ('$(BUILD)','ESSENTIALS')
 SUBDIRS = $(ESSENTIAL_DIRS)
 INC_SUPP :=  $(foreach subdir, \
-            / /zlib /szlib /jpeg /hdf5 /netcdf,\
+            / /zlib /szlib /jpeg /hdf5 /hdf /netcdf,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 else
 ifeq ('$(BUILD)','GFE')
@@ -620,7 +621,7 @@ nco.config : nco/configure
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
           export CXXFLAGS="$(NCO_CXXFLAGS)";\
           export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG)";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nco \
                       --enable-ncoxx \
@@ -704,7 +705,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
                       --with-udunits2=$(prefix) \
                       --disable-grib --disable-openmp \
                       --disable-shared --enable-static \
-                      CXXFLAGS="$(CLANG_STDC14)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CXXFLAGS="$(CLANG_STDC17)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 nccmp.config: nccmp/configure netcdf.install
@@ -989,7 +990,7 @@ nco.install: nco.config
           export NETCDF_INC="$(prefix)/include/netcdf"; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
 	  $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 endif

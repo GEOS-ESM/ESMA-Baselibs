@@ -16,6 +16,36 @@
 ### Removed
 ### Added
 
+## [7.7.0] - 2022-11-17
+
+### Updates
+
+- GFE v1.8.0
+  - fArgParse v1.4.1
+  - pFUnit v4.6.1
+
+## [7.6.1] - 2022-11-14
+
+### Changed
+
+- Restore HDF4 in the essential libraries
+
+## [7.6.0] - 2022-11-04
+
+### Updates
+
+- ESMF v8.4.0
+- zlib 1.2.13
+- curl 7.86.0
+- netCDF-C 4.9.0
+- netCDF-Fortran 4.6.0
+- NCO 5.1.1
+- CDO 2.1.0
+
+### Fixed
+
+- CDO 2.1.0 requires `-std=c++17` to build with clang
+
 ## [7.5.1] - 2022-08-22
 
 ### Fixed
@@ -26,7 +56,6 @@
 
 - Renamed tarfile GitHub Action for consistency
 - Remove HDF4 from the essential libraries
-
 
 ## [7.5.0] - 2022-07-01
 

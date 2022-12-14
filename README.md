@@ -12,25 +12,25 @@ NASA/GSFC.
 
 | Library                                                                 | Version      |
 | ---                                                                     | ---          |
-| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | v8.3.0       |
+| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | v8.4.0       |
 | [FMS](https://github.com/NOAA-GFDL/FMS/)                                | 2022.04      |
-| [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.8.1        |
-| [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.5.4        |
+| [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.9.0        |
+| [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.6.0        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                    | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                     | 1.10.9       |
 | [HDF4](https://portal.hdfgroup.org/display/support)                     | 4.2.15       |
-| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.4.0       |
+| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.8.0       |
 | [xgboost](https://github.com/dmlc/xgboost)                              | v1.6.0       |
 | [libyaml](https://github.com/yaml/libyaml.git)                          | 0.2.5        |
 | [antlr2](https://www.antlr2.org/)                                       | 2.7.7        |
 | [GSL](https://www.gnu.org/software/gsl/)                                | 2.7          |
 | [jpeg](http://www.ijg.org/)                                             | 9e           |
-| [zlib](http://www.zlib.net/)                                            | 1.2.11       |
+| [zlib](http://www.zlib.net/)                                            | 1.2.13       |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                 | 2.1.1        |
-| [cURL](https://curl.haxx.se/)                                           | 7.83.1       |
+| [cURL](https://curl.haxx.se/)                                           | 7.86.0       |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                        | 2.2.26       |
-| [NCO](http://nco.sourceforge.net/)                                      | 5.0.7        |
-| [CDO](https://code.mpimet.mpg.de/projects/cdo)                          | 2.0.5        |
+| [NCO](http://nco.sourceforge.net/)                                      | 5.1.1        |
+| [CDO](https://code.mpimet.mpg.de/projects/cdo)                          | 2.1.0        |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                | 1.9.1.0      |
 | [FLAP](https://github.com/mathomp4/FLAP)                                | geos/v1.10.0 |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                 | 3.0          |
