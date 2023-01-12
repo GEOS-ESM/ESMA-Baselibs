@@ -12,7 +12,6 @@
 
 ### Updates
 
-- ESMF v8.5.0b12
 - curl 7.87.0
 - NCO 5.1.4
 - CDO 2.1.1
