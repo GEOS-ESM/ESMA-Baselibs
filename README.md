@@ -12,7 +12,7 @@ NASA/GSFC.
 
 | Library                                                                 | Version      |
 | ---                                                                     | ---          |
-| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | v8.4.0       |
+| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | v8.5.0b13    |
 | [FMS](https://github.com/NOAA-GFDL/FMS/)                                | 2022.04      |
 | [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.9.0        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.6.0        |

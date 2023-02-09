@@ -16,7 +16,14 @@
 ### Removed
 ### Added
 
-## [7.8.0] - 2023-01-13
+## [7.9.0] - 2023-01-25
+
+### Updates
+
+- ESMF v8.5.0b13
+  - NOTE: This is a non-zero-diff change for GEOSgcm to precision changes in grid generation.
+
+## [7.8.0] - 2023-01-20
 
 ### Updates
 
