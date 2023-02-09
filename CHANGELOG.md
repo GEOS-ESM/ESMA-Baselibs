@@ -8,6 +8,19 @@
 ### Removed
 ### Added
 
+## [7.10.0] - 2023-02-10
+
+### Updates
+
+- GFE v1.8.0
+  - gFTL v1.8.3
+  - gFTL-shared v1.5.1
+  - fArgParse v1.4.2
+  - pFUnit v4.6.3
+  - yaFyaml v1.0.7
+  - pFlogger v1.9.3
+- Update `config.guess` to a newer version (for support for Graviton3 in future testing)
+
 ## [7.9.0] - 2023-01-25
 
 ### Updates
