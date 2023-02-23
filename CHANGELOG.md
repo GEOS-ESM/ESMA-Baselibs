@@ -19,6 +19,7 @@
   - pFUnit v4.6.3
   - yaFyaml v1.0.7
   - pFlogger v1.9.3
+- curl 7.88.1
 - Update `config.guess` to a newer version (for support for Graviton3 in future testing)
 
 ## [7.9.0] - 2023-01-25
