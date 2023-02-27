@@ -12,7 +12,7 @@
 
 ### Updates
 
-- GFE v1.8.0
+- GFE v1.9.0
   - gFTL v1.8.3
   - gFTL-shared v1.5.1
   - fArgParse v1.4.2
