@@ -8,6 +8,13 @@
 ### Removed
 ### Added
 
+## [7.8.1] - 2023-03-07
+
+### Updates
+
+- ESMF 8.4.1
+  - This fixes a bug in ESMF 8.4.0
+
 ## [7.8.0] - 2023-01-20
 
 ### Updates
