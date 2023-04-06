@@ -12,14 +12,14 @@ NASA/GSFC.
 
 | Library                                                                 | Version      |
 | ---                                                                     | ---          |
-| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | v8.5.0b13    |
+| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | v8.5.0b18    |
 | [FMS](https://github.com/NOAA-GFDL/FMS/)                                | 2022.04      |
 | [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.9.0        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.6.0        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                    | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                     | 1.10.9       |
 | [HDF4](https://portal.hdfgroup.org/display/support)                     | 4.2.15       |
-| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.8.0       |
+| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.9.0       |
 | [xgboost](https://github.com/dmlc/xgboost)                              | v1.6.0       |
 | [libyaml](https://github.com/yaml/libyaml.git)                          | 0.2.5        |
 | [antlr2](https://www.antlr2.org/)                                       | 2.7.7        |
@@ -27,7 +27,7 @@ NASA/GSFC.
 | [jpeg](http://www.ijg.org/)                                             | 9e           |
 | [zlib](http://www.zlib.net/)                                            | 1.2.13       |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                 | 2.1.1        |
-| [cURL](https://curl.haxx.se/)                                           | 7.87.0       |
+| [cURL](https://curl.haxx.se/)                                           | 7.88.1       |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                        | 2.2.26       |
 | [NCO](http://nco.sourceforge.net/)                                      | 5.1.4        |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                          | 2.1.1        |
