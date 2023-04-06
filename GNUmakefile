@@ -248,7 +248,9 @@ ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf
           GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran FMS esmf \
+GFE_DIRS = GFE
+
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS esmf xgboost \
                  $(GFE_DIRS) FLAP
 
 ifeq ($(ARCH),Darwin)
@@ -270,11 +272,6 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
    NO_NVHPC_DIRS = SDPToolkit
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif
-
-GFE_DIRS = GFE
-
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS esmf xgboost \
-                 $(GFE_DIRS) FLAP
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
