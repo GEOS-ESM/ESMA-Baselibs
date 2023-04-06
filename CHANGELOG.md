@@ -4,7 +4,7 @@
 
 ### Added
 
-* FMS 2022.04
+* FMS 2023.01
   - Has GEOS/MAPL Constants
   - Uses fPIC to build
 * libyaml 0.2.5
