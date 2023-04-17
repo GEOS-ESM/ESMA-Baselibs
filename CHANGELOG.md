@@ -12,6 +12,13 @@
 
 ### Updates
 
+- GFE v1.10.0
+  - gFTL v1.10.0
+  - gFTL-shared v1.6.0
+  - fArgParse v1.5.0
+  - pFUnit v4.7.0
+  - yaFyaml v1.1.0
+  - pFlogger v1.10.0
 - curl 8.0.1
 - NCO 5.1.5
 
