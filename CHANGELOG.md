@@ -22,6 +22,10 @@
 - curl 8.0.1
 - NCO 5.1.5
 
+### Fixed
+
+- Fixed URL for CDO 2.1.1
+
 ## [7.11.0] - 2023-03-08
 
 ### Updates
