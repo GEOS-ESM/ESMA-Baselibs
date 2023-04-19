@@ -8,6 +8,12 @@
 ### Removed
 ### Added
 
+## [7.8.2] - 2023-04-19
+
+### Fixed
+
+- Updated URL for CDO 2.1.1 (former working URL changed)
+
 ## [7.8.1] - 2023-03-07
 
 ### Updates
