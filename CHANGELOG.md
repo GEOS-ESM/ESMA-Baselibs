@@ -12,6 +12,7 @@
 
 ### Updated
 
+- esmf v8.5.0b22
 - curl 8.1.0
 - HDF5 1.10.10
 - netCDF-C 4.9.2
