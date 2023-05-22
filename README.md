@@ -13,7 +13,7 @@ NASA/GSFC.
 | Library                                                                 | Version      |
 | ---                                                                     | ---          |
 | [ESMF](https://github.com/esmf-org/esmf)                                | v8.5.0b18    |
-| [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.9.0        |
+| [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.9.2        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.6.0        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                    | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                     | 1.10.10      |
