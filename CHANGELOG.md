@@ -16,6 +16,17 @@
 ### Removed
 ### Added
 
+## [7.13.0] - 2023-05-24
+
+### Updated
+
+- esmf v8.5.0b22
+- curl 8.1.1
+- HDF5 1.10.10
+- netCDF-C 4.9.2
+- netCDF-Fortran 4.6.1
+- CDO 2.2.0
+
 ## [7.12.0] - 2023-04-18
 
 ### Updates

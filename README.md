@@ -12,12 +12,12 @@ NASA/GSFC.
 
 | Library                                                                 | Version      |
 | ---                                                                     | ---          |
-| [ESMF](https://www.earthsystemcog.org/projects/esmf/)                   | v8.5.0b18    |
+| [ESMF](https://github.com/esmf-org/esmf)                                | v8.5.0b22    |
 | [FMS](https://github.com/NOAA-GFDL/FMS/)                                | 2023.01      |
-| [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.9.0        |
-| [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.6.0        |
+| [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.9.2        |
+| [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.6.1        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                    | 4.3.1        |
-| [HDF5](https://portal.hdfgroup.org/display/support)                     | 1.10.9       |
+| [HDF5](https://portal.hdfgroup.org/display/support)                     | 1.10.10      |
 | [HDF4](https://portal.hdfgroup.org/display/support)                     | 4.2.15       |
 | [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.10.0      |
 | [xgboost](https://github.com/dmlc/xgboost)                              | v1.6.0       |
@@ -27,10 +27,10 @@ NASA/GSFC.
 | [jpeg](http://www.ijg.org/)                                             | 9e           |
 | [zlib](http://www.zlib.net/)                                            | 1.2.13       |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                 | 2.1.1        |
-| [cURL](https://curl.haxx.se/)                                           | 8.0.1        |
+| [cURL](https://curl.haxx.se/)                                           | 8.1.1        |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                        | 2.2.26       |
 | [NCO](http://nco.sourceforge.net/)                                      | 5.1.5        |
-| [CDO](https://code.mpimet.mpg.de/projects/cdo)                          | 2.1.1        |
+| [CDO](https://code.mpimet.mpg.de/projects/cdo)                          | 2.2.0        |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                | 1.9.1.0      |
 | [FLAP](https://github.com/mathomp4/FLAP)                                | geos/v1.10.0 |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                 | 3.0          |
