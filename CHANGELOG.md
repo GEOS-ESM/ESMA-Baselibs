@@ -8,6 +8,11 @@
 ### Removed
 ### Added
 
+- functional-fortran 0.6.2
+- json-fortran 8.3.0
+- h5-fortran 4.10.2+geos
+- neural-fortran prebuilt-dependencies
+
 ## [7.13.0] - 2023-05-24
 
 ### Updated
