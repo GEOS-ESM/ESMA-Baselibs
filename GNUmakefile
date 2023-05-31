@@ -243,6 +243,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
           udunits2 nco cdo nccmp esmf xgboost \
+          functional-fortran h5fortran json-fortran neural-fortran \
           GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
 
@@ -715,11 +716,39 @@ nccmp.config: nccmp/configure netcdf.install
                       FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
-xgboost.config:
+xgboost.config: xgboost/CMakeLists.txt
 	@echo "Configuring xgboost"
 	@mkdir -p ./xgboost/build
 	@(cd ./xgboost/build; \
 		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) .. )
+	@touch $@
+
+functional-fortran.config: functional-fortran/CMakeLists.txt
+	@echo "Configuring functional-fortran"
+	@mkdir -p ./functional-fortran/build
+	@(cd ./functional-fortran/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) .. )
+	@touch $@
+
+h5fortran.config: h5fortran/CMakeLists.txt hdf5.install
+	@echo "Configuring h5fortran"
+	@mkdir -p ./h5fortran/build
+	@(cd ./h5fortran/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DHDF5_ROOT="$(prefix);$(prefix)/include/hdf5;$(prefix)/include/szlib" .. )
+	@touch $@
+
+json-fortran.config: json-fortran/CMakeLists.txt
+	@echo "Configuring json-fortran"
+	@mkdir -p ./json-fortran/build
+	@(cd ./json-fortran/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DSKIP_DOC_GEN=TRUE .. )
+	@touch $@
+
+neural-fortran.config: neural-fortran/CMakeLists.txt functional-fortran.install h5fortran.install json-fortran.install
+	@echo "Configuring neural-fortran"
+	@mkdir -p ./neural-fortran/build
+	@(cd ./neural-fortran/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DHDF5_ROOT="$(prefix);$(prefix)/include/hdf5;$(prefix)/include/szlib" -DSERIAL=1 .. )
 	@touch $@
 
 GFE.config:
@@ -902,6 +931,30 @@ xgboost.install: xgboost.config
 		$(MAKE) install )
 	@touch $@
 
+functional-fortran.install: functional-fortran.config
+	@echo "Installing functional-fortran"
+	@(cd ./functional-fortran/build; \
+		$(MAKE) install )
+	@touch $@
+
+h5fortran.install: h5fortran.config
+	@echo "Installing h5fortran"
+	@(cd ./h5fortran/build; \
+		$(MAKE) install )
+	@touch $@
+
+json-fortran.install: json-fortran.config
+	@echo "Installing json-fortran"
+	@(cd ./json-fortran/build; \
+		$(MAKE) install )
+	@touch $@
+
+neural-fortran.install: neural-fortran.config
+	@echo "Installing neural-fortran"
+	@(cd ./neural-fortran/build; \
+		$(MAKE) install )
+	@touch $@
+
 GFE.install: GFE.config
 	@echo "Installing GFE"
 	@(cd ./GFE/build; \
@@ -1065,6 +1118,38 @@ xgboost.distclean:
 	@echo "Cleaning xgboost"
 	@rm -rf ./xgboost/build
 
+functional-fortran.clean:
+	@echo "Cleaning functional-fortran"
+	@rm -rf ./functional-fortran/build
+
+functional-fortran.distclean:
+	@echo "Cleaning functional-fortran"
+	@rm -rf ./functional-fortran/build
+
+h5fortran.clean:
+	@echo "Cleaning h5fortran"
+	@rm -rf ./h5fortran/build
+
+h5fortran.distclean:
+	@echo "Cleaning h5fortran"
+	@rm -rf ./h5fortran/build
+
+json-fortran.clean:
+	@echo "Cleaning json-fortran"
+	@rm -rf ./json-fortran/build
+
+json-fortran.distclean:
+	@echo "Cleaning json-fortran"
+	@rm -rf ./json-fortran/build
+
+neural-fortran.clean:
+	@echo "Cleaning neural-fortran"
+	@rm -rf ./neural-fortran/build
+
+neural-fortran.distclean:
+	@echo "Cleaning neural-fortran"
+	@rm -rf ./neural-fortran/build
+
 GFE.clean:
 	@echo "Cleaning GFE"
 	@rm -rf ./GFE/build
@@ -1111,6 +1196,30 @@ curl.check: curl.install
 
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"
+
+functional-fortran.check: functional-fortran.install
+	@echo "Installing functional-fortran"
+	@(cd ./functional-fortran/build; \
+		ctest )
+	@touch $@
+
+h5fortran.check: h5fortran.install
+	@echo "Installing h5fortran"
+	@(cd ./h5fortran/build; \
+		ctest )
+	@touch $@
+
+json-fortran.check: json-fortran.install
+	@echo "Installing json-fortran"
+	@(cd ./json-fortran/build; \
+		$(MAKE) check )
+	@touch $@
+
+neural-fortran.check: neural-fortran.install
+	@echo "Installing neural-fortran"
+	@(cd ./neural-fortran/build; \
+		ctest )
+	@touch $@
 
 GFE.check: GFE.install
 	@echo "Checking GFE"

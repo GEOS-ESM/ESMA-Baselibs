@@ -46,3 +46,15 @@
 [submodule "xgboost"]
 	path = xgboost
 	url = https://github.com/dmlc/xgboost.git
+[submodule "functional-fortran"]
+	path = functional-fortran
+	url = https://github.com/wavebitscientific/functional-fortran
+[submodule "json-fortran"]
+	path = json-fortran
+	url = https://github.com/jacobwilliams/json-fortran
+[submodule "neural-fortran"]
+	path = neural-fortran
+	url = https://github.com/mathomp4/neural-fortran.git
+[submodule "h5fortran"]
+	path = h5fortran
+	url = https://github.com/GMAO-SI-Team/h5fortran
