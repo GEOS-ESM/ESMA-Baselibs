@@ -3,6 +3,11 @@
 ## [Unreleased]
 
 ### Updates
+
+- GFE v1.11.0
+  - gFTL-shared v1.6.1
+  - pFUnit v4.7.3
+
 ### Fixed
 
 - Fix for building HDF5 with nvhpc
