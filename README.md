@@ -47,7 +47,7 @@ NASA/GSFC.
 - The MPI library. On a Linux desktop/laptop, Open MPI is recommended.
   Make sure mpicc, mpifort, etc is on your path. Try compiling a simple
   "Hello, world!" program with mpicc and running it; sometimes you need
-  to set your LD_LIBRARY_PATH so that the runtime MPI libraries can be
+  to set your `LD_LIBRARY_PATH` so that the runtime MPI libraries can be
   found.
 
   Linux Note: many Linux distributions now have Open MPI packages.
@@ -123,7 +123,7 @@ where `<mpistack>` is one of the ESMF MPI stack names, such as:
 
 - mpt
 - openmpi
-- mpich3
+- mpich
 - mvapich2
 - intelmpi
 
@@ -131,7 +131,7 @@ see `esmf/INSTALL` for more information.
 
 You can optionally pass in a `prefix` to determine where Baselibs will
 be built. If you don't, the system uses `config.guess` =>
-`x86_64-pc-linux-gnu` to install to:
+`x86_64-pc-linux-gnu` (on most Linux) to install to:
 ```
 ../x86_64-pc-linux-gnu/$FC/Linux
 ```
@@ -171,7 +171,9 @@ compiler under Linux, just enter this
 
 ### Using Baselibs in GEOS
 
-For GEOS, you'll need to pass in the Baselibs as:
+For GEOS, if you have `BASEDIR` set in your environment which points to the location where
+the `lib/`, `bin/`, etc. directories exist, you need do nothing else.
+If not, you'll need to pass in the Baselibs as:
 
 ```
 cmake .. -DBASEDIR=<BASEDIR_LOC> ...
