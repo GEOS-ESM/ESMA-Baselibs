@@ -8,6 +8,7 @@
   - gFTL-shared v1.6.1
   - pFUnit v4.7.3
 - curl 8.2.0
+- CDO 2.2.1
 
 ### Fixed
 
