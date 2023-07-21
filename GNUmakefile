@@ -513,7 +513,7 @@ hdf5.config :: hdf5/README.md szlib.install zlib.install
 	echo Configuring hdf5
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
-          export LDFLAGS="-lm" ;\
+          export LIBS="-lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdf5 \
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
