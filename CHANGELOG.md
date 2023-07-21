@@ -4,6 +4,9 @@
 
 ### Updates
 ### Fixed
+
+- Fix for building HDF5 with nvhpc
+
 ### Changed
 ### Removed
 
