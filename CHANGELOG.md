@@ -13,7 +13,63 @@
 
 * zlib-ng 2.0.6
 
-## [7.8.0] - 2023-01-13
+## [7.13.0] - 2023-05-24
+
+### Updated
+
+- esmf v8.5.0b22
+- curl 8.1.1
+- HDF5 1.10.10
+- netCDF-C 4.9.2
+- netCDF-Fortran 4.6.1
+- CDO 2.2.0
+
+## [7.12.0] - 2023-04-18
+
+### Updates
+
+- GFE v1.10.0
+  - gFTL v1.10.0
+  - gFTL-shared v1.6.0
+  - fArgParse v1.5.0
+  - pFUnit v4.7.0
+  - yaFyaml v1.1.0
+  - pFlogger v1.10.0
+- curl 8.0.1
+- NCO 5.1.5
+
+### Fixed
+
+- Fixed URL for CDO 2.1.1
+
+## [7.11.0] - 2023-03-08
+
+### Updates
+
+- ESMF v8.5.0b18
+
+## [7.10.0] - 2023-02-27
+
+### Updates
+
+- GFE v1.9.0
+  - gFTL v1.8.3
+  - gFTL-shared v1.5.1
+  - fArgParse v1.4.2
+  - pFUnit v4.6.3
+  - yaFyaml v1.0.7
+  - pFlogger v1.9.3
+- curl 7.88.1
+- Update `config.guess` to a newer version (for support for Graviton3 in future testing)
+
+## [7.9.0] - 2023-01-25
+
+### Updates
+
+- ESMF v8.5.0b13
+  - NOTE: This is a non-zero-diff change for GEOSgcm to precision changes in grid generation.
+
+## [7.8.0] - 2023-01-20
 
 ### Updates
 
