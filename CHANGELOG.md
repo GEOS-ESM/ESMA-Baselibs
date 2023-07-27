@@ -17,6 +17,7 @@
   - gFTL-shared v1.6.1
   - pFUnit v4.7.3
 - curl 8.2.1
+- NCO 5.1.7
 - CDO 2.2.1
 
 ### Fixed
