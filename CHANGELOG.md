@@ -3,6 +3,14 @@
 ## [Unreleased]
 
 ### Updates
+### Fixed
+### Changed
+### Removed
+### Added
+
+## [7.14.0] - 2023-07-27
+
+### Updates
 
 - ESMF v8.5.0
 - GFE v1.11.0
@@ -14,10 +22,6 @@
 ### Fixed
 
 - Fix for building HDF5 with nvhpc
-
-### Changed
-### Removed
-### Added
 
 ## [7.13.0] - 2023-05-24
 
