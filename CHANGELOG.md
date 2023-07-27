@@ -4,6 +4,7 @@
 
 ### Updates
 
+- ESMF v8.5.0
 - GFE v1.11.0
   - gFTL-shared v1.6.1
   - pFUnit v4.7.3
