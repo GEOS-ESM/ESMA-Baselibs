@@ -4,12 +4,25 @@
 
 ### Updates
 ### Fixed
-
-- Fix for building HDF5 with nvhpc
-
 ### Changed
 ### Removed
 ### Added
+
+## [7.14.0] - 2023-07-27
+
+### Updates
+
+- ESMF v8.5.0
+- GFE v1.11.0
+  - gFTL-shared v1.6.1
+  - pFUnit v4.7.3
+- curl 8.2.1
+- NCO 5.1.7
+- CDO 2.2.1
+
+### Fixed
+
+- Fix for building HDF5 with nvhpc
 
 ## [7.13.0] - 2023-05-24
 
