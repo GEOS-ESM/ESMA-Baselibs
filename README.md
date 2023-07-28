@@ -12,23 +12,23 @@ NASA/GSFC.
 
 | Library                                                                 | Version      |
 | ---                                                                     | ---          |
-| [ESMF](https://github.com/esmf-org/esmf)                                | v8.5.0b22    |
+| [ESMF](https://github.com/esmf-org/esmf)                                | v8.5.0       |
 | [netCDF](https://github.com/Unidata/netcdf-c)                           | 4.9.2        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)             | 4.6.1        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                    | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                     | 1.10.10      |
 | [HDF4](https://portal.hdfgroup.org/display/support)                     | 4.2.15       |
-| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.10.0      |
+| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                 | v1.11.0      |
 | [xgboost](https://github.com/dmlc/xgboost)                              | v1.6.0       |
 | [antlr2](https://www.antlr2.org/)                                       | 2.7.7        |
 | [GSL](https://www.gnu.org/software/gsl/)                                | 2.7          |
 | [jpeg](http://www.ijg.org/)                                             | 9e           |
 | [zlib-ng](https://github.com/zlib-ng/zlib-ng)                           | 2.1.3        |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                 | 2.1.1        |
-| [cURL](https://curl.haxx.se/)                                           | 8.1.1        |
+| [cURL](https://curl.haxx.se/)                                           | 8.2.1        |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                        | 2.2.26       |
-| [NCO](http://nco.sourceforge.net/)                                      | 5.1.5        |
-| [CDO](https://code.mpimet.mpg.de/projects/cdo)                          | 2.2.0        |
+| [NCO](http://nco.sourceforge.net/)                                      | 5.1.7        |
+| [CDO](https://code.mpimet.mpg.de/projects/cdo)                          | 2.2.1        |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                | 1.9.1.0      |
 | [FLAP](https://github.com/mathomp4/FLAP)                                | geos/v1.10.0 |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                 | 3.0          |
@@ -47,7 +47,7 @@ NASA/GSFC.
 - The MPI library. On a Linux desktop/laptop, Open MPI is recommended.
   Make sure mpicc, mpifort, etc is on your path. Try compiling a simple
   "Hello, world!" program with mpicc and running it; sometimes you need
-  to set your LD_LIBRARY_PATH so that the runtime MPI libraries can be
+  to set your `LD_LIBRARY_PATH` so that the runtime MPI libraries can be
   found.
 
   Linux Note: many Linux distributions now have Open MPI packages.
@@ -123,7 +123,7 @@ where `<mpistack>` is one of the ESMF MPI stack names, such as:
 
 - mpt
 - openmpi
-- mpich3
+- mpich
 - mvapich2
 - intelmpi
 
@@ -131,7 +131,7 @@ see `esmf/INSTALL` for more information.
 
 You can optionally pass in a `prefix` to determine where Baselibs will
 be built. If you don't, the system uses `config.guess` =>
-`x86_64-pc-linux-gnu` to install to:
+`x86_64-pc-linux-gnu` (on most Linux) to install to:
 ```
 ../x86_64-pc-linux-gnu/$FC/Linux
 ```
@@ -171,7 +171,9 @@ compiler under Linux, just enter this
 
 ### Using Baselibs in GEOS
 
-For GEOS, you'll need to pass in the Baselibs as:
+For GEOS, if you have `BASEDIR` set in your environment which points to the location where
+the `lib/`, `bin/`, etc. directories exist, you need do nothing else.
+If not, you'll need to pass in the Baselibs as:
 
 ```
 cmake .. -DBASEDIR=<BASEDIR_LOC> ...
