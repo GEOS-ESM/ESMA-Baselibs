@@ -8,6 +8,12 @@
 ### Removed
 ### Added
 
+## [7.14.1] - 2023-09-08
+
+### Fixed
+
+- Fixes for GNU Make system for NCCS SLES15 cluster
+
 ## [7.14.0] - 2023-07-27
 
 ### Updates

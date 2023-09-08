@@ -185,6 +185,18 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      endif
   endif
 
+# icx also needs the strict C99 flags
+# -----------------------------------
+
+  ifeq ($(findstring icx,$(notdir $(CC))),icx)
+     NO_IMPLICIT_FUNCTION_ERROR := -Wno-implicit-function-declaration
+     export NO_IMPLICIT_FUNCTION_ERROR
+     NO_IMPLICIT_INT_ERROR := -Wno-implicit-int
+     export NO_IMPLICIT_INT_ERROR
+     NO_INT_CONVERSION_ERROR := -Wno-int-conversion
+     export NO_INT_CONVERSION_ERROR
+  endif
+
 # HDF5 and MPT at NCCS have an "issue" that needs an extra flag
 # -------------------------------------------------------------
 
@@ -320,6 +332,7 @@ verify:
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
+	@echo LIB_EXTRA = $(LIB_EXTRA)
 	@echo NAG_FCFLAGS = $(NAG_FCFLAGS)
 	@echo FC_FROM_ENV = $(FC_FROM_ENV)
 	@echo CC_FROM_ENV = $(CC_FROM_ENV)
@@ -501,7 +514,7 @@ hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
                       --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
                       --disable-netcdf \
-                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
 hdf5.config :: hdf5/README.md szlib.install zlib.install
@@ -591,7 +604,7 @@ udunits2.config : udunits2/configure.ac
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/udunits2 \
                       --disable-shared \
-                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 INC_HDF5 = $(prefix)/include/hdf5
@@ -810,7 +823,7 @@ hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
                       --includedir=$(prefix)/include/hdfeos5 \
                       --disable-shared --enable-static \
                       --enable-fortran \
-                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC="$(H5_CC)" FC=$(H5_FC) F77=$(H5_FC) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC="$(H5_CC)" FC=$(H5_FC) F77=$(H5_FC) )
 	@touch $@
 
 INC_SUPP_SDP :=  $(foreach subdir, \
@@ -838,7 +851,7 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
                       --with-hdfeos5=$(prefix)/include/hdfeos5,$(prefix)/lib \
                       --enable-fortran \
                       --disable-shared --enable-static \
-                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR) $(NO_INT_CONVERSION_ERROR)" FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 
