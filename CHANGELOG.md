@@ -13,6 +13,10 @@
 ### Fixed
 
 - Fixes for GNU Make system for NCCS SLES15 cluster
+  - Adds support for using `icx`, `icpx`, and `ifx` as `CC`, `CXX` and `FC`
+  - Includes need for some C99 flags to allow compilation
+    - NOTE: This support is untested in re `ifx` but a first good shot
+  - On SLES15 we seem to now need to link to libtirpc, so we add support for that
 
 ## [7.14.0] - 2023-07-27
 
