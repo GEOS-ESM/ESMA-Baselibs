@@ -12,6 +12,7 @@
 
 ### Updates
 
+- ESMF v8.6.0b06
 - zlib 1.3
 - curl 8.3.0
 - nco 5.1.8
