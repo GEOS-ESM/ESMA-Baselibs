@@ -501,7 +501,7 @@ jpeg.config: jpeg/configure
 		      CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
+hdf4.config: hdf4/README.md jpeg.install zlib.install szlib.install
 	@echo Configuring hdf4
 	@(cd hdf4; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
