@@ -74,7 +74,7 @@ ifeq ($(ARCH),Linux)
    ifneq ($(shell uname -n | egrep 'r[0-9]*c[0-9]*t[0-9]*n[0-9]*'),)
       SITE := NAS
    endif
-   CFLAGS := -fPIC 
+   CFLAGS := -fPIC
    export CFLAGS
 
    # Gentoo and Fedora put tiprc files in a weird place
@@ -86,6 +86,12 @@ ifeq ($(ARCH),Linux)
    ifeq ($(SITE),NCCS)
       ENABLE_GPFS = --enable-gpfs
       LINK_GPFS = -lgpfs
+
+      # On SLES15 at NCCS we need to link to libtirpc
+      OS_VERSION := $(shell grep VERSION_ID /etc/os-release | cut -d= -f2 | cut -d. -f1 | sed 's/"//g')
+      ifeq ($(OS_VERSION),15)
+         LIB_EXTRA += -ltirpc
+      endif
    endif
 
 # NAS is weird. The Intel compiler modules do not define

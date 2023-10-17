@@ -12,12 +12,35 @@
 
 ### Updates
 ### Fixed
-
-- Fix for building HDF5 with nvhpc
-
 ### Changed
 ### Removed
 ### Added
+
+## [7.14.1] - 2023-09-20
+
+### Fixed
+
+- Fixes for GNU Make system for NCCS SLES15 cluster
+  - Adds support for using `icx`, `icpx`, and `ifx` as `CC`, `CXX` and `FC`
+  - Includes need for some C99 flags to allow compilation
+    - NOTE: This support is untested in re `ifx` but a first good shot
+  - On SLES15 we seem to now need to link to libtirpc, so we add support for that
+
+## [7.14.0] - 2023-07-27
+
+### Updates
+
+- ESMF v8.5.0
+- GFE v1.11.0
+  - gFTL-shared v1.6.1
+  - pFUnit v4.7.3
+- curl 8.2.1
+- NCO 5.1.7
+- CDO 2.2.1
+
+### Fixed
+
+- Fix for building HDF5 with nvhpc
 
 ## [7.13.0] - 2023-05-24
 
