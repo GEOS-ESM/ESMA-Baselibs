@@ -19,6 +19,12 @@
 - nco 5.1.8
 - CDO 2.2.2
 
+### Changes
+
+- HDF4 4.2.16
+  - We *specifically* enable the Fortran interface. By default, HDF4 does not do this because of [possible unsafe side effects](https://forum.hdfgroup.org/t/release-of-hdf-4-2-16-newsletter-191-the-hdf-group/10915), but other libraries in Baselibs require it.
+  - We add `--enable-hdf4-xdr` to the configure line as it is needed on macOS
+
 ## [7.14.1] - 2023-09-20
 
 ### Fixed
