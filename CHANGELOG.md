@@ -12,7 +12,6 @@
 
 ### Updates
 
-- ESMF v8.6.0b08
 - zlib 1.3
 - curl 8.4.0
 - HDF4 4.2.16-2
