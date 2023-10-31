@@ -507,6 +507,7 @@ hdf4.config: hdf4/README.md jpeg.install zlib.install szlib.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LDFLAGS="-lm $(LIB_EXTRA)" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --program-suffix="-hdf4"\
                       --includedir=$(prefix)/include/hdf \

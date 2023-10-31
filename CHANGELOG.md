@@ -24,6 +24,8 @@
 - HDF4 4.2.16
   - We *specifically* enable the Fortran interface. By default, HDF4 does not do this because of [possible unsafe side effects](https://forum.hdfgroup.org/t/release-of-hdf-4-2-16-newsletter-191-the-hdf-group/10915), but other libraries in Baselibs require it.
   - We add `--enable-hdf4-xdr` to the configure line as it is needed on macOS
+  - We add `autoreconf -f -v -i` because of the `ld: cannot find -loopopt=0` [bug with ifx](https://www.intel.com/content/www/us/en/developer/articles/release-notes/oneapi-fortran-compiler-release-notes.html). This also means using autoconf 2.71 when building with ifx
+
 
 ## [7.14.1] - 2023-09-20
 
