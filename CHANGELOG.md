@@ -8,6 +8,9 @@
 ### Removed
 ### Added
 
+- fortran\_udunits2
+  - Based on the mathomp4 fork, branch `feature/add-cmake`
+
 ## [7.14.1] - 2023-09-20
 
 ### Fixed
