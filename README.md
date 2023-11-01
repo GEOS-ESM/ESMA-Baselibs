@@ -27,6 +27,7 @@ NASA/GSFC.
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                 | 2.1.1        |
 | [cURL](https://curl.haxx.se/)                                           | 8.2.1        |
 | [UDUNITS2](https://github.com/Unidata/UDUNITS-2)                        | 2.2.26       |
+| [fortran_udunits2](git@github.com:GMAO-SI-Team/fortran_udunits2.git)    | v1.0.0-rc.1  |
 | [NCO](http://nco.sourceforge.net/)                                      | 5.1.7        |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                          | 2.2.1        |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                | 1.9.1.0      |
