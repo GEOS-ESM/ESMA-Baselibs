@@ -47,7 +47,7 @@
     else
     ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
       ES_FC := $(FC)
-      ESMF_COMPILER := intelifx
+      ESMF_COMPILER := intel
       FLAP_COMPILER := intel
       FC_FROM_ENV := TRUE
     else
@@ -90,7 +90,7 @@
   else
   ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
     ES_FC := $(FC)
-    ESMF_COMPILER := intelifx
+    ESMF_COMPILER := intel
     FLAP_COMPILER := intel
   else
   ifneq ($(wildcard $(shell which ifort 2> /dev/null)),)
