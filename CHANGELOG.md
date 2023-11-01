@@ -10,6 +10,10 @@
 
 ## [7.15.0] - 2023-09-22
 
+### Added
+
+- fortran\_udunits2 v1.0.0-rc.1 (GMAO-SI-Team fork)
+
 ### Updates
 
 - zlib 1.3
@@ -28,7 +32,6 @@
 - hdfeos
   - Add autoreconf to the build as well
 - Don't use `intelifx` as an ESMF_COMPILER. That might be from ancient times but is certainly a bug now
-
 
 ## [7.14.1] - 2023-09-20
 
