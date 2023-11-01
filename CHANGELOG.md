@@ -8,7 +8,7 @@
 ### Removed
 ### Added
 
-## [7.15.0] - 2023-09-22
+## [7.15.0] - 2023-11-01
 
 ### Added
 
@@ -34,6 +34,7 @@
 - hdfeos
   - Add autoreconf to the build as well
 - Don't use `intelifx` as an ESMF_COMPILER. That might be from ancient times but is certainly a bug now
+- Added udunits2 and fortran\_udunits2 to the essential libraries, removed xgboost and FLAP
 
 ## [7.14.1] - 2023-09-20
 
