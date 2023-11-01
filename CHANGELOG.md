@@ -22,6 +22,8 @@
 - HDF5 1.10.11
 - nco 5.1.8
 - CDO 2.2.2
+- udunits2 2.2.28
+  - Now based on [GMAO-SI-Team fork of UDUNITS-2](https://github.com/GMAO-SI-Team/UDUNITS-2.git)
 
 ### Changes
 

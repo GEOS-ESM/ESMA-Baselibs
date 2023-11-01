@@ -21,7 +21,7 @@
 	url = https://github.com/Unidata/netcdf-cxx4.git
 [submodule "udunits2"]
 	path = udunits2
-	url = https://github.com/Unidata/UDUNITS-2.git
+	url = https://github.com/GMAO-SI-Team/UDUNITS-2.git
 [submodule "nco"]
 	path = nco
 	url = https://github.com/nco/nco.git
