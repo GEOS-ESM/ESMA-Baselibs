@@ -8,6 +8,12 @@
 ### Removed
 ### Added
 
+## [7.14.1+aist_nr_1.0] - 2023-11-01
+
+### Updates
+
+- ESMF v8.6.0b07_gmao_aist_nr_1.0 from tclune fork
+
 ## [7.14.1] - 2023-09-20
 
 ### Fixed
