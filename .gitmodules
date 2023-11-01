@@ -48,4 +48,4 @@
 	url = https://github.com/dmlc/xgboost.git
 [submodule "fortran_udunits2"]
 	path = fortran_udunits2
-	url = https://github.com/mathomp4/fortran_udunits2.git
+	url = https://github.com/GMAO-SI-Team/fortran_udunits2.git
