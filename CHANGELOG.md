@@ -8,6 +8,13 @@
 ### Removed
 ### Added
 
+## [7.15.1] - 2023-11-06
+
+### Updates
+
+- fortran\_udunits2 v1.0.0-rc.2 (GMAO-SI-Team fork)
+  - Fixes build issue on Linux
+
 ## [7.15.0] - 2023-11-01
 
 ### Added
