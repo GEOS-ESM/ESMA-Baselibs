@@ -49,3 +49,9 @@
 [submodule "fortran_udunits2"]
 	path = fortran_udunits2
 	url = https://github.com/GMAO-SI-Team/fortran_udunits2.git
+[submodule "FMS"]
+	path = FMS
+	url = https://github.com/NOAA-GFDL/FMS.git
+[submodule "libyaml"]
+	path = libyaml
+	url = https://github.com/yaml/libyaml.git

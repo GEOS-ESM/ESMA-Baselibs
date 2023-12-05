@@ -162,6 +162,8 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
         ALLOW_INVALID_BOZ := -fallow-invalid-boz
         COMMON_FLAG := -fcommon
         export ALLOW_ARGUMENT_MISMATCH ALLOW_INVALID_BOZ
+        CMAKE_ALLOW_ARGUMENT_MISMATCH := "-DCMAKE_Fortran_FLAGS='$(ALLOW_ARGUMENT_MISMATCH)'"
+        export CMAKE_ALLOW_ARGUMENT_MISMATCH
      endif
   endif
 
@@ -254,7 +256,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 fortran_udunits2 nco cdo nccmp esmf xgboost \
+          udunits2 fortran_udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
           GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
 
@@ -264,10 +266,12 @@ ifeq ($(ARCH),Darwin)
 endif
 
 # NAG cannot build cdo
-# https://code.mpimet.mpg.de/boards/1/topics/9337
+#    https://code.mpimet.mpg.de/boards/1/topics/9337
+# or FMS due to cray pointers
 ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-   NO_NAG_DIRS = cdo
+   NO_NAG_DIRS = cdo FMS
    ALLDIRS := $(filter-out $(NO_NAG_DIRS),$(ALLDIRS))
+   ESSENTIAL_DIRS := $(filter-out $(NO_NAG_DIRS),$(ESSENTIAL_DIRS))
 endif
 
 # NVHPC seems to have issues with SDPToolkit
@@ -276,7 +280,7 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran \
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
 					  udunits2 fortran_udunits2 esmf GFE
 
 ifeq ($(MACH),aarch64)
@@ -328,6 +332,7 @@ verify:
 	@echo MACOS_VERSION = $(MACOS_VERSION)
 	@echo MMACOS_MIN = $(MMACOS_MIN)
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
+	@echo CMAKE_ALLOW_ARGUMENT_MISMATCH = $(CMAKE_ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
 	@echo LIB_EXTRA = $(LIB_EXTRA)
@@ -749,6 +754,20 @@ GFE.config:
 		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. )
 	@touch $@
 
+libyaml.config:
+	@echo "Configuring libyaml"
+	@mkdir -p ./libyaml/build
+	@(cd ./libyaml/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
+	@touch $@
+
+FMS.config: netcdf.install netcdf-fortran.install libyaml.install
+	@echo "Configuring FMS"
+	@mkdir -p ./FMS/build
+	@(cd ./FMS/build; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf $(CMAKE_ALLOW_ARGUMENT_MISMATCH) .. )
+	@touch $@
+
 FLAP.config:
 	@echo "Configuring FLAP"
 	@mkdir -p $(prefix)/lib
@@ -935,6 +954,18 @@ GFE.install: GFE.config
 		$(MAKE) install )
 	@touch $@
 
+libyaml.install: libyaml.config
+	@echo "Installing libyaml"
+	@(cd ./libyaml/build; \
+		$(MAKE) install )
+	@touch $@
+
+FMS.install: FMS.config
+	@echo "Installing FMS"
+	@(cd ./FMS/build; \
+		$(MAKE) install )
+	@touch $@
+
 FLAP.install: FLAP.config
 	@echo "Installing FLAP with CMake"
 	@(cd ./FLAP/build; \
@@ -1108,6 +1139,22 @@ GFE.distclean:
 	@echo "Cleaning GFE"
 	@rm -rf ./GFE/build
 
+libyaml.clean:
+	@echo "Cleaning libyaml"
+	@rm -rf ./libyaml/build
+
+libyaml.distclean:
+	@echo "Cleaning libyaml"
+	@rm -rf ./libyaml/build
+
+FMS.clean:
+	@echo "Cleaning FMS"
+	@rm -rf ./FMS/build
+
+FMS.distclean:
+	@echo "Cleaning FMS"
+	@rm -rf ./FMS/build
+
 FLAP.clean:
 	@echo "Cleaning FLAP"
 	@rm -rf ./FLAP/build
@@ -1149,6 +1196,14 @@ fortran_udunits2.check: fortran_udunits2.install
 
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"
+
+libyaml.check: libyaml.install
+	@echo "Checking libyaml"
+	@echo "We do not check libyaml not sure how."
+
+FMS.check: FMS.install
+	@echo "Checking FMS"
+	@echo "We do not check FMS."
 
 GFE.check: GFE.install
 	@echo "Checking GFE"
