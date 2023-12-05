@@ -256,14 +256,9 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
+          udunits2 fortran_udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
           GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
-
-GFE_DIRS = GFE
-
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS esmf xgboost \
-                 $(GFE_DIRS) FLAP
 
 ifeq ($(ARCH),Darwin)
    NO_DARWIN_DIRS = netcdf-cxx4 hdfeos hdfeos5 SDPToolkit
@@ -285,6 +280,9 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif
 
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
+					  udunits2 fortran_udunits2 esmf GFE
+
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_ARM_DIRS),$(ALLDIRS))
@@ -298,7 +296,7 @@ INC_SUPP :=  $(foreach subdir, \
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 else
 ifeq ('$(BUILD)','GFE')
-SUBDIRS = $(GFE_DIRS)
+SUBDIRS = GFE
 else
 SUBDIRS = $(ALLDIRS)
 INC_SUPP :=  $(foreach subdir, \
@@ -506,12 +504,13 @@ jpeg.config: jpeg/configure
 		      CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
+hdf4.config: hdf4/README.md jpeg.install zlib.install szlib.install
 	@echo Configuring hdf4
 	@(cd hdf4; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LDFLAGS="-lm $(LIB_EXTRA)" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --program-suffix="-hdf4"\
                       --includedir=$(prefix)/include/hdf \
@@ -519,6 +518,8 @@ hdf4.config: hdf4/README.txt jpeg.install zlib.install szlib.install
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
                       --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
                       --disable-netcdf \
+                      --enable-hdf4-xdr \
+                      --enable-fortran \
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
@@ -603,13 +604,19 @@ udunits2.config : udunits2/configure.ac
 	@echo "Configuring udunits2 $*"
 	@(cd udunits2; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
-          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          export CPPFLAGS="$(CPPFLAGS)";\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/udunits2 \
                       --disable-shared \
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+	@touch $@
+
+fortran_udunits2.config: udunits2.install
+	@echo "Configuring fortran_udunits2"
+	@mkdir -p ./fortran_udunits2/build
+	@(cd ./fortran_udunits2/build; \
+		cmake -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_INSTALL_PREFIX=$(prefix) .. -DCMAKE_Fortran_COMPILER=$(NC_FC))
 	@touch $@
 
 INC_HDF5 = $(prefix)/include/hdf5
@@ -816,6 +823,7 @@ hdfeos.config: hdfeos.download hdfeos/configure hdf4.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos \
                       --disable-shared --enable-static \
@@ -926,6 +934,12 @@ nccmp.install: nccmp.config
 	@(cd nccmp; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
+	@touch $@
+
+fortran_udunits2.install: fortran_udunits2.config
+	@echo "Installing fortran_udunits2"
+	@(cd ./fortran_udunits2/build; \
+		$(MAKE) install )
 	@touch $@
 
 xgboost.install: xgboost.config
@@ -1101,6 +1115,14 @@ netcdf-cxx4.distclean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
+fortran_udunits2.clean:
+	@echo "Cleaning fortran_udunits2"
+	@rm -rf ./fortran_udunits2/build
+
+fortran_udunits2.distclean:
+	@echo "Cleaning fortran_udunits2"
+	@rm -rf ./fortran_udunits2/build
+
 xgboost.clean:
 	@echo "Cleaning xgboost"
 	@rm -rf ./xgboost/build
@@ -1168,6 +1190,9 @@ esmf.all_tests : esmf_rules.mk
 curl.check: curl.install
 	@echo "Checking curl"
 	@echo "We explicitly do not check cURL due to how long it takes"
+
+fortran_udunits2.check: fortran_udunits2.install
+	@echo "Not sure how to check fortran_udunits2"
 
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"

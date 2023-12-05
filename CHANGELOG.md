@@ -16,6 +16,61 @@
 ### Removed
 ### Added
 
+## [7.17.0] - 2023-12-01
+
+### Updates
+
+- GFE v1.12.0
+  - gFTL v1.11.0
+  - gFTL-shared v1.7.0
+  - fArgParse v1.6.0
+  - pFUnit v4.8.0
+  - yaFyaml v1.2.0
+  - pFlogger v1.11.0
+
+## [7.16.0] - 2023-11-22
+
+### Updates
+
+- ESMF v8.6.0
+- nco 5.1.9
+- CDO 2.3.0
+
+## [7.15.1] - 2023-11-06
+
+### Updates
+
+- fortran\_udunits2 v1.0.0-rc.2 (GMAO-SI-Team fork)
+  - Fixes build issue on Linux
+
+## [7.15.0] - 2023-11-01
+
+### Added
+
+- fortran\_udunits2 v1.0.0-rc.1 (GMAO-SI-Team fork)
+
+### Updates
+
+- zlib 1.3
+- curl 8.4.0
+- HDF4 4.2.16-2
+- HDF5 1.10.11
+- nco 5.1.8
+- CDO 2.2.2
+- udunits2 2.2.28
+  - Now based on [GMAO-SI-Team fork of UDUNITS-2](https://github.com/GMAO-SI-Team/UDUNITS-2.git)
+
+### Changes
+
+- HDF4 4.2.16
+  - We *specifically* enable the Fortran interface. By default, HDF4 does not do this because of [possible unsafe side effects](https://forum.hdfgroup.org/t/release-of-hdf-4-2-16-newsletter-191-the-hdf-group/10915), but other libraries in Baselibs require it.
+  - We add `--enable-hdf4-xdr` to the configure line as it is needed on macOS
+  - We add `autoreconf -f -v -i` because of the `ld: cannot find -loopopt=0` [bug with ifx](https://www.intel.com/content/www/us/en/developer/articles/release-notes/oneapi-fortran-compiler-release-notes.html). This also means using autoconf 2.71 when building with ifx
+- hdfeos
+  - Add autoreconf to the build as well
+- Don't use `intelifx` as an ESMF_COMPILER. That might be from ancient times but is certainly a bug now
+- Added udunits2 and fortran\_udunits2 to the essential libraries, removed xgboost and FLAP
+
 ## [7.14.1] - 2023-09-20
 
 ### Fixed
