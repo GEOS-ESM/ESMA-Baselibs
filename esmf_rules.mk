@@ -54,6 +54,14 @@ endif
     endif
   endif
 
+# ESMF using the NAG compiler has a bug with ESMF_TRACE_LIB_BUILD=ON
+# so we turn it off when using NAG
+# -----------------------------------------------------------------
+  ifeq ($(ESMF_COMPILER), nag)
+    ESMF_TRACE_LIB_BUILD=OFF
+    export ESMF_TRACE_LIB_BUILD
+  endif
+
 # ESMF with GCC 10.1 needs extra flags
 # ------------------------------------
 
