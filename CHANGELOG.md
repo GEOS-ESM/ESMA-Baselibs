@@ -8,6 +8,12 @@
 ### Removed
 ### Added
 
+## [7.17.1] - 2024-01-05
+
+### Fixed
+
+- Set `ESMF_TRACE_LIB_BUILD=OFF` when building ESMF 8.6.0 with NAG to avoid a build error
+
 ## [7.17.0] - 2023-12-01
 
 ### Updates
