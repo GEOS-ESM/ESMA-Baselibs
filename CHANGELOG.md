@@ -4,6 +4,10 @@
 
 ### Updates
 ### Fixed
+
+- Disable HDF4 Fortran bindings when using `ifx` as `FC`
+  - This means we must also disable builds of HDF-EOS2 and SDPToolkit
+
 ### Changed
 ### Removed
 ### Added

@@ -197,6 +197,17 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      export NO_INT_CONVERSION_ERROR
   endif
 
+# HDF4 plus ifx does not work with Fortran bindings
+# -------------------------------------------------
+
+  ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
+     HDF4_ENABLE_FORTRAN := --disable-fortran
+     export HDF4_ENABLE_FORTRAN
+  else
+     HDF4_ENABLE_FORTRAN := --enable-fortran
+     export HDF4_ENABLE_FORTRAN
+  endif
+
 # HDF5 and MPT at NCCS have an "issue" that needs an extra flag
 # -------------------------------------------------------------
 
@@ -309,6 +320,14 @@ else
    LIB_HDF4 =
    # Also need to remove hdfeos if no hdf4
    SUBDIRS := $(filter-out hdfeos,$(SUBDIRS))
+endif
+
+# Since we do not build the Fortran interface
+# to HDF4 with ifx, we cannot build hdf-eos2
+# or SDPToolkit
+ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
+   SUBDIRS := $(filter-out hdfeos,$(SUBDIRS))
+   SUBDIRS := $(filter-out SDPToolkit,$(SUBDIRS))
 endif
 
 TARGETS = all lib install
@@ -514,7 +533,7 @@ hdf4.config: hdf4/README.md jpeg.install zlib.install szlib.install
                       --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
                       --disable-netcdf \
                       --enable-hdf4-xdr \
-                      --enable-fortran \
+                      $(HDF4_ENABLE_FORTRAN) \
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
