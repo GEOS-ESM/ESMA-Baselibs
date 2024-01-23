@@ -8,11 +8,23 @@
 ### Removed
 ### Added
 
-## [7.18.0] - 2024-MM-DD
+## [7.18.0] - 2024-01-24
 
 ### Updates
 
 - HDF5 1.14.3
+
+## [7.17.2] - 2024-01-23
+
+### Updates
+
+- fortran\_udunits2 v1.0.0-rc.3 (GMAO-SI-Team fork)
+  - Fixes build issue with NAG on Darwin
+
+### Fixed
+
+- Disable HDF4 Fortran bindings when using `ifx` as `FC`
+  - This means we must also disable builds of HDF-EOS2 and SDPToolkit
 
 ## [7.17.1] - 2024-01-05
 
