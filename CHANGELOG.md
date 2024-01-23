@@ -8,11 +8,17 @@
 ### Removed
 ### Added
 
-## [7.18.0] - 2023-12-06
+## [7.18.0] - 2024-MM-DD
 
 ### Updates
 
 - HDF5 1.14.3
+
+## [7.17.1] - 2024-01-05
+
+### Fixed
+
+- Set `ESMF_TRACE_LIB_BUILD=OFF` when building ESMF 8.6.0 with NAG to avoid a build error
 
 ## [7.17.0] - 2023-12-01
 
