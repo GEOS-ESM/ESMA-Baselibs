@@ -14,6 +14,12 @@
 
 - HDF5 1.14.3
 
+### Changed
+
+- Set `ESMF_TRACE_LIB_BUILD=OFF` when building ESMF on Darwin
+  - Previously was only on NAG, but testing shows even GCC builds
+    can fail with this flag on
+
 ## [7.17.2] - 2024-01-23
 
 ### Updates
