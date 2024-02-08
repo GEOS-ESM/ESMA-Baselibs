@@ -712,6 +712,7 @@ curl.config : curl/configure.ac zlib.install
                       --without-libidn2 \
                       --without-nghttp2 \
                       --without-nghttp3 \
+                      --without-libpsl \
                       $(CURL_SSL) \
                       CFLAGS="$(CFLAGS) $(MMACOS_MIN)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
