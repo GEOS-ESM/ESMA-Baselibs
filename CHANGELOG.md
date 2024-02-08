@@ -8,6 +8,13 @@
 ### Removed
 ### Added
 
+## [7.18.1] - 2024-02-08
+
+### Fixed
+
+- Build curl with `--without-libpsl` as by default it is enabled (see https://daniel.haxx.se/blog/2024/01/10/psl-in-curl/) but it is
+  not required for why Baselibs needs curl (libdap for netCDF)
+
 ## [7.18.0] - 2024-02-08
 
 ### Updates
