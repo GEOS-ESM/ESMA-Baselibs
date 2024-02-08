@@ -16,16 +16,16 @@ NASA/GSFC.
 | [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.9.2        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.6.1        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1        |
-| [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.10.11      |
+| [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.14.3       |
 | [HDF4](https://portal.hdfgroup.org/display/support)                      | 4.2.16-2     |
 | [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                  | v1.12.0      |
 | [xgboost](https://github.com/dmlc/xgboost)                               | v1.6.0       |
 | [antlr2](https://www.antlr2.org/)                                        | 2.7.7        |
 | [GSL](https://www.gnu.org/software/gsl/)                                 | 2.7          |
 | [jpeg](http://www.ijg.org/)                                              | 9e           |
-| [zlib](http://www.zlib.net/)                                             | 1.3          |
+| [zlib](http://www.zlib.net/)                                             | 1.3.1        |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                  | 2.1.1        |
-| [cURL](https://curl.haxx.se/)                                            | 8.4.0        |
+| [cURL](https://curl.haxx.se/)                                            | 8.6.0        |
 | [UDUNITS2](https://github.com/GMAO-SI-Team/UDUNITS-2.git)                | 2.2.28       |
 | [fortran_udunits2](https://github.com/GMAO-SI-Team/fortran_udunits2.git) | v1.0.0-rc.3  |
 | [NCO](http://nco.sourceforge.net/)                                       | 5.1.9        |

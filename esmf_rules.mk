@@ -54,10 +54,10 @@ endif
     endif
   endif
 
-# ESMF using the NAG compiler has a bug with ESMF_TRACE_LIB_BUILD=ON
-# so we turn it off when using NAG
+# ESMF on Darwin seems to have issues with ESMF's trace library
+# so we turn it off on Darwin
 # -----------------------------------------------------------------
-  ifeq ($(ESMF_COMPILER), nag)
+  ifeq ($(ARCH), Darwin)
     ESMF_TRACE_LIB_BUILD=OFF
     export ESMF_TRACE_LIB_BUILD
   endif

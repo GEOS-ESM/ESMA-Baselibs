@@ -8,6 +8,20 @@
 ### Removed
 ### Added
 
+## [7.18.0] - 2024-02-08
+
+### Updates
+
+- HDF5 1.14.3
+- curl 8.6.0
+- zlib 1.3.1
+
+### Changed
+
+- Set `ESMF_TRACE_LIB_BUILD=OFF` when building ESMF on Darwin
+  - Previously was only on NAG, but testing shows even GCC builds
+    can fail with this flag on
+
 ## [7.17.2] - 2024-01-23
 
 ### Updates
