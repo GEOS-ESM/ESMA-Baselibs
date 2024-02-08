@@ -13,6 +13,7 @@
 ### Updates
 
 - HDF5 1.14.3
+- curl 8.6.0
 
 ### Changed
 
