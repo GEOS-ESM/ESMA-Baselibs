@@ -14,6 +14,7 @@
 
 - HDF5 1.14.3
 - curl 8.6.0
+- zlib 1.3.1
 
 ### Changed
 
