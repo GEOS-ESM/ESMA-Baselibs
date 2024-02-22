@@ -7,11 +7,11 @@
 ### Changed
 ### Removed
 
-* Remove zlib library
+- Remove zlib library
 
 ### Added
 
-* zlib-ng 2.1.3
+- zlib-ng 2.1.6
 
 ## [7.18.1] - 2024-02-08
 
