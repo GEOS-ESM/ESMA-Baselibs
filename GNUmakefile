@@ -185,6 +185,29 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      endif
   endif
 
+# icx also needs the strict C99 flags
+# -----------------------------------
+
+  ifeq ($(findstring icx,$(notdir $(CC))),icx)
+     NO_IMPLICIT_FUNCTION_ERROR := -Wno-implicit-function-declaration
+     export NO_IMPLICIT_FUNCTION_ERROR
+     NO_IMPLICIT_INT_ERROR := -Wno-implicit-int
+     export NO_IMPLICIT_INT_ERROR
+     NO_INT_CONVERSION_ERROR := -Wno-int-conversion
+     export NO_INT_CONVERSION_ERROR
+  endif
+
+# HDF4 plus ifx does not work with Fortran bindings
+# -------------------------------------------------
+
+  ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
+     HDF4_ENABLE_FORTRAN := --disable-fortran
+     export HDF4_ENABLE_FORTRAN
+  else
+     HDF4_ENABLE_FORTRAN := --enable-fortran
+     export HDF4_ENABLE_FORTRAN
+  endif
+
 # HDF5 and MPT at NCCS have an "issue" that needs an extra flag
 # -------------------------------------------------------------
 
@@ -242,7 +265,7 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib-ng szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp esmf xgboost \
+          udunits2 fortran_udunits2 nco cdo nccmp esmf xgboost \
           GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
 
@@ -264,10 +287,8 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif
 
-GFE_DIRS = GFE
-
-ESSENTIAL_DIRS = jpeg zlib-ng szlib hdf4 hdf5 netcdf netcdf-fortran esmf xgboost \
-                 $(GFE_DIRS) FLAP
+ESSENTIAL_DIRS = jpeg zlib-ng szlib hdf4 hdf5 netcdf netcdf-fortran \
+					  udunits2 fortran_udunits2 esmf GFE
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
@@ -282,7 +303,7 @@ INC_SUPP :=  $(foreach subdir, \
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 else
 ifeq ('$(BUILD)','GFE')
-SUBDIRS = $(GFE_DIRS)
+SUBDIRS = GFE
 else
 SUBDIRS = $(ALLDIRS)
 INC_SUPP :=  $(foreach subdir, \
@@ -299,6 +320,14 @@ else
    LIB_HDF4 =
    # Also need to remove hdfeos if no hdf4
    SUBDIRS := $(filter-out hdfeos,$(SUBDIRS))
+endif
+
+# Since we do not build the Fortran interface
+# to HDF4 with ifx, we cannot build hdf-eos2
+# or SDPToolkit
+ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
+   SUBDIRS := $(filter-out hdfeos,$(SUBDIRS))
+   SUBDIRS := $(filter-out SDPToolkit,$(SUBDIRS))
 endif
 
 TARGETS = all lib install
@@ -320,6 +349,7 @@ verify:
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
+	@echo LIB_EXTRA = $(LIB_EXTRA)
 	@echo NAG_FCFLAGS = $(NAG_FCFLAGS)
 	@echo FC_FROM_ENV = $(FC_FROM_ENV)
 	@echo CC_FROM_ENV = $(CC_FROM_ENV)
@@ -488,12 +518,13 @@ jpeg.config: jpeg/configure
 		      CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-hdf4.config: hdf4/README.txt jpeg.install zlib-ng.install szlib.install
+hdf4.config: hdf4/README.md jpeg.install zlib-ng.install szlib.install
 	@echo Configuring hdf4
 	@(cd hdf4; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LDFLAGS="-lm $(LIB_EXTRA)" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --program-suffix="-hdf4"\
                       --includedir=$(prefix)/include/hdf \
@@ -501,7 +532,9 @@ hdf4.config: hdf4/README.txt jpeg.install zlib-ng.install szlib.install
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
                       --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
                       --disable-netcdf \
-                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
+                      --enable-hdf4-xdr \
+                      $(HDF4_ENABLE_FORTRAN) \
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
 hdf5.config :: hdf5/README.md szlib.install zlib-ng.install
@@ -585,13 +618,19 @@ udunits2.config : udunits2/configure.ac
 	@echo "Configuring udunits2 $*"
 	@(cd udunits2; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
-          export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          export CPPFLAGS="$(CPPFLAGS)";\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/udunits2 \
                       --disable-shared \
-                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+	@touch $@
+
+fortran_udunits2.config: udunits2.install
+	@echo "Configuring fortran_udunits2"
+	@mkdir -p ./fortran_udunits2/build
+	@(cd ./fortran_udunits2/build; \
+		cmake -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_INSTALL_PREFIX=$(prefix) .. -DCMAKE_Fortran_COMPILER=$(NC_FC))
 	@touch $@
 
 INC_HDF5 = $(prefix)/include/hdf5
@@ -673,6 +712,7 @@ curl.config : curl/configure.ac zlib-ng.install
                       --without-libidn2 \
                       --without-nghttp2 \
                       --without-nghttp3 \
+                      --without-libpsl \
                       $(CURL_SSL) \
                       CFLAGS="$(CFLAGS) $(MMACOS_MIN)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
@@ -784,6 +824,7 @@ hdfeos.config: hdfeos.download hdfeos/configure hdf4.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos \
                       --disable-shared --enable-static \
@@ -810,7 +851,7 @@ hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
                       --includedir=$(prefix)/include/hdfeos5 \
                       --disable-shared --enable-static \
                       --enable-fortran \
-                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC="$(H5_CC)" FC=$(H5_FC) F77=$(H5_FC) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC="$(H5_CC)" FC=$(H5_FC) F77=$(H5_FC) )
 	@touch $@
 
 INC_SUPP_SDP :=  $(foreach subdir, \
@@ -838,7 +879,7 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
                       --with-hdfeos5=$(prefix)/include/hdfeos5,$(prefix)/lib \
                       --enable-fortran \
                       --disable-shared --enable-static \
-                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR) $(NO_INT_CONVERSION_ERROR)" FCFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 
@@ -894,6 +935,12 @@ nccmp.install: nccmp.config
 	@(cd nccmp; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
+	@touch $@
+
+fortran_udunits2.install: fortran_udunits2.config
+	@echo "Installing fortran_udunits2"
+	@(cd ./fortran_udunits2/build; \
+		$(MAKE) install )
 	@touch $@
 
 xgboost.install: xgboost.config
@@ -1057,6 +1104,14 @@ netcdf-cxx4.distclean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
+fortran_udunits2.clean:
+	@echo "Cleaning fortran_udunits2"
+	@rm -rf ./fortran_udunits2/build
+
+fortran_udunits2.distclean:
+	@echo "Cleaning fortran_udunits2"
+	@rm -rf ./fortran_udunits2/build
+
 xgboost.clean:
 	@echo "Cleaning xgboost"
 	@rm -rf ./xgboost/build
@@ -1108,6 +1163,9 @@ esmf.all_tests : esmf_rules.mk
 curl.check: curl.install
 	@echo "Checking curl"
 	@echo "We explicitly do not check cURL due to how long it takes"
+
+fortran_udunits2.check: fortran_udunits2.install
+	@echo "Not sure how to check fortran_udunits2"
 
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"

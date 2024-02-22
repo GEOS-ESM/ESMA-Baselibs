@@ -47,7 +47,7 @@
     else
     ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
       ES_FC := $(FC)
-      ESMF_COMPILER := intelifx
+      ESMF_COMPILER := intel
       FLAP_COMPILER := intel
       FC_FROM_ENV := TRUE
     else
@@ -88,6 +88,11 @@
     ESMF_COMPILER := nag
     FLAP_COMPILER := nag
   else
+  ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
+    ES_FC := $(FC)
+    ESMF_COMPILER := intel
+    FLAP_COMPILER := intel
+  else
   ifneq ($(wildcard $(shell which ifort 2> /dev/null)),)
     FC := ifort
     ES_FC := $(FC)
@@ -109,6 +114,7 @@
   else
     FC := UNKNOWN
     ES_FC := $(FC)
+  endif
   endif
   endif
   endif
@@ -175,6 +181,10 @@
     CC := nvc
     ES_CC := $(CC)
   else
+  ifneq ($(wildcard $(shell which icx 2> /dev/null)),)
+    CC := icx
+    ES_CC := $(CC)
+  else
   ifneq ($(wildcard $(shell which icc 2> /dev/null)),)
     CC := icc
     ES_CC := $(CC)
@@ -189,6 +199,7 @@
     ES_CC := $(CC)
   else
     CC := UNKNOWN
+  endif
   endif
   endif
   endif
@@ -252,6 +263,10 @@
     CXX := nvc++
     ES_CXX := $(CXX)
   else
+  ifneq ($(wildcard $(shell which icpx 2> /dev/null)),)
+    CXX := icpx
+    ES_CXX := $(CXX)
+  else
   ifneq ($(wildcard $(shell which icpc 2> /dev/null)),)
     CXX := icpc
     ES_CXX := $(CXX)
@@ -267,6 +282,7 @@
   endif
   endif
   endif
+  endif
 
 # MPI CC compiler detection
 # --------------------
@@ -274,7 +290,11 @@
     ifeq ($(findstring gcc,$(notdir $(CC))),gcc)
       MPICC := mpigcc
     else
+    ifeq ($(findstring icx,$(notdir $(CC))),icx)
+      MPICC := mpiicx
+    else
       MPICC := mpiicc
+    endif
     endif
   else
   ifeq ($(ESMF_COMM),openmpi)
@@ -294,7 +314,11 @@
     ifeq ($(findstring g++,$(notdir $(CXX))),g++)
       MPICXX := mpigxx
     else
+    ifeq ($(findstring icpx,$(notdir $(CXX))),icpx)
+      MPICXX := mpiicpx
+    else
       MPICXX := mpiicpc
+    endif
     endif
   else
   ifeq ($(ESMF_COMM),openmpi)
@@ -318,8 +342,12 @@
     ifeq ($(findstring gfortran,$(notdir $(FC))),gfortran)
       MPIFC := mpifc
     else
+    ifeq ($(findstring gfortran,$(notdir $(FC))),ifx)
+      MPIFC := mpiifx
+    else
       MPIFC := mpiifort
       CPPDEFS += -DpgiFortran
+    endif
     endif
   else
   ifeq ($(ESMF_COMM),openmpi)

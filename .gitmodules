@@ -18,7 +18,7 @@
 	url = https://github.com/Unidata/netcdf-cxx4.git
 [submodule "udunits2"]
 	path = udunits2
-	url = https://github.com/Unidata/UDUNITS-2.git
+	url = https://github.com/GMAO-SI-Team/UDUNITS-2.git
 [submodule "nco"]
 	path = nco
 	url = https://github.com/nco/nco.git
@@ -43,6 +43,9 @@
 [submodule "xgboost"]
 	path = xgboost
 	url = https://github.com/dmlc/xgboost.git
+[submodule "fortran_udunits2"]
+	path = fortran_udunits2
+	url = https://github.com/GMAO-SI-Team/fortran_udunits2.git
 [submodule "zlib-ng"]
 	path = zlib-ng
 	url = https://github.com/zlib-ng/zlib-ng.git

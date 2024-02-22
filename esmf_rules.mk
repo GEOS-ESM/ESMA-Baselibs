@@ -54,6 +54,14 @@ endif
     endif
   endif
 
+# ESMF on Darwin seems to have issues with ESMF's trace library
+# so we turn it off on Darwin
+# -----------------------------------------------------------------
+  ifeq ($(ARCH), Darwin)
+    ESMF_TRACE_LIB_BUILD=OFF
+    export ESMF_TRACE_LIB_BUILD
+  endif
+
 # ESMF with GCC 10.1 needs extra flags
 # ------------------------------------
 
