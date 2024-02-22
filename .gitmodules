@@ -1,6 +1,3 @@
-[submodule "zlib"]
-	path = zlib
-	url = https://github.com/madler/zlib.git
 [submodule "jpeg"]
 	path = jpeg
 	url = https://github.com/libjpeg-turbo/ijg.git
@@ -49,3 +46,6 @@
 [submodule "fortran_udunits2"]
 	path = fortran_udunits2
 	url = https://github.com/GMAO-SI-Team/fortran_udunits2.git
+[submodule "zlib-ng"]
+	path = zlib-ng
+	url = https://github.com/zlib-ng/zlib-ng.git
