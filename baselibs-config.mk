@@ -9,6 +9,10 @@ ifeq ($(findstring pgcc,$(notdir $(CC))),pgcc)
 else
 ifeq ($(findstring gcc,$(notdir $(CC))),gcc)
    CC_VERSION := $(shell $(CC) --version | awk '{ if(NR==1) print $$3}')
+else
+ifeq ($(findstring clang,$(notdir $(CC))),clang)
+   CC_VERSION := $(shell $(CC) --version | awk '{ if(NR==1) print $$4}')
+endif
 endif
 endif
 endif
@@ -32,8 +36,12 @@ else
 ifeq ($(findstring pg++,$(notdir $(CXX))),pg++)
    CXX_VERSION := $(shell $(CXX) --version | awk '{ if(NR==2) print $$2}')
 else
+ifeq ($(findstring clang++,$(notdir $(CXX))),clang++)
+   CXX_VERSION := $(shell $(CXX) --version | awk '{ if(NR==1) print $$4}')
+else
 ifeq ($(findstring g++,$(notdir $(CXX))),g++)
    CXX_VERSION := $(shell $(CXX) --version | awk '{ if(NR==1) print $$3}')
+endif
 endif
 endif
 endif
@@ -71,14 +79,14 @@ endif
 endif
 endif
 
+# We should not do this if FC is nagfor
+ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
+MPIFC_COMPILER := $(FC)
+else
 MPIFC_COMPILER := $(shell $(MPIFC) $(FORTRAN_VERSION) | awk '{ if(NR==1) print $$1}')
 ifeq ($(MPIFC_COMPILER),)
    MPIFC_COMPILER := $(shell $(MPIFC) $(FORTRAN_VERSION) | awk '{ if(NR==2) print $$1}')
 endif
-
-MPIFC_VERSION := $(shell $(MPIFC) $(FORTRAN_VERSION) | awk '{ if(NR==1) print $$3}')
-ifeq ($(MPIFC_VERSION),)
-   MPIFC_VERSION := $(shell $(MPIFC) $(FORTRAN_VERSION) | awk '{ if(NR==2) print $$2}')
 endif
 
 # ---------------------
@@ -94,6 +102,7 @@ s?###CXX_VERSION###?$(CXX_VERSION)?g
 
 s?###FC###?$(FC)?g
 s?###FC_VERSION###?$(FC_VERSION)?g
+s?###FORTRAN_VERSION###?$(FORTRAN_VERSION)?g
 
 s?###MPICC###?$(MPICC)?g
 s?###MPICC_COMPILER###?$(MPICC_COMPILER)?g

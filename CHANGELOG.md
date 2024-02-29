@@ -4,6 +4,9 @@
 
 ### Updates
 ### Fixed
+
+- Fixed bad interaction between NAG and `baselibs-config.mk`
+
 ### Changed
 ### Removed
 ### Added
