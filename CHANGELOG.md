@@ -4,12 +4,15 @@
 
 ### Updates
 ### Fixed
-
-- Fixed bad interaction between NAG and `baselibs-config.mk`
-
 ### Changed
 ### Removed
 ### Added
+
+## [7.18.2] - 2024-03-04
+
+### Fixed
+
+- Fixed bad interaction between NAG and `baselibs-config.mk`
 
 ## [7.18.1] - 2024-02-08
 
