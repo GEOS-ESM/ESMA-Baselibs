@@ -19,6 +19,7 @@
   - pFUnit v4.9.0
   - yaFyaml v1.3.0
   - pFlogger v1.13.1
+- NCO v5.2.1
 
 ## [7.18.2] - 2024-03-04
 
