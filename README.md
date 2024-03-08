@@ -18,7 +18,7 @@ NASA/GSFC.
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.14.3       |
 | [HDF4](https://portal.hdfgroup.org/display/support)                      | 4.2.16-2     |
-| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                  | v1.12.0      |
+| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                  | v1.13.0      |
 | [xgboost](https://github.com/dmlc/xgboost)                               | v1.6.0       |
 | [antlr2](https://www.antlr2.org/)                                        | 2.7.7        |
 | [GSL](https://www.gnu.org/software/gsl/)                                 | 2.7          |
@@ -28,7 +28,7 @@ NASA/GSFC.
 | [cURL](https://curl.haxx.se/)                                            | 8.6.0        |
 | [UDUNITS2](https://github.com/GMAO-SI-Team/UDUNITS-2.git)                | 2.2.28       |
 | [fortran_udunits2](https://github.com/GMAO-SI-Team/fortran_udunits2.git) | v1.0.0-rc.3  |
-| [NCO](http://nco.sourceforge.net/)                                       | 5.1.9        |
+| [NCO](http://nco.sourceforge.net/)                                       | 5.2.1        |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.3.0        |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.9.1.0      |
 | [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.10.0 |
