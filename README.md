@@ -16,7 +16,7 @@ NASA/GSFC.
 | [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.9.2        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.6.1        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1        |
-| [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.14.3       |
+| [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.10.11      |
 | [HDF4](https://portal.hdfgroup.org/display/support)                      | 4.2.16-2     |
 | [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                  | v1.13.0      |
 | [xgboost](https://github.com/dmlc/xgboost)                               | v1.6.0       |
