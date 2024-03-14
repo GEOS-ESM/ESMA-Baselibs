@@ -8,6 +8,14 @@
 ### Removed
 ### Added
 
+## [7.20.0] - 2024-03-15
+
+### Updates
+
+- Revert to HDF5 1.10.11
+  - We are seeing issues with MAPL using HDF5 1.14 for unknown reasons. Runs fail on calls to `nf90_create`. Older
+    HDF5 doesn't seem to have this issue
+
 ## [7.19.0] - 2024-03-08
 
 ### Updates
