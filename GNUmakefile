@@ -27,6 +27,8 @@ RELEASE_DIR = $(shell dirname $(MKFILE_DIR))
 RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 
 MAKEJOBS = $(patsubst -j%,%,$(filter -j%,$(MFLAGS)))
+# Note, if MAKEJOBS is blank, we need to set it to 1
+MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 
 # System dependent defauls
 # ------------------------
