@@ -26,6 +26,8 @@ DATE = $(shell date +"%Y%b%d")
 RELEASE_DIR = $(shell dirname $(MKFILE_DIR))
 RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 
+MAKEJOBS = $(patsubst -j%,%,$(filter -j%,$(MFLAGS)))
+
 # System dependent defauls
 # ------------------------
   include Base.mk
@@ -371,6 +373,7 @@ verify:
 	@echo ESMF_COMPILER = $(ESMF_COMPILER)
 	@echo ENABLE_HDF4 = $(ENABLE_HDF4)
 	@echo LIB_HDF4 = $(LIB_HDF4)
+	@echo MAKEJOBS = $(MAKEJOBS)
 	@ argv="$(SUBDIRS)" ;\
         ( echo "-------+---------+---------+--------------" );  \
         ( echo "Config | Install |  Check  |   Package" );      \
@@ -940,19 +943,19 @@ nccmp.install: nccmp.config
 fortran_udunits2.install: fortran_udunits2.config
 	@echo "Installing fortran_udunits2"
 	@(cd ./fortran_udunits2; \
-		cmake --build build --target install -j 4)
+		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
 xgboost.install: xgboost.config
 	@echo "Installing xgboost"
 	@(cd ./xgboost; \
-		cmake --build build --target install -j 4)
+		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
 GFE.install: GFE.config
 	@echo "Installing GFE"
 	@(cd ./GFE; \
-		cmake --build build --target install -j 4)
+		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
 FLAP.install: FLAP.config
@@ -1177,7 +1180,7 @@ GFE.check: GFE.install
 	@mkdir -p ./GFE/build
 	@(cd ./GFE; \
 		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES ;\
-		cmake --build build --target tests -j 4)
+		cmake --build build --target tests -j $(MAKEJOBS))
 	@touch $@
 
 FLAP.check: FLAP.install
