@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 ### Updates
+
+- NCO 5.2.4
+
 ### Fixed
 ### Changed
 
