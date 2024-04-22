@@ -3,11 +3,18 @@
 ## [Unreleased]
 
 ### Updates
+### Fixed
+### Changed
+### Removed
+### Added
+
+## [7.24.0] - 2024-04-23
+
+### Updates
 
 - ESMF v8.6.1b04
 - NCO 5.2.4
 
-### Fixed
 ### Changed
 
 - Changed all CMake builds to be "canonical" (`cmake -B build -S .` and `cmake --build build`)
@@ -18,8 +25,6 @@
   - Removed as MAPL now uses its own interface to UDUNITS2
 - FLAP
   - Removed as MAPL now uses fArgParse
-
-### Added
 
 ## [7.23.0] - 2024-03-26
 
