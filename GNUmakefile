@@ -26,6 +26,10 @@ DATE = $(shell date +"%Y%b%d")
 RELEASE_DIR = $(shell dirname $(MKFILE_DIR))
 RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 
+MAKEJOBS = $(patsubst -j%,%,$(filter -j%,$(MFLAGS)))
+# Note, if MAKEJOBS is blank, we need to set it to 1
+MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
+
 # System dependent defauls
 # ------------------------
   include Base.mk
@@ -371,6 +375,7 @@ verify:
 	@echo ESMF_COMPILER = $(ESMF_COMPILER)
 	@echo ENABLE_HDF4 = $(ENABLE_HDF4)
 	@echo LIB_HDF4 = $(LIB_HDF4)
+	@echo MAKEJOBS = $(MAKEJOBS)
 	@ argv="$(SUBDIRS)" ;\
         ( echo "-------+---------+---------+--------------" );  \
         ( echo "Config | Install |  Check  |   Package" );      \
@@ -629,8 +634,8 @@ udunits2.config : udunits2/configure.ac
 fortran_udunits2.config: udunits2.install
 	@echo "Configuring fortran_udunits2"
 	@mkdir -p ./fortran_udunits2/build
-	@(cd ./fortran_udunits2/build; \
-		cmake -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_INSTALL_PREFIX=$(prefix) .. -DCMAKE_Fortran_COMPILER=$(NC_FC))
+	@(cd ./fortran_udunits2; \
+		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_Fortran_COMPILER=$(NC_FC))
 	@touch $@
 
 INC_HDF5 = $(prefix)/include/hdf5
@@ -758,23 +763,23 @@ nccmp.config: nccmp/configure netcdf.install
 xgboost.config:
 	@echo "Configuring xgboost"
 	@mkdir -p ./xgboost/build
-	@(cd ./xgboost/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) .. )
+	@(cd ./xgboost; \
+		cmake -B build -S . --install-prefix=$(prefix) )
 	@touch $@
 
 GFE.config:
 	@echo "Configuring GFE"
 	@mkdir -p ./GFE/build
-	@(cd ./GFE/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. )
+	@(cd ./GFE; \
+		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES )
 	@touch $@
 
 FLAP.config:
 	@echo "Configuring FLAP"
 	@mkdir -p $(prefix)/lib
 	@mkdir -p ./FLAP/build
-	@(cd ./FLAP/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) .. )
+	@(cd ./FLAP; \
+		cmake -B build -S . --install-prefix=$(prefix) )
 	@touch $@
 
 antlr2.config : antlr2/configure
@@ -939,26 +944,26 @@ nccmp.install: nccmp.config
 
 fortran_udunits2.install: fortran_udunits2.config
 	@echo "Installing fortran_udunits2"
-	@(cd ./fortran_udunits2/build; \
-		$(MAKE) install )
+	@(cd ./fortran_udunits2; \
+		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
 xgboost.install: xgboost.config
 	@echo "Installing xgboost"
-	@(cd ./xgboost/build; \
-		$(MAKE) install )
+	@(cd ./xgboost; \
+		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
 GFE.install: GFE.config
 	@echo "Installing GFE"
-	@(cd ./GFE/build; \
-		$(MAKE) install )
+	@(cd ./GFE; \
+		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
 FLAP.install: FLAP.config
 	@echo "Installing FLAP with CMake"
-	@(cd ./FLAP/build; \
-      $(MAKE) -j1 install )
+	@(cd ./FLAP; \
+		cmake --build build --target install -j 1)
 	@touch $@
 
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup
@@ -1175,9 +1180,9 @@ GFE.check: GFE.install
 	@echo "This requires a re-CMake to enable testing"
 	@rm -rf ./GFE/build
 	@mkdir -p ./GFE/build
-	@(cd ./GFE/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. ;\
-		$(MAKE) tests)
+	@(cd ./GFE; \
+		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES ;\
+		cmake --build build --target tests -j $(MAKEJOBS))
 	@touch $@
 
 FLAP.check: FLAP.install

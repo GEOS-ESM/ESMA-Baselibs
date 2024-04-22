@@ -5,6 +5,9 @@
 ### Updates
 ### Fixed
 ### Changed
+
+- Changed all CMake builds to be "canonical" (`cmake -B build -S .` and `cmake --build build`)
+
 ### Removed
 ### Added
 
