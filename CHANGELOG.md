@@ -4,6 +4,7 @@
 
 ### Updates
 
+- ESMF v8.6.1b04
 - NCO 5.2.4
 
 ### Fixed
