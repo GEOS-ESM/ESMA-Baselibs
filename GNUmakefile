@@ -269,7 +269,7 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 fortran_udunits2 nco cdo nccmp esmf xgboost \
+          udunits2 nco cdo nccmp esmf xgboost \
           GFE \
           FLAP hdfeos hdfeos5 SDPToolkit
 
@@ -292,7 +292,7 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
 endif
 
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran \
-					  udunits2 fortran_udunits2 esmf GFE
+					  udunits2 esmf GFE
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
@@ -631,13 +631,6 @@ udunits2.config : udunits2/configure.ac
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
-fortran_udunits2.config: udunits2.install
-	@echo "Configuring fortran_udunits2"
-	@mkdir -p ./fortran_udunits2/build
-	@(cd ./fortran_udunits2; \
-		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_Fortran_COMPILER=$(NC_FC))
-	@touch $@
-
 INC_HDF5 = $(prefix)/include/hdf5
 LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz curl,\
            $(prefix)/lib/lib$(lib).a) )
@@ -942,12 +935,6 @@ nccmp.install: nccmp.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
-fortran_udunits2.install: fortran_udunits2.config
-	@echo "Installing fortran_udunits2"
-	@(cd ./fortran_udunits2; \
-		cmake --build build --target install -j $(MAKEJOBS))
-	@touch $@
-
 xgboost.install: xgboost.config
 	@echo "Installing xgboost"
 	@(cd ./xgboost; \
@@ -1109,14 +1096,6 @@ netcdf-cxx4.distclean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
-fortran_udunits2.clean:
-	@echo "Cleaning fortran_udunits2"
-	@rm -rf ./fortran_udunits2/build
-
-fortran_udunits2.distclean:
-	@echo "Cleaning fortran_udunits2"
-	@rm -rf ./fortran_udunits2/build
-
 xgboost.clean:
 	@echo "Cleaning xgboost"
 	@rm -rf ./xgboost/build
@@ -1168,9 +1147,6 @@ esmf.all_tests : esmf_rules.mk
 curl.check: curl.install
 	@echo "Checking curl"
 	@echo "We explicitly do not check cURL due to how long it takes"
-
-fortran_udunits2.check: fortran_udunits2.install
-	@echo "Not sure how to check fortran_udunits2"
 
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"

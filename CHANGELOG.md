@@ -13,6 +13,10 @@
 - Changed all CMake builds to be "canonical" (`cmake -B build -S .` and `cmake --build build`)
 
 ### Removed
+
+- fortran_udunits2
+  - Removed as MAPL now uses its own interface to UDUNITS2
+
 ### Added
 
 ## [7.23.0] - 2024-03-26
