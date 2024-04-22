@@ -177,13 +177,6 @@ then
    echo_version fArgParse "$FARGPARSE_VERSION" "$FARGPARSE_VERSION_LOC"
 fi
 
-FLAP_VERSION_LOC="FLAP/README.md"
-if [[ -e $FLAP_VERSION_LOC ]]
-then
-   FLAP_VERSION=$(grep '^ *version' ${FLAP_VERSION_LOC} | awk '{print $3}' | sed "s/'//g")
-   echo_version FLAP "$FLAP_VERSION" "$FLAP_VERSION_LOC"
-fi
-
 HDFEOS_VERSION_LOC="hdfeos/src/EHapi.c"
 if [[ -e $HDFEOS_VERSION_LOC ]]
 then

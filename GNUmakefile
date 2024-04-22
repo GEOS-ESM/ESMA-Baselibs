@@ -271,7 +271,7 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
           udunits2 nco cdo nccmp esmf xgboost \
           GFE \
-          FLAP hdfeos hdfeos5 SDPToolkit
+          hdfeos hdfeos5 SDPToolkit
 
 ifeq ($(ARCH),Darwin)
    NO_DARWIN_DIRS = netcdf-cxx4 hdfeos hdfeos5 SDPToolkit
@@ -449,7 +449,6 @@ baselibs-config: baselibs-config.mk
 	@echo "ES_CC: $(ES_CC)" >> $(prefix)/etc/CONFIG
 	@echo "ES_CXX: $(ES_CXX)" >> $(prefix)/etc/CONFIG
 	@echo "ES_FC: $(ES_FC)" >> $(prefix)/etc/CONFIG
-	@echo "FLAP_COMPILER: $(FLAP_COMPILER)" >> $(prefix)/etc/CONFIG
 	@echo "" >> $(prefix)/etc/CONFIG
 	@echo "CONFIG_SETUP: $(CONFIG_SETUP)" >> $(prefix)/etc/CONFIG
 	@echo "SYSNAME: $(SYSNAME)" >> $(prefix)/etc/CONFIG
@@ -767,14 +766,6 @@ GFE.config:
 		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES )
 	@touch $@
 
-FLAP.config:
-	@echo "Configuring FLAP"
-	@mkdir -p $(prefix)/lib
-	@mkdir -p ./FLAP/build
-	@(cd ./FLAP; \
-		cmake -B build -S . --install-prefix=$(prefix) )
-	@touch $@
-
 antlr2.config : antlr2/configure
 	@echo "Configuring antlr2"
 	@mkdir -p ./antlr2/build
@@ -947,12 +938,6 @@ GFE.install: GFE.config
 		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
-FLAP.install: FLAP.config
-	@echo "Installing FLAP with CMake"
-	@(cd ./FLAP; \
-		cmake --build build --target install -j 1)
-	@touch $@
-
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup
 #      in nco. If you just run nco, it never makes the libnco.a library, or at least
 #      does not make it correctly. As the nco/m4/libtool.m4 and, say, the
@@ -1112,14 +1097,6 @@ GFE.distclean:
 	@echo "Cleaning GFE"
 	@rm -rf ./GFE/build
 
-FLAP.clean:
-	@echo "Cleaning FLAP"
-	@rm -rf ./FLAP/build
-
-FLAP.distclean:
-	@echo "Cleaning FLAP"
-	@rm -rf ./FLAP/build
-
 antlr2.clean:
 	@echo "Cleaning antlr2"
 	@rm -rf ./antlr2/build
@@ -1160,9 +1137,6 @@ GFE.check: GFE.install
 		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES ;\
 		cmake --build build --target tests -j $(MAKEJOBS))
 	@touch $@
-
-FLAP.check: FLAP.install
-	@echo "Not sure how to check FLAP"
 
 antlr2.check: antlr2.install
 	@echo "Checking antlr2"

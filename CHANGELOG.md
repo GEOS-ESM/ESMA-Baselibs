@@ -16,6 +16,8 @@
 
 - fortran_udunits2
   - Removed as MAPL now uses its own interface to UDUNITS2
+- FLAP
+  - Removed as MAPL now uses fArgParse
 
 ### Added
 

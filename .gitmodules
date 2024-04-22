@@ -31,9 +31,6 @@
 [submodule "hdf4"]
 	path = hdf4
 	url = https://github.com/HDFGroup/hdf4.git
-[submodule "FLAP"]
-	path = FLAP
-	url = https://github.com/mathomp4/FLAP.git
 [submodule "esmf"]
 	path = esmf
 	url = https://github.com/esmf-org/esmf.git
