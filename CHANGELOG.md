@@ -14,6 +14,7 @@
 
 - ESMF v8.6.1b04
 - NCO 5.2.4
+- curl 8.7.1
 
 ### Changed
 
