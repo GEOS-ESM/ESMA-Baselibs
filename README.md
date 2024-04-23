@@ -12,7 +12,7 @@ NASA/GSFC.
 
 | Library                                                                  | Version      |
 | ---                                                                      | ---          |
-| [ESMF](https://github.com/esmf-org/esmf)                                 | v8.6.0       |
+| [ESMF](https://github.com/esmf-org/esmf)                                 | v8.6.1b04    |
 | [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.9.2        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.6.1        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1        |
@@ -25,13 +25,11 @@ NASA/GSFC.
 | [jpeg](http://www.ijg.org/)                                              | 9e           |
 | [zlib](http://www.zlib.net/)                                             | 1.3.1        |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                  | 2.1.1        |
-| [cURL](https://curl.haxx.se/)                                            | 8.6.0        |
+| [cURL](https://curl.haxx.se/)                                            | 8.7.1        |
 | [UDUNITS2](https://github.com/GMAO-SI-Team/UDUNITS-2.git)                | 2.2.28       |
-| [fortran_udunits2](https://github.com/GMAO-SI-Team/fortran_udunits2.git) | v1.0.0-rc.3  |
-| [NCO](http://nco.sourceforge.net/)                                       | 5.2.2        |
+| [NCO](http://nco.sourceforge.net/)                                       | 5.2.4        |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.3.0        |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.9.1.0      |
-| [FLAP](https://github.com/mathomp4/FLAP)                                 | geos/v1.10.0 |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                  | 3.0          |
 | [HDF-EOS5](https://wiki.earthdata.nasa.gov/display/DAS)                  | 2.0          |
 | [SDP Toolkit](https://wiki.earthdata.nasa.gov/display/DAS)               | 5.2.20       |

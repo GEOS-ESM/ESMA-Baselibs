@@ -269,9 +269,9 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 fortran_udunits2 nco cdo nccmp esmf xgboost \
+          udunits2 nco cdo nccmp esmf xgboost \
           GFE \
-          FLAP hdfeos hdfeos5 SDPToolkit
+          hdfeos hdfeos5 SDPToolkit
 
 ifeq ($(ARCH),Darwin)
    NO_DARWIN_DIRS = netcdf-cxx4 hdfeos hdfeos5 SDPToolkit
@@ -292,7 +292,7 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
 endif
 
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran \
-					  udunits2 fortran_udunits2 esmf GFE
+					  udunits2 esmf GFE
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
@@ -449,7 +449,6 @@ baselibs-config: baselibs-config.mk
 	@echo "ES_CC: $(ES_CC)" >> $(prefix)/etc/CONFIG
 	@echo "ES_CXX: $(ES_CXX)" >> $(prefix)/etc/CONFIG
 	@echo "ES_FC: $(ES_FC)" >> $(prefix)/etc/CONFIG
-	@echo "FLAP_COMPILER: $(FLAP_COMPILER)" >> $(prefix)/etc/CONFIG
 	@echo "" >> $(prefix)/etc/CONFIG
 	@echo "CONFIG_SETUP: $(CONFIG_SETUP)" >> $(prefix)/etc/CONFIG
 	@echo "SYSNAME: $(SYSNAME)" >> $(prefix)/etc/CONFIG
@@ -631,13 +630,6 @@ udunits2.config : udunits2/configure.ac
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
-fortran_udunits2.config: udunits2.install
-	@echo "Configuring fortran_udunits2"
-	@mkdir -p ./fortran_udunits2/build
-	@(cd ./fortran_udunits2; \
-		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_Fortran_COMPILER=$(NC_FC))
-	@touch $@
-
 INC_HDF5 = $(prefix)/include/hdf5
 LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz curl,\
            $(prefix)/lib/lib$(lib).a) )
@@ -772,14 +764,6 @@ GFE.config:
 	@mkdir -p ./GFE/build
 	@(cd ./GFE; \
 		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES )
-	@touch $@
-
-FLAP.config:
-	@echo "Configuring FLAP"
-	@mkdir -p $(prefix)/lib
-	@mkdir -p ./FLAP/build
-	@(cd ./FLAP; \
-		cmake -B build -S . --install-prefix=$(prefix) )
 	@touch $@
 
 antlr2.config : antlr2/configure
@@ -942,12 +926,6 @@ nccmp.install: nccmp.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
-fortran_udunits2.install: fortran_udunits2.config
-	@echo "Installing fortran_udunits2"
-	@(cd ./fortran_udunits2; \
-		cmake --build build --target install -j $(MAKEJOBS))
-	@touch $@
-
 xgboost.install: xgboost.config
 	@echo "Installing xgboost"
 	@(cd ./xgboost; \
@@ -958,12 +936,6 @@ GFE.install: GFE.config
 	@echo "Installing GFE"
 	@(cd ./GFE; \
 		cmake --build build --target install -j $(MAKEJOBS))
-	@touch $@
-
-FLAP.install: FLAP.config
-	@echo "Installing FLAP with CMake"
-	@(cd ./FLAP; \
-		cmake --build build --target install -j 1)
 	@touch $@
 
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup
@@ -1109,14 +1081,6 @@ netcdf-cxx4.distclean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
-fortran_udunits2.clean:
-	@echo "Cleaning fortran_udunits2"
-	@rm -rf ./fortran_udunits2/build
-
-fortran_udunits2.distclean:
-	@echo "Cleaning fortran_udunits2"
-	@rm -rf ./fortran_udunits2/build
-
 xgboost.clean:
 	@echo "Cleaning xgboost"
 	@rm -rf ./xgboost/build
@@ -1132,14 +1096,6 @@ GFE.clean:
 GFE.distclean:
 	@echo "Cleaning GFE"
 	@rm -rf ./GFE/build
-
-FLAP.clean:
-	@echo "Cleaning FLAP"
-	@rm -rf ./FLAP/build
-
-FLAP.distclean:
-	@echo "Cleaning FLAP"
-	@rm -rf ./FLAP/build
 
 antlr2.clean:
 	@echo "Cleaning antlr2"
@@ -1169,9 +1125,6 @@ curl.check: curl.install
 	@echo "Checking curl"
 	@echo "We explicitly do not check cURL due to how long it takes"
 
-fortran_udunits2.check: fortran_udunits2.install
-	@echo "Not sure how to check fortran_udunits2"
-
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"
 
@@ -1184,9 +1137,6 @@ GFE.check: GFE.install
 		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES ;\
 		cmake --build build --target tests -j $(MAKEJOBS))
 	@touch $@
-
-FLAP.check: FLAP.install
-	@echo "Not sure how to check FLAP"
 
 antlr2.check: antlr2.install
 	@echo "Checking antlr2"

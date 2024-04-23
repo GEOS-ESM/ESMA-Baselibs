@@ -102,7 +102,6 @@ ifeq ($(ARCH),Linux)
          FC := ifort
          ES_FC := $(FC)
          ESMF_COMPILER := intel
-         FLAP_COMPILER := intel
          FC_FROM_ENV := FALSE
          ifeq ($(ESMF_COMM),intelmpi)
             MPIFC := mpiifort
