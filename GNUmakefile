@@ -26,6 +26,10 @@ DATE = $(shell date +"%Y%b%d")
 RELEASE_DIR = $(shell dirname $(MKFILE_DIR))
 RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 
+MAKEJOBS = $(patsubst -j%,%,$(filter -j%,$(MFLAGS)))
+# Note, if MAKEJOBS is blank, we need to set it to 1
+MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
+
 # System dependent defauls
 # ------------------------
   include Base.mk
@@ -197,6 +201,17 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
      export NO_INT_CONVERSION_ERROR
   endif
 
+# HDF4 plus ifx does not work with Fortran bindings
+# -------------------------------------------------
+
+  ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
+     HDF4_ENABLE_FORTRAN := --disable-fortran
+     export HDF4_ENABLE_FORTRAN
+  else
+     HDF4_ENABLE_FORTRAN := --enable-fortran
+     export HDF4_ENABLE_FORTRAN
+  endif
+
 # HDF5 and MPT at NCCS have an "issue" that needs an extra flag
 # -------------------------------------------------------------
 
@@ -254,9 +269,9 @@ RELEASE_FILE = $(MKFILE_DIRNAME)-$(DATE)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 fortran_udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
+          udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
           GFE \
-          FLAP hdfeos hdfeos5 SDPToolkit
+          hdfeos hdfeos5 SDPToolkit
 
 ifeq ($(ARCH),Darwin)
    NO_DARWIN_DIRS = netcdf-cxx4 hdfeos hdfeos5 SDPToolkit
@@ -279,7 +294,7 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
 endif
 
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
-					  udunits2 fortran_udunits2 esmf GFE
+					  udunits2 esmf GFE
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
@@ -311,6 +326,14 @@ else
    LIB_HDF4 =
    # Also need to remove hdfeos if no hdf4
    SUBDIRS := $(filter-out hdfeos,$(SUBDIRS))
+endif
+
+# Since we do not build the Fortran interface
+# to HDF4 with ifx, we cannot build hdf-eos2
+# or SDPToolkit
+ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
+   SUBDIRS := $(filter-out hdfeos,$(SUBDIRS))
+   SUBDIRS := $(filter-out SDPToolkit,$(SUBDIRS))
 endif
 
 TARGETS = all lib install
@@ -354,6 +377,7 @@ verify:
 	@echo ESMF_COMPILER = $(ESMF_COMPILER)
 	@echo ENABLE_HDF4 = $(ENABLE_HDF4)
 	@echo LIB_HDF4 = $(LIB_HDF4)
+	@echo MAKEJOBS = $(MAKEJOBS)
 	@ argv="$(SUBDIRS)" ;\
         ( echo "-------+---------+---------+--------------" );  \
         ( echo "Config | Install |  Check  |   Package" );      \
@@ -427,7 +451,6 @@ baselibs-config: baselibs-config.mk
 	@echo "ES_CC: $(ES_CC)" >> $(prefix)/etc/CONFIG
 	@echo "ES_CXX: $(ES_CXX)" >> $(prefix)/etc/CONFIG
 	@echo "ES_FC: $(ES_FC)" >> $(prefix)/etc/CONFIG
-	@echo "FLAP_COMPILER: $(FLAP_COMPILER)" >> $(prefix)/etc/CONFIG
 	@echo "" >> $(prefix)/etc/CONFIG
 	@echo "CONFIG_SETUP: $(CONFIG_SETUP)" >> $(prefix)/etc/CONFIG
 	@echo "SYSNAME: $(SYSNAME)" >> $(prefix)/etc/CONFIG
@@ -516,7 +539,7 @@ hdf4.config: hdf4/README.md jpeg.install zlib.install szlib.install
                       --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
                       --disable-netcdf \
                       --enable-hdf4-xdr \
-                      --enable-fortran \
+                      $(HDF4_ENABLE_FORTRAN) \
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
@@ -609,13 +632,6 @@ udunits2.config : udunits2/configure.ac
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
-fortran_udunits2.config: udunits2.install
-	@echo "Configuring fortran_udunits2"
-	@mkdir -p ./fortran_udunits2/build
-	@(cd ./fortran_udunits2/build; \
-		cmake -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_INSTALL_PREFIX=$(prefix) .. -DCMAKE_Fortran_COMPILER=$(NC_FC))
-	@touch $@
-
 INC_HDF5 = $(prefix)/include/hdf5
 LIB_HDF5 = $(wildcard $(foreach lib, hdf5_hl hdf5 z sz curl,\
            $(prefix)/lib/lib$(lib).a) )
@@ -695,6 +711,7 @@ curl.config : curl/configure.ac zlib.install
                       --without-libidn2 \
                       --without-nghttp2 \
                       --without-nghttp3 \
+                      --without-libpsl \
                       $(CURL_SSL) \
                       CFLAGS="$(CFLAGS) $(MMACOS_MIN)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
@@ -740,37 +757,29 @@ nccmp.config: nccmp/configure netcdf.install
 xgboost.config:
 	@echo "Configuring xgboost"
 	@mkdir -p ./xgboost/build
-	@(cd ./xgboost/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) .. )
+	@(cd ./xgboost; \
+		cmake -B build -S . --install-prefix=$(prefix) )
 	@touch $@
 
 GFE.config:
 	@echo "Configuring GFE"
 	@mkdir -p ./GFE/build
-	@(cd ./GFE/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. )
+	@(cd ./GFE; \
+		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES )
 	@touch $@
 
 libyaml.config:
 	@echo "Configuring libyaml"
 	@mkdir -p ./libyaml/build
-	@(cd ./libyaml/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) .. )
+	@(cd ./libyaml; \
+		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) )
 	@touch $@
 
 FMS.config: netcdf.install netcdf-fortran.install libyaml.install
 	@echo "Configuring FMS"
 	@mkdir -p ./FMS/build
-	@(cd ./FMS/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf -DUSE_DEPRECATED_IO=ON .. )
-	@touch $@
-
-FLAP.config:
-	@echo "Configuring FLAP"
-	@mkdir -p $(prefix)/lib
-	@mkdir -p ./FLAP/build
-	@(cd ./FLAP/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) .. )
+	@(cd ./FMS; \
+		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf -DUSE_DEPRECATED_IO=ON )
 	@touch $@
 
 antlr2.config : antlr2/configure
@@ -933,40 +942,28 @@ nccmp.install: nccmp.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
-fortran_udunits2.install: fortran_udunits2.config
-	@echo "Installing fortran_udunits2"
-	@(cd ./fortran_udunits2/build; \
-		$(MAKE) install )
-	@touch $@
-
 xgboost.install: xgboost.config
 	@echo "Installing xgboost"
-	@(cd ./xgboost/build; \
-		$(MAKE) install )
+	@(cd ./xgboost; \
+		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
 GFE.install: GFE.config
 	@echo "Installing GFE"
-	@(cd ./GFE/build; \
-		$(MAKE) install )
+	@(cd ./GFE; \
+		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
 libyaml.install: libyaml.config
 	@echo "Installing libyaml"
-	@(cd ./libyaml/build; \
-		$(MAKE) install )
+	@(cd ./libyaml; \
+		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
 FMS.install: FMS.config
 	@echo "Installing FMS"
-	@(cd ./FMS/build; \
-		$(MAKE) install )
-	@touch $@
-
-FLAP.install: FLAP.config
-	@echo "Installing FLAP with CMake"
-	@(cd ./FLAP/build; \
-      $(MAKE) -j1 install )
+	@(cd ./FMS; \
+		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup
@@ -1112,14 +1109,6 @@ netcdf-cxx4.distclean:
 	@echo "Cleaning netcdf-cxx4"
 	@rm -rf ./netcdf-cxx4/build
 
-fortran_udunits2.clean:
-	@echo "Cleaning fortran_udunits2"
-	@rm -rf ./fortran_udunits2/build
-
-fortran_udunits2.distclean:
-	@echo "Cleaning fortran_udunits2"
-	@rm -rf ./fortran_udunits2/build
-
 xgboost.clean:
 	@echo "Cleaning xgboost"
 	@rm -rf ./xgboost/build
@@ -1152,14 +1141,6 @@ FMS.distclean:
 	@echo "Cleaning FMS"
 	@rm -rf ./FMS/build
 
-FLAP.clean:
-	@echo "Cleaning FLAP"
-	@rm -rf ./FLAP/build
-
-FLAP.distclean:
-	@echo "Cleaning FLAP"
-	@rm -rf ./FLAP/build
-
 antlr2.clean:
 	@echo "Cleaning antlr2"
 	@rm -rf ./antlr2/build
@@ -1188,9 +1169,6 @@ curl.check: curl.install
 	@echo "Checking curl"
 	@echo "We explicitly do not check cURL due to how long it takes"
 
-fortran_udunits2.check: fortran_udunits2.install
-	@echo "Not sure how to check fortran_udunits2"
-
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"
 
@@ -1207,13 +1185,10 @@ GFE.check: GFE.install
 	@echo "This requires a re-CMake to enable testing"
 	@rm -rf ./GFE/build
 	@mkdir -p ./GFE/build
-	@(cd ./GFE/build; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES .. ;\
-		$(MAKE) tests)
+	@(cd ./GFE; \
+		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES ;\
+		cmake --build build --target tests -j $(MAKEJOBS))
 	@touch $@
-
-FLAP.check: FLAP.install
-	@echo "Not sure how to check FLAP"
 
 antlr2.check: antlr2.install
 	@echo "Checking antlr2"

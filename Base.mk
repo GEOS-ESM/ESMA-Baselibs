@@ -36,38 +36,32 @@
     ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
       ES_FC := $(FC)
       ESMF_COMPILER := nvhpc
-      FLAP_COMPILER := pgi
       FC_FROM_ENV := TRUE
     else
     ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
       ES_FC := $(FC)
       ESMF_COMPILER := nag
-      FLAP_COMPILER := nag
       FC_FROM_ENV := TRUE
     else
     ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
       ES_FC := $(FC)
       ESMF_COMPILER := intel
-      FLAP_COMPILER := intel
       FC_FROM_ENV := TRUE
     else
     ifeq ($(findstring ifort,$(notdir $(FC))),ifort)
       ES_FC := $(FC)
       ESMF_COMPILER := intel
-      FLAP_COMPILER := intel
       FC_FROM_ENV := TRUE
     else
     ifeq ($(findstring pgfortran,$(notdir $(FC))),pgfortran)
       ES_FC := $(FC)
       ESMF_COMPILER := pgi
-      FLAP_COMPILER := pgi
       FC_FROM_ENV := TRUE
     else
     ifeq ($(findstring gfortran,$(notdir $(FC))),gfortran)
       ES_FC := $(FC)
       EXCEPTIONS := -fexceptions
       ESMF_COMPILER := gfortran
-      FLAP_COMPILER := gnu
       FC_FROM_ENV := TRUE
     endif
     endif
@@ -80,37 +74,31 @@
     FC := nvfortran
     ES_FC := $(FC)
     ESMF_COMPILER := nvhpc
-    FLAP_COMPILER := pgi
   else
   ifneq ($(wildcard $(shell which nagfor 2> /dev/null)),)
     FC := nagfor
     ES_FC := $(FC)
     ESMF_COMPILER := nag
-    FLAP_COMPILER := nag
   else
   ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
     ES_FC := $(FC)
     ESMF_COMPILER := intel
-    FLAP_COMPILER := intel
   else
   ifneq ($(wildcard $(shell which ifort 2> /dev/null)),)
     FC := ifort
     ES_FC := $(FC)
     ESMF_COMPILER := intel
-    FLAP_COMPILER := intel
   else
   ifneq ($(wildcard $(shell which pgfortran 2> /dev/null)),)
     FC := pgfortran
     ES_FC := $(FC)
     ESMF_COMPILER := pgi
-    FLAP_COMPILER := pgi
   else
   ifneq ($(wildcard $(shell which gfortran 2> /dev/null)),)
     FC := gfortran
     ES_FC := $(FC)
     EXCEPTIONS := -fexceptions
     ESMF_COMPILER := gfortran
-    FLAP_COMPILER := gnu
   else
     FC := UNKNOWN
     ES_FC := $(FC)

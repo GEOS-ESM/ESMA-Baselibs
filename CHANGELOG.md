@@ -17,6 +17,112 @@
 ### Removed
 ### Added
 
+## [7.24.0] - 2024-04-23
+
+### Updates
+
+- ESMF v8.6.1b04
+- NCO 5.2.4
+- curl 8.7.1
+
+### Changed
+
+- Changed all CMake builds to be "canonical" (`cmake -B build -S .` and `cmake --build build`)
+
+### Removed
+
+- fortran_udunits2
+  - Removed as MAPL now uses its own interface to UDUNITS2
+- FLAP
+  - Removed as MAPL now uses fArgParse
+
+## [7.23.0] - 2024-03-26
+
+### Updates
+
+- NCO v5.2.2
+
+## [7.22.0] - 2024-03-26
+
+### Updates
+
+- GFE v1.15.0
+  - pFlogger v1.14.0
+
+## [7.21.0] - 2024-03-20
+
+### Updates
+
+- GFE v1.14.0
+  - gFTL v1.13.0
+  - pFlogger v1.13.2
+
+## [7.20.0] - 2024-03-15
+
+### Updates
+
+- Revert to HDF5 1.10.11
+  - We are seeing issues with MAPL using HDF5 1.14 for unknown reasons. Runs fail on calls to `nf90_create`. Older
+    HDF5 doesn't seem to have this issue
+
+## [7.19.0] - 2024-03-08
+
+### Updates
+
+- GFE v1.13.0
+  - gFTL v1.12.0
+  - gFTL-shared v1.8.0
+  - fArgParse v1.7.0
+  - pFUnit v4.9.0
+  - yaFyaml v1.3.0
+  - pFlogger v1.13.1
+- NCO v5.2.1
+
+## [7.18.2] - 2024-03-04
+
+### Fixed
+
+- Fixed bad interaction between NAG and `baselibs-config.mk`
+
+## [7.18.1] - 2024-02-08
+
+### Fixed
+
+- Build curl with `--without-libpsl` as by default it is enabled (see https://daniel.haxx.se/blog/2024/01/10/psl-in-curl/) but it is
+  not required for why Baselibs needs curl (libdap for netCDF)
+
+## [7.18.0] - 2024-02-08
+
+### Updates
+
+- HDF5 1.14.3
+- curl 8.6.0
+- zlib 1.3.1
+
+### Changed
+
+- Set `ESMF_TRACE_LIB_BUILD=OFF` when building ESMF on Darwin
+  - Previously was only on NAG, but testing shows even GCC builds
+    can fail with this flag on
+
+## [7.17.2] - 2024-01-23
+
+### Updates
+
+- fortran\_udunits2 v1.0.0-rc.3 (GMAO-SI-Team fork)
+  - Fixes build issue with NAG on Darwin
+
+### Fixed
+
+- Disable HDF4 Fortran bindings when using `ifx` as `FC`
+  - This means we must also disable builds of HDF-EOS2 and SDPToolkit
+
+## [7.17.1] - 2024-01-05
+
+### Fixed
+
+- Set `ESMF_TRACE_LIB_BUILD=OFF` when building ESMF 8.6.0 with NAG to avoid a build error
+
 ## [7.17.0] - 2023-12-01
 
 ### Updates
