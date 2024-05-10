@@ -43,6 +43,9 @@
 [submodule "xgboost"]
 	path = xgboost
 	url = https://github.com/dmlc/xgboost.git
+[submodule "FMS"]
+	path = FMS
+	url = https://github.com/NOAA-GFDL/FMS.git
 [submodule "libyaml"]
 	path = libyaml
 	url = https://github.com/yaml/libyaml.git
