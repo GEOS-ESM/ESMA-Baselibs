@@ -4,7 +4,7 @@
 
 ### Added
 
-- FMS 2023.04
+- FMS 2024.01
   - Has GEOS/MAPL Constants
   - Uses fPIC to build
   - Currently enabling deprecated IO
