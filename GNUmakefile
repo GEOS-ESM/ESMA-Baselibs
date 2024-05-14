@@ -186,6 +186,11 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
         # There is an issue with clang++ and cdo
         CLANG_STDC17 := -std=c++17
         export CLANG_STDC17
+
+        # There is an issue with clang and...everything
+        CLANG_LD_CLASSIC := -Wl,-ld_classic
+        export CLANG_LD_CLASSIC
+
      endif
   endif
 
@@ -548,6 +553,7 @@ hdf5.config :: hdf5/README.md szlib.install zlib.install
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export LIBS="-lm" ;\
+          export LDFLAGS="$(CLANG_LD_CLASSIC)" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdf5 \
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
