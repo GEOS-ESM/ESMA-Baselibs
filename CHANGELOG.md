@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Updates
+### Fixed
+### Changed
+### Removed
+### Added
+
+## [8.0.0] - 2024-05-14
+
 ### Added
 
 - FMS 2024.01
@@ -10,12 +18,6 @@
   - Currently enabling deprecated IO
 - libyaml 0.2.5
   - Added for possible YAML support in FMS
-
-### Updates
-### Fixed
-### Changed
-### Removed
-### Added
 
 ## [7.24.0] - 2024-04-23
 
