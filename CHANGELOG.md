@@ -8,6 +8,12 @@
 ### Removed
 ### Added
 
+## [8.0.2] - 2024-05-15
+
+### Fixed
+
+- Changed the HDF5 build issue code to detect if XCode is 15 or greater. The `-Wl,-ld_classic` flag is needed (at the moment) only for the HDF5 build on macOS with Clang 15 or greater.
+
 ## [8.0.1] - 2024-05-14
 
 ### Fixed

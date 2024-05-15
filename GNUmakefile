@@ -187,10 +187,17 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
         CLANG_STDC17 := -std=c++17
         export CLANG_STDC17
 
-        # There is an issue with clang and...everything
-        CLANG_LD_CLASSIC := -Wl,-ld_classic
-        export CLANG_LD_CLASSIC
-
+        # We might need to add -Wl,-ld_classic to LDFLAGS but only for certain versions of macOS/XCode
+        # This command:
+        #   pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | sed -n 's/version: \([0-9]*\)\..*/\1/p'
+        # will return the version of the Command Line Tools installed on the system and if it is 15 or greater
+        # then we need to add -Wl,-ld_classic to LDFLAGS
+        XCODE_VERSION := $(shell pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | sed -n 's/version: \([0-9]*\)\..*/\1/p')
+        XCODE_VERSION_GTE_15 := $(shell expr $(XCODE_VERSION) \>= 15)
+        ifeq ($(XCODE_VERSION_GTE_15),1)
+           CLANG_LD_CLASSIC := -Wl,-ld_classic
+           export CLANG_LD_CLASSIC
+        endif
      endif
   endif
 
@@ -357,6 +364,9 @@ verify:
 	@echo GFORTRAN_VERSION_GTE_10 = $(GFORTRAN_VERSION_GTE_10)
 	@echo MACOS_VERSION = $(MACOS_VERSION)
 	@echo MMACOS_MIN = $(MMACOS_MIN)
+	@echo XCODE_VERSION = $(XCODE_VERSION)
+	@echo XCODE_VERSION_GTE_15 = $(XCODE_VERSION_GTE_15)
+	@echo CLANG_LD_CLASSIC = $(CLANG_LD_CLASSIC)
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
