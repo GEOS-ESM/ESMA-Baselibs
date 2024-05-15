@@ -8,6 +8,13 @@
 ### Removed
 ### Added
 
+## [7.24.1] - 2024-05-15
+
+### Fixed
+
+- Fixed issue building with Clang/XCode 15 on macOS
+  - Add `-Wl,-ld_classic` to the HDF5 build
+
 ## [7.24.0] - 2024-04-23
 
 ### Updates
