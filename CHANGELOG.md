@@ -6,6 +6,7 @@
 
 - ESMF 8.6.1
 - FMS 2024.01.01
+- curl 8.8.0
 
 ### Fixed
 ### Changed
