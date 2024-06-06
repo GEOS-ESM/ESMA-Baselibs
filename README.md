@@ -12,8 +12,8 @@ NASA/GSFC.
 
 | Library                                                                  | Version      |
 | ---                                                                      | ---          |
-| [ESMF](https://github.com/esmf-org/esmf)                                 | v8.6.1b04    |
-| [FMS](https://github.com/NOAA-GFDL/FMS/)                                 | 2024.01      |
+| [ESMF](https://github.com/esmf-org/esmf)                                 | v8.6.1       |
+| [FMS](https://github.com/NOAA-GFDL/FMS/)                                 | 2024.01.01   |
 | [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.9.2        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.6.1        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1        |
@@ -27,7 +27,7 @@ NASA/GSFC.
 | [jpeg](http://www.ijg.org/)                                              | 9e           |
 | [zlib](http://www.zlib.net/)                                             | 1.3.1        |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                  | 2.1.1        |
-| [cURL](https://curl.haxx.se/)                                            | 8.7.1        |
+| [cURL](https://curl.haxx.se/)                                            | 8.8.0        |
 | [UDUNITS2](https://github.com/GMAO-SI-Team/UDUNITS-2.git)                | 2.2.28       |
 | [NCO](http://nco.sourceforge.net/)                                       | 5.2.4        |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.3.0        |
