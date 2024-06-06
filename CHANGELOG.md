@@ -3,15 +3,18 @@
 ## [Unreleased]
 
 ### Updates
-
-- ESMF 8.6.1
-- FMS 2024.01.01
-- curl 8.8.0
-
 ### Fixed
 ### Changed
 ### Removed
 ### Added
+
+## [8.1.0] - 2024-06-06
+
+### Updates
+
+- ESMF 8.6.1
+- FMS 2024.01.01
+- curl 8.8.0
 
 ## [8.0.2] - 2024-05-15
 
