@@ -4,6 +4,9 @@
 
 ### Updates
 ### Fixed
+
+- Fix rules in `esmf_rules.mk` where in `ESMPy` is now `esmpy`
+
 ### Changed
 ### Removed
 ### Added
