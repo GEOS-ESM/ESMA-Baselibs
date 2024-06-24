@@ -186,18 +186,6 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
         # There is an issue with clang++ and cdo
         CLANG_STDC17 := -std=c++17
         export CLANG_STDC17
-
-        # We might need to add -Wl,-ld_classic to LDFLAGS but only for certain versions of macOS/XCode
-        # This command:
-        #   pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | sed -n 's/version: \([0-9]*\)\..*/\1/p'
-        # will return the version of the Command Line Tools installed on the system and if it is 15 or greater
-        # then we need to add -Wl,-ld_classic to LDFLAGS
-        XCODE_VERSION := $(shell pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | sed -n 's/version: \([0-9]*\)\..*/\1/p')
-        XCODE_VERSION_GTE_15 := $(shell expr $(XCODE_VERSION) \>= 15)
-        ifeq ($(XCODE_VERSION_GTE_15),1)
-           CLANG_LD_CLASSIC := -Wl,-ld_classic
-           export CLANG_LD_CLASSIC
-        endif
      endif
   endif
 
@@ -281,7 +269,7 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
+          udunits2 nco cdo nccmp esmf xgboost \
           GFE \
           hdfeos hdfeos5 SDPToolkit
 
@@ -291,12 +279,10 @@ ifeq ($(ARCH),Darwin)
 endif
 
 # NAG cannot build cdo
-#    https://code.mpimet.mpg.de/boards/1/topics/9337
-# or FMS due to cray pointers
+# https://code.mpimet.mpg.de/boards/1/topics/9337
 ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-   NO_NAG_DIRS = cdo FMS
+   NO_NAG_DIRS = cdo
    ALLDIRS := $(filter-out $(NO_NAG_DIRS),$(ALLDIRS))
-   ESSENTIAL_DIRS := $(filter-out $(NO_NAG_DIRS),$(ESSENTIAL_DIRS))
 endif
 
 # NVHPC seems to have issues with SDPToolkit
@@ -305,7 +291,7 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran \
 					  udunits2 esmf GFE
 
 ifeq ($(MACH),aarch64)
@@ -382,9 +368,6 @@ verify:
 	@echo GFORTRAN_VERSION_GTE_10 = $(GFORTRAN_VERSION_GTE_10)
 	@echo MACOS_VERSION = $(MACOS_VERSION)
 	@echo MMACOS_MIN = $(MMACOS_MIN)
-	@echo XCODE_VERSION = $(XCODE_VERSION)
-	@echo XCODE_VERSION_GTE_15 = $(XCODE_VERSION_GTE_15)
-	@echo CLANG_LD_CLASSIC = $(CLANG_LD_CLASSIC)
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
@@ -557,6 +540,7 @@ jpeg.config: jpeg/configure
 	  export PATH="$(prefix)/bin:$(PATH)" ;\
 	  export CPPFLAGS="$(INC_SUPP)";\
 	  export LIBS="-lm";\
+	  autoreconf -f -v -i ;\
 	  ./configure --prefix=$(prefix) \
 		      --includedir=$(prefix)/include/jpeg \
 		      --disable-shared \
@@ -587,7 +571,7 @@ hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export LIBS="-lm" ;\
-          export LDFLAGS="$(CLANG_LD_CLASSIC)" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdf5 \
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
@@ -615,6 +599,7 @@ netcdf.config : netcdf/configure
           export CPPFLAGS="$(CPPFLAGS) $(NC_CPPFLAGS) $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
           export LIBS="-L$(prefix)/lib -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/netcdf \
                       $(ENABLE_HDF4) \
@@ -637,6 +622,7 @@ netcdf-fortran.config : netcdf-fortran/configure netcdf.install
           export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/netcdf \
                       $(NC_PAR_TESTS) \
@@ -653,6 +639,7 @@ netcdf-cxx4.config : netcdf-cxx4/configure netcdf.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
+          autoreconf -f -v -i;\
           ../configure --prefix=$(prefix) \
                        --includedir=$(prefix)/include/netcdf \
                        --disable-shared \
@@ -692,6 +679,7 @@ nco.config : nco/configure
           export CXXFLAGS="$(NCO_CXXFLAGS)";\
           export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nco \
                       --enable-ncoxx \
@@ -716,6 +704,7 @@ szlib.config : szlib.download szlib/configure
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LIBS="-lm";\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/szlib \
                       --disable-shared \
@@ -767,6 +756,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/cdo \
                       --with-szlib=$(prefix) \
@@ -808,23 +798,10 @@ GFE.config:
 		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES )
 	@touch $@
 
-libyaml.config:
-	@echo "Configuring libyaml"
-	@mkdir -p ./libyaml/build
-	@(cd ./libyaml; \
-		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) )
-	@touch $@
-
-FMS.config: netcdf.install netcdf-fortran.install libyaml.install
-	@echo "Configuring FMS"
-	@mkdir -p ./FMS/build
-	@(cd ./FMS; \
-		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf -DUSE_DEPRECATED_IO=ON )
-	@touch $@
-
 antlr2.config : antlr2/configure
 	@echo "Configuring antlr2"
 	@mkdir -p ./antlr2/build
+	@cp config.guess ./antlr2/scripts/config.guess
 	@(cd antlr2/build; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
@@ -849,6 +826,7 @@ gsl.config : gsl.download gsl/configure
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LIBS="-lm";\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/gsl \
                       --disable-shared \
@@ -892,6 +870,7 @@ hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos5 \
                       --disable-shared --enable-static \
@@ -914,6 +893,7 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP_SDP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/SDPToolkit \
                       $(WITH_ZLIB) \
@@ -991,18 +971,6 @@ xgboost.install: xgboost.config
 GFE.install: GFE.config
 	@echo "Installing GFE"
 	@(cd ./GFE; \
-		cmake --build build --target install -j $(MAKEJOBS))
-	@touch $@
-
-libyaml.install: libyaml.config
-	@echo "Installing libyaml"
-	@(cd ./libyaml; \
-		cmake --build build --target install -j $(MAKEJOBS))
-	@touch $@
-
-FMS.install: FMS.config
-	@echo "Installing FMS"
-	@(cd ./FMS; \
 		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
@@ -1165,22 +1133,6 @@ GFE.distclean:
 	@echo "Cleaning GFE"
 	@rm -rf ./GFE/build
 
-libyaml.clean:
-	@echo "Cleaning libyaml"
-	@rm -rf ./libyaml/build
-
-libyaml.distclean:
-	@echo "Cleaning libyaml"
-	@rm -rf ./libyaml/build
-
-FMS.clean:
-	@echo "Cleaning FMS"
-	@rm -rf ./FMS/build
-
-FMS.distclean:
-	@echo "Cleaning FMS"
-	@rm -rf ./FMS/build
-
 antlr2.clean:
 	@echo "Cleaning antlr2"
 	@rm -rf ./antlr2/build
@@ -1211,14 +1163,6 @@ curl.check: curl.install
 
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"
-
-libyaml.check: libyaml.install
-	@echo "Checking libyaml"
-	@echo "We do not check libyaml not sure how."
-
-FMS.check: FMS.install
-	@echo "Checking FMS"
-	@echo "We do not check FMS."
 
 GFE.check: GFE.install
 	@echo "Checking GFE"

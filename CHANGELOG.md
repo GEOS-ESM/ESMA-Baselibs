@@ -13,6 +13,33 @@
 ### Removed
 ### Added
 
+## [8.2.0] - 2024-06-24
+
+### Updates
+
+- NCO 5.2.6
+
+### Changed
+
+- Added `autoreconf -f -v -i` to many config steps. This is needed for newer hardware (like Graviton3 and GraceHopper)
+  - For `antlr2` we instead copy a new `config.guess` as `autoreconf` didn't seem to work
+
+### Fixed
+
+- Fix rules in `esmf_rules.mk` where in `ESMPy` is now `esmpy`
+
+### Removed
+
+- Removed stray file accidentally added to the repo
+
+## [8.1.0] - 2024-06-06
+
+### Updates
+
+- ESMF 8.6.1
+- FMS 2024.01.01
+- curl 8.8.0
+
 ## [8.0.2] - 2024-05-15
 
 ### Fixed
