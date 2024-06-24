@@ -186,6 +186,18 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
         # There is an issue with clang++ and cdo
         CLANG_STDC17 := -std=c++17
         export CLANG_STDC17
+
+        # We might need to add -Wl,-ld_classic to LDFLAGS but only for certain versions of macOS/XCode
+        # This command:
+        #   pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | sed -n 's/version: \([0-9]*\)\..*/\1/p'
+        # will return the version of the Command Line Tools installed on the system and if it is 15 or greater
+        # then we need to add -Wl,-ld_classic to LDFLAGS
+        XCODE_VERSION := $(shell pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | sed -n 's/version: \([0-9]*\)\..*/\1/p')
+        XCODE_VERSION_GTE_15 := $(shell expr $(XCODE_VERSION) \>= 15)
+        ifeq ($(XCODE_VERSION_GTE_15),1)
+           CLANG_LD_CLASSIC := -Wl,-ld_classic
+           export CLANG_LD_CLASSIC
+        endif
      endif
   endif
 
@@ -368,6 +380,9 @@ verify:
 	@echo GFORTRAN_VERSION_GTE_10 = $(GFORTRAN_VERSION_GTE_10)
 	@echo MACOS_VERSION = $(MACOS_VERSION)
 	@echo MMACOS_MIN = $(MMACOS_MIN)
+	@echo XCODE_VERSION = $(XCODE_VERSION)
+	@echo XCODE_VERSION_GTE_15 = $(XCODE_VERSION_GTE_15)
+	@echo CLANG_LD_CLASSIC = $(CLANG_LD_CLASSIC)
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
@@ -571,12 +586,13 @@ hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export LIBS="-lm" ;\
+          export LDFLAGS="$(CLANG_LD_CLASSIC)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdf5 \
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
                       $(WITH_ZLIB) \
-                      --disable-shared --disable-cxx\
+                      --disable-shared --disable-cxx \
                       --enable-hl --enable-fortran --disable-sharedlib-rpath \
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
                       CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
@@ -795,6 +811,7 @@ GFE.config:
 	@echo "Configuring GFE"
 	@mkdir -p ./GFE/build
 	@(cd ./GFE; \
+		export LDFLAGS="$(CLANG_LD_CLASSIC)" ;\
 		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES )
 	@touch $@
 
@@ -802,6 +819,7 @@ antlr2.config : antlr2/configure
 	@echo "Configuring antlr2"
 	@mkdir -p ./antlr2/build
 	@cp config.guess ./antlr2/scripts/config.guess
+	@cp config.sub ./antlr2/scripts/config.sub
 	@(cd antlr2/build; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
@@ -890,6 +908,7 @@ SDPToolkit.download : scripts/download_SDPToolkit.bash
 SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
 	@echo "Configuring SDPToolkit $*"
 	@cp config.guess ./TOOLKIT/config/config.guess
+	@cp config.sub ./TOOLKIT/config/config.sub
 	@(cd SDPToolkit; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP_SDP)";\
