@@ -18,6 +18,9 @@
 
 - Added `autoreconf -f -v -i` to many config steps. This is needed for newer hardware (like Graviton3 and GraceHopper)
   - For `antlr2` we instead copy a new `config.guess` as `autoreconf` didn't seem to work
+- Add new `SYSTEM_ZLIB` variable which, if set to `YES`, does not build zlib and uses the system version.
+  This was shown to be needed in testing NVHPC on bucy. Not sure why yet as no other compiler cares.
+  - Manifested as a `/usr/lib64/libxml2.so: undefined reference to `gzopen64@ZLIB_1.2.3.3'` error in ESMF linking
 
 ### Fixed
 

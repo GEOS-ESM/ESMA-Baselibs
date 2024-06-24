@@ -334,6 +334,24 @@ ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
    SUBDIRS := $(filter-out SDPToolkit,$(SUBDIRS))
 endif
 
+# NVHPC and ESMF seem to have issues with zlib in Baselibs
+# So we need to filter it out. We will use a special
+# build variable to do this
+ifeq ('$(SYSTEM_ZLIB)','YES')
+   SUBDIRS := $(filter-out zlib,$(SUBDIRS))
+   ZLIB_INSTALL =
+   WITH_ZLIB =
+   WITH_ZLIB_SHORT =
+   CURL_ZLIB = --without-zlib
+   # We also need to filter out zlib from INC_SUPP
+   INC_SUPP := $(filter-out -I$(prefix)/include/zlib,$(INC_SUPP))
+else
+   ZLIB_INSTALL = zlib.install
+   WITH_ZLIB := --with-zlib=$(prefix)/include/zlib,$(prefix)/lib
+   WITH_ZLIB_SHORT := --with-zlib=$(prefix)
+   CURL_ZLIB := $(WITH_ZLIB_SHORT)
+endif
+
 TARGETS = all lib install
 
 download: gsl.download szlib.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download
@@ -354,6 +372,12 @@ verify:
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
 	@echo LIB_EXTRA = $(LIB_EXTRA)
+	@echo SYSTEM_ZLIB = $(SYSTEM_ZLIB)
+	@echo ZLIB_INSTALL = $(ZLIB_INSTALL)
+	@echo WITH_ZLIB = $(WITH_ZLIB)
+	@echo WITH_ZLIB_SHORT = $(WITH_ZLIB_SHORT)
+	@echo CURL_ZLIB = $(CURL_ZLIB)
+	@echo INC_SUPP = $(INC_SUPP)
 	@echo NAG_FCFLAGS = $(NAG_FCFLAGS)
 	@echo FC_FROM_ENV = $(FC_FROM_ENV)
 	@echo CC_FROM_ENV = $(CC_FROM_ENV)
@@ -523,7 +547,7 @@ jpeg.config: jpeg/configure
 		      CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-hdf4.config: hdf4/README.md jpeg.install zlib.install szlib.install
+hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) szlib.install
 	@echo Configuring hdf4
 	@(cd hdf4; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -535,14 +559,14 @@ hdf4.config: hdf4/README.md jpeg.install zlib.install szlib.install
                       --includedir=$(prefix)/include/hdf \
                       --with-jpeg=$(prefix)/include/jpeg,$(prefix)/lib \
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
-                      --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
+                      $(WITH_ZLIB) \
                       --disable-netcdf \
                       --enable-hdf4-xdr \
                       $(HDF4_ENABLE_FORTRAN) \
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
-hdf5.config :: hdf5/README.md szlib.install zlib.install
+hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
 	echo Configuring hdf5
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -551,7 +575,7 @@ hdf5.config :: hdf5/README.md szlib.install zlib.install
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdf5 \
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
-                      --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
+                      $(WITH_ZLIB) \
                       --disable-shared --disable-cxx\
                       --enable-hl --enable-fortran --disable-sharedlib-rpath \
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
@@ -697,7 +721,7 @@ zlib.config : zlib/configure
 	touch $@
 
 
-curl.config : curl/configure.ac zlib.install
+curl.config : curl/configure.ac $(ZLIB_INSTALL)
 	@echo "Configuring curl"
 	@(cd curl; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -707,7 +731,7 @@ curl.config : curl/configure.ac zlib.install
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/ \
                       --libdir=$(prefix)/lib \
-                      --with-zlib=$(prefix) \
+                      $(WITH_ZLIB_SHORT) \
                       --disable-ldap \
                       --enable-manual \
                       --disable-shared \
@@ -736,7 +760,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/cdo \
                       --with-szlib=$(prefix) \
-                      --with-zlib=$(prefix) \
+                      $(WITH_ZLIB_SHORT) \
                       --with-hdf5=$(prefix) \
                       --with-netcdf=$(prefix) \
                       --with-udunits2=$(prefix) \
@@ -872,7 +896,7 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/SDPToolkit \
-                      --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
+                      $(WITH_ZLIB) \
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
                       --with-hdf4=$(prefix)/include/hdf,$(prefix)/lib \
                       --with-hdf5=$(prefix)/include/hdf5,$(prefix)/lib \
