@@ -4,9 +4,6 @@
 
 ### Updates
 ### Fixed
-
-- Fix rules in `esmf_rules.mk` where in `ESMPy` is now `esmpy`
-
 ### Changed
 ### Removed
 ### Added
@@ -21,6 +18,10 @@
 
 - Added `autoreconf -f -v -i` to many config steps. This is needed for newer hardware (like Graviton3 and GraceHopper)
   - For `antlr2` we instead copy a new `config.guess` as `autoreconf` didn't seem to work
+
+### Fixed
+
+- Fix rules in `esmf_rules.mk` where in `ESMPy` is now `esmpy`
 
 ### Removed
 
