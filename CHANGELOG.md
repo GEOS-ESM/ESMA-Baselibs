@@ -8,6 +8,13 @@
 ### Removed
 ### Added
 
+## [8.3.1] - 2024-06-24
+
+### Fixed
+
+- The updated `config.guess` file requires an updated `config.sub` file. This is now copied in the `configure` step for all libraries that have explicit `config.guess` copies
+- Restore code for `-Wl,-ld_classic` for HDF5 on macOS with Clang 15 or greater (accidentially removed in 8.1.0)
+
 ## [8.3.0] - 2024-06-24
 
 ### Updates
