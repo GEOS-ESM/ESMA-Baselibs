@@ -889,7 +889,7 @@ SDPToolkit.download : scripts/download_SDPToolkit.bash
 
 SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
 	@echo "Configuring SDPToolkit $*"
-	@cp config.guess ./TOOLKIT/config/config.guess ;\
+	@cp config.guess ./TOOLKIT/config/config.guess
 	@(cd SDPToolkit; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP_SDP)";\
