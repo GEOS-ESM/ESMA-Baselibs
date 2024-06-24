@@ -41,13 +41,13 @@ jobs:
           git submodule status
       - name: Verify Before
         run: |
-          make verify BUILD=ESSENTIALS ESMF_COMM=openmpi ESMF_COMPILER=gfortran
+          make verify ESMF_COMM=openmpi ESMF_COMPILER=gfortran
       - name: Build
         run: |
-          make -j4 install BUILD=ESSENTIALS ESMF_COMM=openmpi ESMF_PYTHON=/usr/bin/python3 ESMF_COMPILER=gfortran
+          make -j4 install ESMF_COMM=openmpi ESMF_PYTHON=/usr/bin/python3 ESMF_COMPILER=gfortran
       - name: Verify After
         run: |
-          make verify BUILD=ESSENTIALS ESMF_COMM=openmpi ESMF_COMPILER=gfortran
+          make verify ESMF_COMM=openmpi ESMF_COMPILER=gfortran
       - name: Check directory structure
         run: |
           ls ../x86_64-pc-linux-gnu/gfortran/Linux/*

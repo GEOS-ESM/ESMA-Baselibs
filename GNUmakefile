@@ -893,7 +893,7 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP_SDP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
-          autoreconf -f -v -i;\
+          @cp config.guess ./TOOLKIT/config/config.guess ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/SDPToolkit \
                       $(WITH_ZLIB) \

@@ -5,11 +5,18 @@
 ### Updates
 ### Fixed
 ### Changed
-
-- Update docker image in CI workflow
-
 ### Removed
 ### Added
+
+## [8.2.1] - 2024-06-24
+
+### Fixed
+
+- Undo `autoreconf` for SDPToolkit
+
+### Changed
+
+- Update docker image in CI workflow
 
 ## [8.2.0] - 2024-06-24
 
