@@ -5,11 +5,22 @@
 ### Updates
 ### Fixed
 ### Changed
-
-- Update docker image in CI workflow
-
 ### Removed
 ### Added
+
+## [8.3.0] - 2024-06-24
+
+### Updates
+
+- FMS 2024.01.02
+
+### Fixed
+
+- Undo `autoreconf` for SDPToolkit
+
+### Changed
+
+- Update docker image in CI workflow
 
 ## [8.2.0] - 2024-06-24
 
