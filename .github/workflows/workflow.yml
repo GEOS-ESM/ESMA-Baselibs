@@ -21,10 +21,14 @@ jobs:
       CC: gcc
       CXX: g++
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: recursive
+      - name: Set all directories as git safe
+        run: |
+          git config --global --add safe.directory '*'
       - name: Versions etc.
         run: |
           gcc --version
