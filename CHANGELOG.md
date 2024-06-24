@@ -5,6 +5,9 @@
 ### Updates
 ### Fixed
 ### Changed
+
+- Update docker image in CI workflow
+
 ### Removed
 ### Added
 
