@@ -4,6 +4,9 @@
 
 ### Updates
 ### Fixed
+
+- Fixes for MPT and using icx/icpx at NAS
+
 ### Changed
 ### Removed
 ### Added
