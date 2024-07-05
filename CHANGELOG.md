@@ -4,12 +4,16 @@
 
 ### Updates
 ### Fixed
-
-- Fixes for MPT and using icx/icpx at NAS
-
 ### Changed
 ### Removed
 ### Added
+
+## [8.4.0] - 2024-07-05
+
+### Fixed
+
+- Restore FMS build (was erroneously removed in 8.2.0)
+- Fixes for MPT and using icx/icpx at NAS
 
 ## [8.3.1] - 2024-06-24
 
