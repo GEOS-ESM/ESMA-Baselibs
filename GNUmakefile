@@ -281,7 +281,7 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 #                  --------------------------------
 
 ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
-          udunits2 nco cdo nccmp esmf xgboost \
+          udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
           GFE \
           hdfeos hdfeos5 SDPToolkit
 
@@ -291,10 +291,12 @@ ifeq ($(ARCH),Darwin)
 endif
 
 # NAG cannot build cdo
-# https://code.mpimet.mpg.de/boards/1/topics/9337
+#    https://code.mpimet.mpg.de/boards/1/topics/9337
+# or FMS due to cray pointers
 ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
-   NO_NAG_DIRS = cdo
+   NO_NAG_DIRS = cdo FMS
    ALLDIRS := $(filter-out $(NO_NAG_DIRS),$(ALLDIRS))
+   ESSENTIAL_DIRS := $(filter-out $(NO_NAG_DIRS),$(ESSENTIAL_DIRS))
 endif
 
 # NVHPC seems to have issues with SDPToolkit
@@ -303,7 +305,7 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran \
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
 					  udunits2 esmf GFE
 
 ifeq ($(MACH),aarch64)
@@ -815,6 +817,20 @@ GFE.config:
 		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES )
 	@touch $@
 
+libyaml.config:
+	@echo "Configuring libyaml"
+	@mkdir -p ./libyaml/build
+	@(cd ./libyaml; \
+		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) )
+	@touch $@
+
+FMS.config: netcdf.install netcdf-fortran.install libyaml.install
+	@echo "Configuring FMS"
+	@mkdir -p ./FMS/build
+	@(cd ./FMS; \
+		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -D32BIT=ON -D64BIT=ON -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf -DUSE_DEPRECATED_IO=ON )
+	@touch $@
+
 antlr2.config : antlr2/configure
 	@echo "Configuring antlr2"
 	@mkdir -p ./antlr2/build
@@ -993,6 +1009,18 @@ GFE.install: GFE.config
 		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
+libyaml.install: libyaml.config
+	@echo "Installing libyaml"
+	@(cd ./libyaml; \
+		cmake --build build --target install -j $(MAKEJOBS))
+	@touch $@
+
+FMS.install: FMS.config
+	@echo "Installing FMS"
+	@(cd ./FMS; \
+		cmake --build build --target install -j $(MAKEJOBS))
+	@touch $@
+
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup
 #      in nco. If you just run nco, it never makes the libnco.a library, or at least
 #      does not make it correctly. As the nco/m4/libtool.m4 and, say, the
@@ -1152,6 +1180,22 @@ GFE.distclean:
 	@echo "Cleaning GFE"
 	@rm -rf ./GFE/build
 
+libyaml.clean:
+	@echo "Cleaning libyaml"
+	@rm -rf ./libyaml/build
+
+libyaml.distclean:
+	@echo "Cleaning libyaml"
+	@rm -rf ./libyaml/build
+
+FMS.clean:
+	@echo "Cleaning FMS"
+	@rm -rf ./FMS/build
+
+FMS.distclean:
+	@echo "Cleaning FMS"
+	@rm -rf ./FMS/build
+
 antlr2.clean:
 	@echo "Cleaning antlr2"
 	@rm -rf ./antlr2/build
@@ -1182,6 +1226,14 @@ curl.check: curl.install
 
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"
+
+libyaml.check: libyaml.install
+	@echo "Checking libyaml"
+	@echo "We do not check libyaml not sure how."
+
+FMS.check: FMS.install
+	@echo "Checking FMS"
+	@echo "We do not check FMS."
 
 GFE.check: GFE.install
 	@echo "Checking GFE"
