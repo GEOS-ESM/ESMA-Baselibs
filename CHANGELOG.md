@@ -8,6 +8,18 @@
 ### Removed
 ### Added
 
+## [8.5.0] - 2024-07-11
+
+### Updates
+
+- GFE v1.16.0
+  - gFTL v1.14.0
+  - gFTL-shared v1.9.0
+  - fArgParse v1.8.0
+  - pFUnit v4.10.0
+  - yaFyaml v1.4.0
+
+
 ## [8.4.0] - 2024-07-05
 
 ### Fixed
