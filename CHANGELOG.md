@@ -12,6 +12,7 @@
 
 ### Updates
 
+- ESMF v8.6.1
 - GFE v1.16.0
   - gFTL v1.14.0
   - gFTL-shared v1.9.0
