@@ -134,13 +134,13 @@ esmf.script_info script_info:
 esmf.check check:
 	@echo "Customized ESMF build step $@..."
 	@(cd $(ESMF_DIR); make -e check)
-	@(cd $(ESMF_DIR)/src/addon/ESMPy; export PYTHONPATH=$(ESMF_INSTALL_PREFIX)/lib/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
+	@(cd $(ESMF_DIR)/src/addon/esmpy; export PYTHONPATH=$(ESMF_INSTALL_PREFIX)/lib/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
 	@touch esmf.check
 
 esmf.all_tests all_tests:
 	@echo "Customized ESMF build step $@..."
 	@(cd $(ESMF_DIR); make -e all_tests)
-	@(cd $(ESMF_DIR)/src/addon/ESMPy; export PYTHONPATH=$(ESMF_INSTALL_PREFIX)/lib/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
+	@(cd $(ESMF_DIR)/src/addon/esmpy; export PYTHONPATH=$(ESMF_INSTALL_PREFIX)/lib/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
 	@touch esmf.all_tests
 
 esmf.examples:
@@ -167,19 +167,19 @@ ifeq ($(ARCH), Darwin)
 endif
 	@cp -pr $(ESMF_DIR)/cmake/*    $(ESMF_INSTALL_HEADERDIR)
 	@touch esmf.install
-	@(cd $(ESMF_DIR)/src/addon/ESMPy; $(ESMF_PYTHON) setup.py build --ESMFMKFILE=$(ESMF_INSTALL_LIBDIR)/esmf.mk; $(ESMF_PYTHON) setup.py install --prefix=$(ESMF_INSTALL_PREFIX))
+	@(cd $(ESMF_DIR)/src/addon/esmpy; $(ESMF_PYTHON) setup.py build --ESMFMKFILE=$(ESMF_INSTALL_LIBDIR)/esmf.mk; $(ESMF_PYTHON) setup.py install --prefix=$(ESMF_INSTALL_PREFIX))
 	@touch esmf.python
 
 # There once was an Intel 16 bug fixed, the ESMF apps can be built separately
 esmf.python python: esmf.install
 	@echo "Customized ESMF build step $@..."
-	@(cd $(ESMF_DIR)/src/addon/ESMPy; $(ESMF_PYTHON) setup.py build --ESMFMKFILE=$(ESMF_INSTALL_LIBDIR)/esmf.mk; $(ESMF_PYTHON) setup.py install --prefix=$(ESMF_INSTALL_PREFIX))
+	@(cd $(ESMF_DIR)/src/addon/esmpy; $(ESMF_PYTHON) setup.py build --ESMFMKFILE=$(ESMF_INSTALL_LIBDIR)/esmf.mk; $(ESMF_PYTHON) setup.py install --prefix=$(ESMF_INSTALL_PREFIX))
 	@touch esmf.python
 
 # There once was an Intel 16 bug fixed, the ESMF apps can be built separately
 esmf.pythoncheck pythoncheck: esmf.install
 	@echo "Customized ESMF build step $@..."
-	@(cd $(ESMF_DIR)/src/addon/ESMPy; export PYTHONPATH=$(ESMF_INSTALL_LIBDIR)/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
+	@(cd $(ESMF_DIR)/src/addon/esmpy; export PYTHONPATH=$(ESMF_INSTALL_LIBDIR)/python2.7/site-packages; $(ESMF_PYTHON) setup.py test)
 
 %:
 	@echo "Customized ESMF build step $@..."

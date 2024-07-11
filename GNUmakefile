@@ -346,6 +346,24 @@ ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
    SUBDIRS := $(filter-out SDPToolkit,$(SUBDIRS))
 endif
 
+# NVHPC and ESMF seem to have issues with zlib in Baselibs
+# So we need to filter it out. We will use a special
+# build variable to do this
+ifeq ('$(SYSTEM_ZLIB)','YES')
+   SUBDIRS := $(filter-out zlib,$(SUBDIRS))
+   ZLIB_INSTALL =
+   WITH_ZLIB =
+   WITH_ZLIB_SHORT =
+   CURL_ZLIB = --without-zlib
+   # We also need to filter out zlib from INC_SUPP
+   INC_SUPP := $(filter-out -I$(prefix)/include/zlib,$(INC_SUPP))
+else
+   ZLIB_INSTALL = zlib.install
+   WITH_ZLIB := --with-zlib=$(prefix)/include/zlib,$(prefix)/lib
+   WITH_ZLIB_SHORT := --with-zlib=$(prefix)
+   CURL_ZLIB := $(WITH_ZLIB_SHORT)
+endif
+
 TARGETS = all lib install
 
 download: gsl.download szlib.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download
@@ -369,6 +387,12 @@ verify:
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
 	@echo NO_IMPLICIT_FUNCTION_ERROR = $(NO_IMPLICIT_FUNCTION_ERROR)
 	@echo LIB_EXTRA = $(LIB_EXTRA)
+	@echo SYSTEM_ZLIB = $(SYSTEM_ZLIB)
+	@echo ZLIB_INSTALL = $(ZLIB_INSTALL)
+	@echo WITH_ZLIB = $(WITH_ZLIB)
+	@echo WITH_ZLIB_SHORT = $(WITH_ZLIB_SHORT)
+	@echo CURL_ZLIB = $(CURL_ZLIB)
+	@echo INC_SUPP = $(INC_SUPP)
 	@echo NAG_FCFLAGS = $(NAG_FCFLAGS)
 	@echo FC_FROM_ENV = $(FC_FROM_ENV)
 	@echo CC_FROM_ENV = $(CC_FROM_ENV)
@@ -531,13 +555,14 @@ jpeg.config: jpeg/configure
 	  export PATH="$(prefix)/bin:$(PATH)" ;\
 	  export CPPFLAGS="$(INC_SUPP)";\
 	  export LIBS="-lm";\
+	  autoreconf -f -v -i ;\
 	  ./configure --prefix=$(prefix) \
 		      --includedir=$(prefix)/include/jpeg \
 		      --disable-shared \
 		      CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-hdf4.config: hdf4/README.md jpeg.install zlib.install szlib.install
+hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) szlib.install
 	@echo Configuring hdf4
 	@(cd hdf4; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -549,24 +574,25 @@ hdf4.config: hdf4/README.md jpeg.install zlib.install szlib.install
                       --includedir=$(prefix)/include/hdf \
                       --with-jpeg=$(prefix)/include/jpeg,$(prefix)/lib \
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
-                      --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
+                      $(WITH_ZLIB) \
                       --disable-netcdf \
                       --enable-hdf4-xdr \
                       $(HDF4_ENABLE_FORTRAN) \
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
-hdf5.config :: hdf5/README.md szlib.install zlib.install
+hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
 	echo Configuring hdf5
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export LIBS="-lm" ;\
           export LDFLAGS="$(CLANG_LD_CLASSIC)" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdf5 \
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
-                      --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
-                      --disable-shared --disable-cxx\
+                      $(WITH_ZLIB) \
+                      --disable-shared --disable-cxx \
                       --enable-hl --enable-fortran --disable-sharedlib-rpath \
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
                       CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
@@ -589,6 +615,7 @@ netcdf.config : netcdf/configure
           export CPPFLAGS="$(CPPFLAGS) $(NC_CPPFLAGS) $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
           export LIBS="-L$(prefix)/lib -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/netcdf \
                       $(ENABLE_HDF4) \
@@ -611,6 +638,7 @@ netcdf-fortran.config : netcdf-fortran/configure netcdf.install
           export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/netcdf \
                       $(NC_PAR_TESTS) \
@@ -627,6 +655,7 @@ netcdf-cxx4.config : netcdf-cxx4/configure netcdf.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
+          autoreconf -f -v -i;\
           ../configure --prefix=$(prefix) \
                        --includedir=$(prefix)/include/netcdf \
                        --disable-shared \
@@ -666,6 +695,7 @@ nco.config : nco/configure
           export CXXFLAGS="$(NCO_CXXFLAGS)";\
           export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nco \
                       --enable-ncoxx \
@@ -690,6 +720,7 @@ szlib.config : szlib.download szlib/configure
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LIBS="-lm";\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/szlib \
                       --disable-shared \
@@ -706,7 +737,7 @@ zlib.config : zlib/configure
 	touch $@
 
 
-curl.config : curl/configure.ac zlib.install
+curl.config : curl/configure.ac $(ZLIB_INSTALL)
 	@echo "Configuring curl"
 	@(cd curl; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -716,7 +747,7 @@ curl.config : curl/configure.ac zlib.install
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/ \
                       --libdir=$(prefix)/lib \
-                      --with-zlib=$(prefix) \
+                      $(WITH_ZLIB_SHORT) \
                       --disable-ldap \
                       --enable-manual \
                       --disable-shared \
@@ -741,10 +772,11 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/cdo \
                       --with-szlib=$(prefix) \
-                      --with-zlib=$(prefix) \
+                      $(WITH_ZLIB_SHORT) \
                       --with-hdf5=$(prefix) \
                       --with-netcdf=$(prefix) \
                       --with-udunits2=$(prefix) \
@@ -779,12 +811,15 @@ GFE.config:
 	@echo "Configuring GFE"
 	@mkdir -p ./GFE/build
 	@(cd ./GFE; \
+		export LDFLAGS="$(CLANG_LD_CLASSIC)" ;\
 		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES )
 	@touch $@
 
 antlr2.config : antlr2/configure
 	@echo "Configuring antlr2"
 	@mkdir -p ./antlr2/build
+	@cp config.guess ./antlr2/scripts/config.guess
+	@cp config.sub ./antlr2/scripts/config.sub
 	@(cd antlr2/build; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
@@ -809,6 +844,7 @@ gsl.config : gsl.download gsl/configure
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LIBS="-lm";\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/gsl \
                       --disable-shared \
@@ -852,6 +888,7 @@ hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos5 \
                       --disable-shared --enable-static \
@@ -870,13 +907,15 @@ SDPToolkit.download : scripts/download_SDPToolkit.bash
 
 SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
 	@echo "Configuring SDPToolkit $*"
+	@cp config.guess ./TOOLKIT/config/config.guess
+	@cp config.sub ./TOOLKIT/config/config.sub
 	@(cd SDPToolkit; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP_SDP)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/SDPToolkit \
-                      --with-zlib=$(prefix)/include/zlib,$(prefix)/lib \
+                      $(WITH_ZLIB) \
                       --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
                       --with-hdf4=$(prefix)/include/hdf,$(prefix)/lib \
                       --with-hdf5=$(prefix)/include/hdf5,$(prefix)/lib \
