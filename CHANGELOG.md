@@ -19,6 +19,7 @@
   - fArgParse v1.8.0
   - pFUnit v4.10.0
   - yaFyaml v1.4.0
+- curl 8.8.0
 
 ## [7.24.1] - 2024-05-15
 
