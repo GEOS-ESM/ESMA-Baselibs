@@ -22,6 +22,22 @@
 - curl 8.8.0
 - NCO 5.2.6
 
+### Fixed
+
+- Fixes for MPT and using icx/icpx at NAS
+- The updated `config.guess` file requires an updated `config.sub` file. This is now copied in the `configure` step for all libraries that have explicit `config.guess` copies
+- Fix rules in `esmf_rules.mk` where in `ESMPy` is now `esmpy`
+- Changed the HDF5 build issue code to detect if XCode is 15 or greater. The `-Wl,-ld_classic` flag is needed (at the moment) only for the HDF5 build on macOS with Clang 15 or greater.
+
+### Changed
+
+- Added `autoreconf -f -v -i` to many config steps. This is needed for newer hardware (like Graviton3 and GraceHopper)
+  - For `antlr2` and `SDPToolkit` we instead copy a new `config.guess` as `autoreconf` didn't seem to work
+- Add new `SYSTEM_ZLIB` variable which, if set to `YES`, does not build zlib and uses the system version.
+  This was shown to be needed in testing NVHPC on bucy. Not sure why yet as no other compiler cares.
+  - Manifested as a `/usr/lib64/libxml2.so: undefined reference to `gzopen64@ZLIB_1.2.3.3'` error in ESMF linking
+- Update docker image in CI workflow
+
 ## [7.24.1] - 2024-05-15
 
 ### Fixed

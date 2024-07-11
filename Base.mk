@@ -377,17 +377,9 @@ endif
 
   ifeq ($(ESMF_COMM),mpt)
     MPICC := mpicc
-    ifeq ($(findstring ifort,$(notdir $(FC))),ifort)
-      CC := gcc
-      CC_FROM_ENV := FALSE
-    endif
   endif
   ifeq ($(ESMF_COMM),mpt)
     MPICXX := mpicxx
-    ifeq ($(findstring ifort,$(notdir $(FC))),ifort)
-      CXX := g++
-      CXX_FROM_ENV := FALSE
-    endif
   endif
 
 # Make sure we have compilers
