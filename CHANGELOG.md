@@ -3,6 +3,13 @@
 ## [Unreleased]
 
 ### Updates
+
+- HDF5 1.14.4.3
+- curl 8.9.1
+- NCO 5.2.7
+- CDO 2.4.2
+- jpeg 9f
+
 ### Fixed
 ### Changed
 ### Removed
