@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 ### Updates
+
+- CDO 2.4.2
+
 ### Fixed
 ### Changed
 ### Removed
