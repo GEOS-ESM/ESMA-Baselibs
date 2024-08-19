@@ -167,6 +167,8 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
         COMMON_FLAG := -fcommon
         export ALLOW_ARGUMENT_MISMATCH ALLOW_INVALID_BOZ
      endif
+     GCC_CDO_STD := -std=c++20
+     export GCC_CDO_STD
   endif
 
 # Clang has issues with some libraries due to strict C99
@@ -784,7 +786,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
                       --with-udunits2=$(prefix) \
                       --disable-grib --disable-openmp \
                       --disable-shared --enable-static \
-                      CXXFLAGS="$(CLANG_STDC20)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CXXFLAGS="$(CLANG_STDC20) $(GCC_CDO_STD)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 nccmp.config: nccmp/configure netcdf.install
