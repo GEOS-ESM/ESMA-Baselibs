@@ -345,6 +345,8 @@ else
    LIB_HDF4 =
    # Also need to remove hdfeos if no hdf4
    SUBDIRS := $(filter-out hdfeos,$(SUBDIRS))
+	# and remove SDPToolkit
+   SUBDIRS := $(filter-out SDPToolkit,$(SUBDIRS))
 endif
 
 # Since we do not build the Fortran interface
