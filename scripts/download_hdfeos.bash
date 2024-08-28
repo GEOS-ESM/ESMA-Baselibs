@@ -6,7 +6,8 @@
 
 package_name='hdfeos'
 tarball='hdf-eos2-3.0-src.tar.gz'
-base_url='https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos/raw/hdf-eos2-3.0-src.tar.gz?at=refs%2Fheads%2FHDFEOS2_3.0'
+#base_url='https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos/raw/hdf-eos2-3.0-src.tar.gz?at=refs%2Fheads%2FHDFEOS2_3.0'
+base_url='https://gmao.gsfc.nasa.gov/gmaoftp/gmao_SIteam/hdf-eos2-3.0-src.tar.gz'
 
 export LMOD_SH_DBG_ON=0
 

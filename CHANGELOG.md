@@ -8,6 +8,14 @@
 ### Removed
 ### Added
 
+## [7.25.1] - 2024-08-28
+
+### Fixed
+
+- Updated download URLs for hdf-eos2, hdf-eos5, and SDP Toolkit due to issues with original host
+- Fixed GNU Make so that we don't require downloading all non-git libraries even if you are only building a few. Rather, we now
+  download at the config step for each library
+
 ## [7.25.0] - 2024-07-11
 
 ### Updates

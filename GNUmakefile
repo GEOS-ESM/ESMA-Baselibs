@@ -444,7 +444,7 @@ verify:
 
 .NOTPARALLEL: baselibs-config
 
-prelim: echo-compilers baselibs-config versions download
+prelim: echo-compilers baselibs-config versions
 
 echo-compilers:
 	@mkdir -p $(prefix)/etc
