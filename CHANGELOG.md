@@ -8,6 +8,22 @@
 ### Removed
 ### Added
 
+## [8.6.0] - 2024-09-10
+
+### Updates
+
+- FMS 2024.03
+- HDF5 1.14.4.3
+- curl 8.9.1
+- NCO 5.2.7
+- CDO 2.4.2
+- jpeg 9f
+
+### Fixed
+
+- Fixed GNU Make so that we don't require downloading all non-git libraries even if you are only building a few. Rather, we now
+  download at the config step for each library
+
 ## [8.5.0] - 2024-07-11
 
 ### Updates
