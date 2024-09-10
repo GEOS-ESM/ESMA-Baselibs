@@ -3,6 +3,14 @@
 ## [Unreleased]
 
 ### Updates
+### Fixed
+### Changed
+### Removed
+### Added
+
+## [8.6.0] - 2024-09-10
+
+### Updates
 
 - FMS 2024.03
 - HDF5 1.14.4.3
@@ -12,9 +20,9 @@
 - jpeg 9f
 
 ### Fixed
-### Changed
-### Removed
-### Added
+
+- Fixed GNU Make so that we don't require downloading all non-git libraries even if you are only building a few. Rather, we now
+  download at the config step for each library
 
 ## [8.5.0] - 2024-07-11
 
