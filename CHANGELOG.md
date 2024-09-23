@@ -3,6 +3,11 @@
 ## [Unreleased]
 
 ### Updates
+
+- curl 8.10.1
+- NCO 5.2.8
+- CDO 2.4.4
+
 ### Fixed
 
 - Building with GCC 14 + MPT on PFE showed the need to use `mpif08` when building HDF5. So, if `mpif08` is detected with MPT, we use
