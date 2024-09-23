@@ -4,6 +4,10 @@
 
 ### Updates
 ### Fixed
+
+- Building with GCC 14 + MPT on PFE showed the need to use `mpif08` when building HDF5. So, if `mpif08` is detected with MPT, we use
+  it as `MPIFC`
+
 ### Changed
 ### Removed
 ### Added

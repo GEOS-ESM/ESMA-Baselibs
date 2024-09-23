@@ -341,6 +341,15 @@
   ifeq ($(ESMF_COMM),openmpi)
     MPIFC := mpifort
   else
+  ifeq ($(ESMF_COMM),mpt)
+    ifneq ($(wildcard $(shell which mpif08 2> /dev/null)),)
+       MPIFC := mpif08
+    else
+    ifneq ($(wildcard $(shell which mpif90 2> /dev/null)),)
+       MPIFC := mpif90
+    endif
+    endif
+  else
   ifneq ($(wildcard $(shell which mpifort 2> /dev/null)),)
     MPIFC := mpifort
   else
@@ -348,6 +357,7 @@
     MPIFC := mpif90
   else
     MPIFC := $(FC)
+  endif
   endif
   endif
   endif
