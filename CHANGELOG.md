@@ -7,8 +7,12 @@
 
 - Building with GCC 14 + MPT on PFE showed the need to use `mpif08` when building HDF5. So, if `mpif08` is detected with MPT, we use
   it as `MPIFC`
+- If not building internal curl, we set `--disable-byterange` with netCDF
 
 ### Changed
+
+- Add new `BUILD=MAPL` to build only libraries needed for MAPL
+
 ### Removed
 ### Added
 

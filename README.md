@@ -148,6 +148,11 @@ compiler under Linux, just enter this
   Use this to only build the libraries essential for building and
   running GEOS GCM
 
+- `BUILD=MAPL`
+
+  Use this to only build the libraries essential for building and
+  running MAPL
+
 - `CONFIG_SETUP`
 
   This is to help detail what combination of compiler and
