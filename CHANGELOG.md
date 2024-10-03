@@ -4,6 +4,13 @@
 
 ### Updates
 ### Fixed
+### Changed
+### Removed
+### Added
+
+## [8.6.1] - 2024-10-03
+
+### Fixed
 
 - Building with GCC 14 + MPT on PFE showed the need to use `mpif08` when building HDF5. So, if `mpif08` is detected with MPT, we use
   it as `MPIFC`
@@ -14,7 +21,6 @@
 - Add new `BUILD=MAPL` to build only libraries needed for MAPL
 - Added `nccmp` to the essential libraries (and MAPL)
 
-### Removed
 ### Added
 
 - Added GitHub action to build a MAPL tarball
