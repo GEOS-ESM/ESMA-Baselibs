@@ -12,9 +12,12 @@
 ### Changed
 
 - Add new `BUILD=MAPL` to build only libraries needed for MAPL
+- Added `nccmp` to the essential libraries (and MAPL)
 
 ### Removed
 ### Added
+
+- Added GitHub action to build a MAPL tarball
 
 ## [8.6.0] - 2024-09-10
 

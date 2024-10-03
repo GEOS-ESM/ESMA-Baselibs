@@ -293,10 +293,10 @@ ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf
           hdfeos hdfeos5 SDPToolkit
 
 ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
-					  udunits2 esmf GFE
+                 udunits2 nccmp esmf GFE
 
 MAPL_DIRS = jpeg zlib szlib hdf5 netcdf netcdf-fortran \
-					  udunits2 esmf GFE
+            udunits2 nccmp esmf GFE
 
 ifeq ($(ARCH),Darwin)
    NO_DARWIN_DIRS = netcdf-cxx4 hdfeos hdfeos5 SDPToolkit

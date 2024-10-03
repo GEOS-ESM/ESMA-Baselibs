@@ -1,4 +1,4 @@
-name: Create Complete Release Tarball
+name: Create Release Tarballs
 
 on:
   release:
@@ -28,6 +28,37 @@ jobs:
       - name: Upload tarball
         run: |
           gh release upload ${{ github.event.release.tag_name }} ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.COMPLETE.tar.xz -R ${{ github.repository_owner }}/${{ github.event.repository.name }}
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  mapl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+          submodules: recursive
+
+      - name: Download non-git libraries
+        run : |
+          cd ${GITHUB_WORKSPACE}/${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+          make download
+
+      - name: Remove unneeded directories
+        run : |
+          cd ${GITHUB_WORKSPACE}/${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+          rm -rf antlr2 gsl curl hdf4 netcdf-cxx4 nco cdo libyaml FMS xgboost
+
+      - name: Create tarball
+        run: |
+          tar --exclude-vcs --exclude=.mepo -cf ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.MAPL.tar ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+          xz -T6 ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.MAPL.tar
+
+      - name: Upload tarball
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.MAPL.tar.xz -R ${{ github.repository_owner }}/${{ github.event.repository.name }}
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
