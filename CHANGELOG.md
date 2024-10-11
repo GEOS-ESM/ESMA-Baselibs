@@ -5,6 +5,7 @@
 ### Updates
 
 - curl 8.10.1
+- HDF5 1.14.5
 - NCO 5.2.8
 - CDO 2.4.4
 
