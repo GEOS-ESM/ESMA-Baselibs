@@ -292,6 +292,12 @@ ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf
           GFE \
           hdfeos hdfeos5 SDPToolkit
 
+ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
+                 udunits2 nccmp esmf GFE
+
+MAPL_DIRS = jpeg zlib szlib hdf5 netcdf netcdf-fortran \
+            udunits2 nccmp esmf GFE
+
 ifeq ($(ARCH),Darwin)
    NO_DARWIN_DIRS = netcdf-cxx4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_DARWIN_DIRS),$(ALLDIRS))
@@ -304,6 +310,7 @@ ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
    NO_NAG_DIRS = cdo FMS
    ALLDIRS := $(filter-out $(NO_NAG_DIRS),$(ALLDIRS))
    ESSENTIAL_DIRS := $(filter-out $(NO_NAG_DIRS),$(ESSENTIAL_DIRS))
+   MAPL_DIRS := $(filter-out $(NO_NAG_DIRS),$(MAPL_DIRS))
 endif
 
 # NVHPC seems to have issues with SDPToolkit
@@ -311,9 +318,6 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
    NO_NVHPC_DIRS = SDPToolkit
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif
-
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
-					  udunits2 esmf GFE
 
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
@@ -327,6 +331,12 @@ INC_SUPP :=  $(foreach subdir, \
             / /zlib /szlib /jpeg /hdf5 /hdf /netcdf,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 else
+ifeq ('$(BUILD)','MAPL')
+SUBDIRS = $(MAPL_DIRS)
+INC_SUPP :=  $(foreach subdir, \
+            / /zlib /szlib /jpeg /hdf5 /netcdf,\
+            -I$(prefix)/include$(subdir) $(INC_EXTRA) )
+else
 ifeq ('$(BUILD)','GFE')
 SUBDIRS = GFE
 else
@@ -334,6 +344,7 @@ SUBDIRS = $(ALLDIRS)
 INC_SUPP :=  $(foreach subdir, \
             / /zlib /szlib /jpeg /hdf5 /hdf /netcdf /udunits2 /gsl /antlr2,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
+endif
 endif
 endif
 
@@ -609,6 +620,7 @@ hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
                       CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	touch $@
 
+NETCDF_BYTERANGE = --enable-byterange
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
 BUILD_DAP = --enable-dap
 LIB_CURL = $(shell $(prefix)/bin/curl-config --libs) $(DARWIN_ST_LIBS)
@@ -618,6 +630,7 @@ endif
 else
 BUILD_DAP = --disable-dap
 LIB_CURL =
+NETCDF_BYTERANGE = --disable-byterange
 endif
 netcdf.config : netcdf/configure
 	@echo "Configuring netcdf $*"
@@ -632,6 +645,7 @@ netcdf.config : netcdf/configure
                       $(ENABLE_HDF4) \
                       $(BUILD_DAP) \
                       $(NC_PAR_TESTS) \
+                      $(NETCDF_BYTERANGE) \
                       --disable-shared \
                       --disable-examples \
                       --enable-netcdf-4 \
