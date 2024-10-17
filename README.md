@@ -12,7 +12,7 @@ NASA/GSFC.
 
 | Library                                                                  | Version      |
 | ---                                                                      | ---          |
-| [ESMF](https://github.com/esmf-org/esmf)                                 | v8.6.1       |
+| [ESMF](https://github.com/esmf-org/esmf)                                 | v8.7.0       |
 | [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.9.2        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.6.1        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1        |
@@ -21,14 +21,14 @@ NASA/GSFC.
 | [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                  | v1.16.0      |
 | [xgboost](https://github.com/dmlc/xgboost)                               | v1.6.0       |
 | [antlr2](https://www.antlr2.org/)                                        | 2.7.7        |
-| [GSL](https://www.gnu.org/software/gsl/)                                 | 2.7          |
+| [GSL](https://www.gnu.org/software/gsl/)                                 | 2.8          |
 | [jpeg](http://www.ijg.org/)                                              | 9f           |
 | [zlib](http://www.zlib.net/)                                             | 1.3.1        |
 | [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                  | 2.1.1        |
-| [curl](https://curl.haxx.se/)                                            | 8.9.1        |
+| [curl](https://curl.haxx.se/)                                            | 8.10.1       |
 | [UDUNITS2](https://github.com/GMAO-SI-Team/UDUNITS-2.git)                | 2.2.28       |
-| [NCO](http://nco.sourceforge.net/)                                       | 5.2.7        |
-| [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.4.2        |
+| [NCO](http://nco.sourceforge.net/)                                       | 5.2.8        |
+| [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.4.4        |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.9.1.0      |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                  | 3.0          |
 | [HDF-EOS5](https://wiki.earthdata.nasa.gov/display/DAS)                  | 2.0          |
