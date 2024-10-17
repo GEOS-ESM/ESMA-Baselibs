@@ -3,6 +3,14 @@
 ## [Unreleased]
 
 ### Updates
+### Fixed
+### Changed
+### Removed
+### Added
+
+## [8.7.0] - 2024-10-17
+
+### Updates
 
 - ESMF 8.7.0
 - curl 8.10.1
@@ -10,11 +18,6 @@
 - NCO 5.2.8
 - CDO 2.4.4
 - GSL 2.8
-
-### Fixed
-### Changed
-### Removed
-### Added
 
 ## [8.6.1] - 2024-10-03
 
