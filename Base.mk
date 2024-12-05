@@ -33,6 +33,11 @@
 # --------------------------
   FC_FROM_ENV := FALSE
   ifneq ($(origin FC),undefined)
+    ifeq ($(findstring flang-new,$(notdir $(FC))),flang-new)
+      ES_FC := $(FC)
+      ESMF_COMPILER := llvm
+      FC_FROM_ENV := TRUE
+    else
     ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
       ES_FC := $(FC)
       ESMF_COMPILER := nvhpc
@@ -69,6 +74,12 @@
     endif
     endif
     endif
+    endif
+  else
+  ifneq ($(wildcard $(shell which flang-new 2> /dev/null)),)
+    FC := flang-new
+    ES_FC := $(FC)
+    ESMF_COMPILER := llvm
   else
   ifneq ($(wildcard $(shell which nvfortran 2> /dev/null)),)
     FC := nvfortran
@@ -102,6 +113,7 @@
   else
     FC := UNKNOWN
     ES_FC := $(FC)
+  endif
   endif
   endif
   endif

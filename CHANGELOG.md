@@ -4,6 +4,9 @@
 
 ### Updates
 ### Fixed
+
+- Add support for flang-new
+
 ### Changed
 ### Removed
 ### Added
