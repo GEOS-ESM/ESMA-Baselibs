@@ -8,6 +8,10 @@
 - Add support for flang-new
 
 ### Changed
+
+- Turn off ESMPy building. It's not working and maybe we don't want to
+  build from source anyway as it's easier through mamba
+
 ### Removed
 ### Added
 
