@@ -5,6 +5,7 @@
 ### Updates
 
 - curl 8.11.1
+- NCO 5.2.9
 
 ### Fixed
 
