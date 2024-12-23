@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 ### Updates
+
+- curl 8.11.1
+
 ### Fixed
 
 - Add support for flang-new
