@@ -3,6 +3,14 @@
 ## [Unreleased]
 
 ### Updates
+### Fixed
+### Changed
+### Removed
+### Added
+
+## [7.28.0] - 2024-12-23
+
+### Updates
 
 - curl 8.11.1
 - NCO 5.2.9
@@ -15,9 +23,6 @@
 
 - Turn off ESMPy building. It's not working and maybe we don't want to
   build from source anyway as it's easier through mamba
-
-### Removed
-### Added
 
 ## [7.27.0] - 2024-10-17
 
