@@ -8,6 +8,21 @@
 ### Removed
 ### Added
 
+## [8.10.0] - 2025-02-05
+
+### Updates
+
+- GFE v1.17.0
+  - gFTL v1.15.1
+  - gFTL-shared v1.10.0
+  - fArgParse v1.9.0
+  - pFUnit v4.11.1
+  - yaFyaml v1.5.1
+  - pFlogger v1.15.0
+- curl 8.12.0
+- FMS 2025.01
+  - Build with portable-kinds support
+
 ## [8.9.0] - 2025-01-14
 
 ### Updates
