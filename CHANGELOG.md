@@ -20,6 +20,8 @@
   - yaFyaml v1.5.1
   - pFlogger v1.15.0
 - curl 8.12.0
+- FMS 2025.01
+  - Build with portable-kinds support
 
 ## [8.9.0] - 2025-01-14
 
