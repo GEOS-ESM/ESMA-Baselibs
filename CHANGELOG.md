@@ -8,6 +8,13 @@
 ### Removed
 ### Added
 
+## [8.11.0] - 2025-02-06
+
+### Updates
+
+- GFE v1.18.0
+  - pFlogger v1.16.1
+
 ## [8.10.0] - 2025-02-05
 
 ### Updates
