@@ -8,6 +8,12 @@
 ### Removed
 ### Added
 
+## [8.12.0] - 2025-02-07
+
+### Updates
+
+- Revert to FMS 2024.03
+
 ## [8.11.0] - 2025-02-06
 
 ### Updates
