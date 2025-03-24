@@ -6,6 +6,9 @@
 ### Fixed
 ### Changed
 ### Removed
+
+- Removed the `MAPL` tarfile generation. It was not quite right and until it can be debugged, the `COMPLETE` tarfile is always good.
+
 ### Added
 
 ## [8.13.0] - 2025-02-11
