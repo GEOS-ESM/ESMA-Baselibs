@@ -7,9 +7,22 @@
 ### Changed
 ### Removed
 
-- Removed the `MAPL` tarfile generation. It was not quite right and until it can be debugged, the `COMPLETE` tarfile is always good.
-
 ### Added
+
+## [7.33.0] - 2025-04-16
+
+### Updates
+
+- ESMF v8.9.0b05
+  - This is being added for CMake 4.0 compatibility
+
+### Fixed
+
+- Add (temporarily) `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` to GFE build until CMake 4 compatibility is added
+
+### Removed
+
+- Removed the `MAPL` tarfile generation. It was not quite right and until it can be debugged, the `COMPLETE` tarfile is always good.
 
 ## [7.32.0] - 2025-02-11
 
