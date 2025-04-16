@@ -18,7 +18,7 @@
 
 ### Fixed
 
-- Add (temporarily) `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` to GFE build until CMake 4 compatibility is added
+- Add `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` to GFE and xgboost builds until CMake 4 compatibility is added
 
 ### Removed
 
