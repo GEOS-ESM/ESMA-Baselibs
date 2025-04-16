@@ -829,7 +829,7 @@ xgboost.config:
 	@echo "Configuring xgboost"
 	@mkdir -p ./xgboost/build
 	@(cd ./xgboost; \
-		cmake -B build -S . --install-prefix=$(prefix) )
+		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_POLICY_VERSION_MINIMUM=3.5 )
 	@touch $@
 
 GFE.config:
