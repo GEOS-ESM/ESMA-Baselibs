@@ -9,12 +9,12 @@
 
 ### Added
 
-## [8.14.0] - 2025-04-16
+## [8.14.0] - 2025-04-21
 
 ### Updates
 
-- ESMF v8.9.0b05
-  - This is being added for CMake 4.0 compatibility
+- ESMF v8.8.1
+  - This is being updated for CMake 4.0 compatibility as well as a bug fix needed in MAPL3 work
 
 ### Fixed
 
