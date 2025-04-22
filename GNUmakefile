@@ -829,7 +829,7 @@ xgboost.config:
 	@echo "Configuring xgboost"
 	@mkdir -p ./xgboost/build
 	@(cd ./xgboost; \
-		cmake -B build -S . --install-prefix=$(prefix) )
+		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_POLICY_VERSION_MINIMUM=3.5 )
 	@touch $@
 
 GFE.config:
@@ -837,14 +837,14 @@ GFE.config:
 	@mkdir -p ./GFE/build
 	@(cd ./GFE; \
 		export LDFLAGS="$(CLANG_LD_CLASSIC)" ;\
-		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES )
+		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES -DCMAKE_POLICY_VERSION_MINIMUM=3.5 )
 	@touch $@
 
 libyaml.config:
 	@echo "Configuring libyaml"
 	@mkdir -p ./libyaml/build
 	@(cd ./libyaml; \
-		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) )
+		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_POLICY_VERSION_MINIMUM=3.5 )
 	@touch $@
 
 FMS.config: netcdf.install netcdf-fortran.install libyaml.install
