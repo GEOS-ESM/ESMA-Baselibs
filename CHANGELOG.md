@@ -7,9 +7,24 @@
 ### Changed
 ### Removed
 
-- Removed the `MAPL` tarfile generation. It was not quite right and until it can be debugged, the `COMPLETE` tarfile is always good.
-
 ### Added
+
+## [7.33.0] - 2025-04-21
+
+### Updates
+
+- ESMF v8.8.1
+  - This is being updated for CMake 4.0 compatibility as well as a bug fix needed in MAPL3 work
+- NCO 5.3.3
+- CDO 2.5.1
+
+### Fixed
+
+- Add `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` to GFE and xgboost builds until CMake 4 compatibility is added
+
+### Removed
+
+- Removed the `MAPL` tarfile generation. It was not quite right and until it can be debugged, the `COMPLETE` tarfile is always good.
 
 ## [7.32.0] - 2025-02-11
 
