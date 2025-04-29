@@ -603,6 +603,12 @@ hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) szlib.install
                       CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
 	touch $@
 
+# We need to patch HDF5 for gcc15. Based on https://github.com/HDFGroup/hdf5/pull/4924
+# Should be in next HDF5 version (1.14.7)
+hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
+	@echo Patching hdf5
+	patch -f -p1 < ./patches/hdf5/gcc15.patch
+
 hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
 	echo Configuring hdf5
 	(cd hdf5; \
@@ -619,6 +625,10 @@ hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
                       CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	touch $@
+
+hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
+	@echo Unpatching hdf5
+	patch -f -p1 -R < ./patches/hdf5/gcc15.patch
 
 NETCDF_BYTERANGE = --enable-byterange
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
@@ -986,22 +996,12 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
 #                         Install
 #                         .......
 
-# We need to patch HDF5 for gcc15. Based on https://github.com/HDFGroup/hdf5/pull/4924
-# Should be in next HDF5 version (1.14.7)
-hdf5.install :: hdf5.config
-	@echo Patching hdf5
-	patch -f -p1 < ./patches/hdf5/gcc15.patch
-
 hdf5.install :: hdf5.config
 	@(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           "$(HDF5_DEEPBIND)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
-
-hdf5.install :: hdf5.config
-	@echo Unpatching hdf5
-	patch -f -p1 -R < ./patches/hdf5/gcc15.patch
 
 netcdf.install : netcdf.config
 	@echo "Installing netcdf $*"
