@@ -11,6 +11,10 @@
 
 ## [8.15.0] - 2025-04-29
 
+### Updates
+
+- curl 8.13.0
+
 ### Fixed
 
 - Fixes for GCC 15 Compatibility (https://github.com/GEOS-ESM/ESMA-Baselibs/issues/290)
