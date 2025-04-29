@@ -191,16 +191,31 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
         export CDO_STD
 
         # We might need to add -Wl,-ld_classic to LDFLAGS but only for certain versions of macOS/XCode
+		  # which is 15 and up to 16.2, but not 16.3
         # This command:
         #   pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | sed -n 's/version: \([0-9]*\)\..*/\1/p'
         # will return the version of the Command Line Tools installed on the system and if it is 15 or greater
         # then we need to add -Wl,-ld_classic to LDFLAGS
-        XCODE_VERSION := $(shell pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | sed -n 's/version: \([0-9]*\)\..*/\1/p')
-        XCODE_VERSION_GTE_15 := $(shell expr $(XCODE_VERSION) \>= 15)
-        ifeq ($(XCODE_VERSION_GTE_15),1)
+        XCODE_VERSION_MAJOR := $(shell pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | sed -n 's/version: \([0-9]*\)\..*/\1/p')
+        XCODE_VERSION_FULL := $(shell pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | grep version: | sed 's/version: //')
+
+        ifeq ($(XCODE_VERSION_MAJOR),15)
            CLANG_LD_CLASSIC := -Wl,-ld_classic
            export CLANG_LD_CLASSIC
         endif
+
+        # Check if major version is 16
+        ifeq ($(XCODE_VERSION_MAJOR),16)
+            # Check if minor version is < 3
+            XCODE_VERSION_MINOR := $(shell echo $(XCODE_VERSION_FULL) | sed 's/16\.\([0-9]*\).*/\1/')
+            XCODE_VERSION_MINOR_LT_3 := $(shell expr $(XCODE_VERSION_MINOR) \< 3)
+            ifeq ($(XCODE_VERSION_MINOR_LT_3),1)
+                # Add the flag
+                CLANG_LD_CLASSIC := -Wl,-ld_classic
+                export CLANG_LD_CLASSIC
+            endif
+        endif
+
      endif
   endif
 
@@ -402,8 +417,10 @@ verify:
 	@echo GFORTRAN_VERSION_GTE_10 = $(GFORTRAN_VERSION_GTE_10)
 	@echo MACOS_VERSION = $(MACOS_VERSION)
 	@echo MMACOS_MIN = $(MMACOS_MIN)
-	@echo XCODE_VERSION = $(XCODE_VERSION)
-	@echo XCODE_VERSION_GTE_15 = $(XCODE_VERSION_GTE_15)
+	@echo XCODE_VERSION_FULL = $(XCODE_VERSION_FULL)
+	@echo XCODE_VERSION_MAJOR = $(XCODE_VERSION_MAJOR)
+	@echo XCODE_VERSION_MINOR = $(XCODE_VERSION_MINOR)
+	@echo XCODE_VERSION_MINOR_LT_3 = $(XCODE_VERSION_MINOR_LT_3)
 	@echo CLANG_LD_CLASSIC = $(CLANG_LD_CLASSIC)
 	@echo ALLOW_ARGUMENT_MISMATCH = $(ALLOW_ARGUMENT_MISMATCH)
 	@echo CC_IS_CLANG = $(CC_IS_CLANG)
@@ -1039,12 +1056,20 @@ cdo.install: cdo.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
-nccmp.install: nccmp.config
+nccmp.install :: nccmp.config
+	@echo Patching nccmp
+	patch -f -p1 < ./patches/nccmp/gcc15.patch
+
+nccmp.install :: nccmp.config
 	@echo "Installing nccmp $*"
 	@(cd nccmp; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
+
+nccmp.install :: nccmp.config
+	@echo Unpatching nccmp
+	patch -f -p1 -R < ./patches/nccmp/gcc15.patch
 
 xgboost.install: xgboost.config
 	@echo "Installing xgboost"
