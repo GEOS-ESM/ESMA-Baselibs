@@ -9,6 +9,14 @@
 
 ### Added
 
+## [8.15.0] - 2025-04-29
+
+### Fixed
+
+- Fixes for GCC 15 Compatibility (https://github.com/GEOS-ESM/ESMA-Baselibs/issues/290)
+  - Patches for szlib and hdf5
+  - HDF5 patch will be temporary until next version (v1.14.7 or v1.16)
+
 ## [8.14.0] - 2025-04-21
 
 ### Updates

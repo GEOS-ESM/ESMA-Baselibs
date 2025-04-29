@@ -752,6 +752,23 @@ szlib.config : szlib.download szlib/configure
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
+# This is a patch for gcc15, but probably safe for all
+# See https://github.com/GEOS-ESM/ESMA-Baselibs/issues/290
+szlib.install :: szlib.config
+	@echo Patching szlib
+	patch -f -p0 < ./patches/szip/rice.patch
+
+szlib.install :: szlib.config
+	@echo "Installing szlib"
+	@(cd szlib; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          $(MAKE) install )
+	touch $@
+
+szlib.install :: szlib.config
+	@echo Unpatching szlib
+	patch -f -p0 -R < ./patches/szip/rice.patch
+
 zlib.config : zlib/configure
 	@echo Configuring zlib
 	@(cd zlib; \
@@ -969,13 +986,22 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
 #                         Install
 #                         .......
 
+# We need to patch HDF5 for gcc15. Based on https://github.com/HDFGroup/hdf5/pull/4924
+# Should be in next HDF5 version (1.14.7)
+hdf5.install :: hdf5.config
+	@echo Patching hdf5
+	patch -f -p1 < ./patches/hdf5/gcc15.patch
 
-hdf5.install: hdf5.config
+hdf5.install :: hdf5.config
 	@(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           "$(HDF5_DEEPBIND)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
+
+hdf5.install :: hdf5.config
+	@echo Unpatching hdf5
+	patch -f -p1 -R < ./patches/hdf5/gcc15.patch
 
 netcdf.install : netcdf.config
 	@echo "Installing netcdf $*"

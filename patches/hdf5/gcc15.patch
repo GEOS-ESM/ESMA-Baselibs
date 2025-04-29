@@ -1,0 +1,12 @@
+diff --git before/hdf5/configure.ac after/hdf5/configure.ac
+index d9147056c5..0e97f1e4b0 100644
+--- before/hdf5/configure.ac
++++ after/hdf5/configure.ac
+@@ -854,6 +854,7 @@ if test "X$HDF_FORTRAN" = "Xyes"; then
+   if test "$MY_FLT128_DIG" -gt "$MY_LDBL_DIG" ; then
+     AC_MSG_RESULT([yes])
+     AC_DEFINE([HAVE_FLOAT128], [1], [Determine if __float128 will be used in the Fortran wrappers])
++    AC_CHECK_SIZEOF([__float128])
+   else
+     ## Can't use __float128, but write an undef line anyway
+     AC_MSG_RESULT([no])
