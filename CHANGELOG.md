@@ -13,6 +13,7 @@
 
 ### Updates
 
+- ESMF v8.9.0b09 (needed for GCC 15)
 - curl 8.13.0
 
 ### Fixed
