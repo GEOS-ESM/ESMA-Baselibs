@@ -1315,7 +1315,7 @@ GFE.check: GFE.install
 	@rm -rf ./GFE/build
 	@mkdir -p ./GFE/build
 	@(cd ./GFE; \
-		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES ;\
+		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ;\
 		cmake --build build --target tests -j $(MAKEJOBS))
 	@touch $@
 

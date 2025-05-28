@@ -4,6 +4,9 @@
 
 ### Updates
 ### Fixed
+
+- Fix CMake issue with `GFE.check` target
+
 ### Changed
 ### Removed
 
