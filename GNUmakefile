@@ -170,6 +170,9 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 	  # CDO needs C++20 standard
      CDO_STD := -std=c++20
      export CDO_STD
+
+     GFORTRAN_VERSION_GTE_14 := $(shell expr `$(FC) -dumpversion | cut -f1 -d.` \>= 14)
+     export GFORTRAN_VERSION_GTE_14
   endif
 
 # Clang has issues with some libraries due to strict C99
@@ -338,6 +341,14 @@ ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_ARM_DIRS),$(ALLDIRS))
    ESSENTIAL_DIRS := $(filter-out hdf4,$(ESSENTIAL_DIRS))
+endif
+
+# Apparently, GCC 14+ has an issue with hdfeos and hdfeos5 (and thus SDPToolkit)
+# This really only matters on Linux, but we will do it for all (since macOS will
+# alrealy strip these out)
+ifeq ($(GFORTRAN_VERSION_GTE_14),1)
+   NO_GCC14_DIRS = hdfeos hdfeos5 SDPToolkit
+   ALLDIRS := $(filter-out $(NO_GCC14_DIRS),$(ALLDIRS))
 endif
 
 ifeq ('$(BUILD)','ESSENTIALS')
