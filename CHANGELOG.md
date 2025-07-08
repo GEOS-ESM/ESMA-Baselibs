@@ -6,6 +6,7 @@
 
 - curl 8.14.1
 - NCO 5.3.4
+- CDO 2.5.2
 - nccmp 1.10.0.0
 
 ### Fixed
