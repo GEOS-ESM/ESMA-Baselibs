@@ -4,6 +4,7 @@
 
 ### Updates
 
+- NCO 5.3.4
 - nccmp 1.10.0.0
 
 ### Fixed
