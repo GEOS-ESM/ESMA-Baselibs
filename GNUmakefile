@@ -173,6 +173,14 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 
      GFORTRAN_VERSION_GTE_14 := $(shell expr `$(FC) -dumpversion | cut -f1 -d.` \>= 14)
      export GFORTRAN_VERSION_GTE_14
+     ifeq ($(GFORTRAN_VERSION_GTE_14),1)
+       NO_IMPLICIT_FUNCTION_ERROR := -Wno-error=implicit-function-declaration
+       export NO_IMPLICIT_FUNCTION_ERROR
+       NO_IMPLICIT_INT_ERROR := -Wno-error=implicit-int
+       export NO_IMPLICIT_INT_ERROR
+       NO_INT_CONVERSION_ERROR := -Wno-error=int-conversion
+       export NO_INT_CONVERSION_ERROR
+     endif
   endif
 
 # Clang has issues with some libraries due to strict C99
@@ -341,14 +349,6 @@ ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_ARM_DIRS),$(ALLDIRS))
    ESSENTIAL_DIRS := $(filter-out hdf4,$(ESSENTIAL_DIRS))
-endif
-
-# Apparently, GCC 14+ has an issue with hdfeos and hdfeos5 (and thus SDPToolkit)
-# This really only matters on Linux, but we will do it for all (since macOS will
-# alrealy strip these out)
-ifeq ($(GFORTRAN_VERSION_GTE_14),1)
-   NO_GCC14_DIRS = hdfeos hdfeos5 SDPToolkit
-   ALLDIRS := $(filter-out $(NO_GCC14_DIRS),$(ALLDIRS))
 endif
 
 ifeq ('$(BUILD)','ESSENTIALS')
@@ -1068,19 +1068,11 @@ cdo.install: cdo.config
 	@touch $@
 
 nccmp.install :: nccmp.config
-	@echo Patching nccmp
-	patch -f -p1 < ./patches/nccmp/gcc15.patch
-
-nccmp.install :: nccmp.config
 	@echo "Installing nccmp $*"
 	@(cd nccmp; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
-
-nccmp.install :: nccmp.config
-	@echo Unpatching nccmp
-	patch -f -p1 -R < ./patches/nccmp/gcc15.patch
 
 xgboost.install: xgboost.config
 	@echo "Installing xgboost"
