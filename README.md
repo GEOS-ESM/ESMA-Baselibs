@@ -31,7 +31,7 @@ NASA/GSFC.
 | [UDUNITS2](https://github.com/GMAO-SI-Team/UDUNITS-2.git)                | 2.2.28       |
 | [NCO](http://nco.sourceforge.net/)                                       | 5.3.3        |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.5.1        |
-| [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.9.1.0      |
+| [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.10.0.0     |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                  | 3.0          |
 | [HDF-EOS5](https://wiki.earthdata.nasa.gov/display/DAS)                  | 2.0          |
 | [SDP Toolkit](https://wiki.earthdata.nasa.gov/display/DAS)               | 5.2.20       |

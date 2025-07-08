@@ -1068,19 +1068,11 @@ cdo.install: cdo.config
 	@touch $@
 
 nccmp.install :: nccmp.config
-	@echo Patching nccmp
-	patch -f -p1 < ./patches/nccmp/gcc15.patch
-
-nccmp.install :: nccmp.config
 	@echo "Installing nccmp $*"
 	@(cd nccmp; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
-
-nccmp.install :: nccmp.config
-	@echo Unpatching nccmp
-	patch -f -p1 -R < ./patches/nccmp/gcc15.patch
 
 xgboost.install: xgboost.config
 	@echo "Installing xgboost"
