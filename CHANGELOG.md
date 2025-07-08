@@ -4,6 +4,18 @@
 
 ### Updates
 
+### Fixed
+
+### Changed
+
+### Removed
+
+### Added
+
+## [8.16.0] - 2025-07-08
+
+### Updates
+
 - curl 8.14.1
 - NCO 5.3.4
 - CDO 2.5.2
@@ -20,8 +32,6 @@
 ### Removed
 
 - Removed patch for `nccmp` as it is no longer needed with the latest version
-
-### Added
 
 ## [8.15.0] - 2025-05-27
 
