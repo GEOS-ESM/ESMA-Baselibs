@@ -12,7 +12,7 @@
 
 ### Changed
 
-- Disable builds of `hdfeos2`, `hdfeos5`, and `SDPToolkit` with GCC 14+. They don't seem to build at the moment and are not needed for GNU builds of GEOS
+- Enable various `-Wno-error=` options when using GCC 14+
 
 ### Removed
 
