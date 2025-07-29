@@ -190,16 +190,16 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
      NO_IMPLICIT_FUNCTION_ERROR := -Wno-error=implicit-function-declaration
      export NO_IMPLICIT_FUNCTION_ERROR
 
+     # There is an issue with clang++ and cdo
+     CDO_STD := -std=c++20
+     export CDO_STD
+
      ifeq ($(ARCH),Darwin)
         # There is an issue with clang and curl, need to pass in a macos version min
         MACOS_VERSION := $(shell sw_vers -productVersion | awk -F . '{print $$1 "." $$2}')
         export MACOS_VERSION
         MMACOS_MIN := -mmacosx-version-min=$(MACOS_VERSION)
         export MMACOS_MIN
-
-        # There is an issue with clang++ and cdo
-        CDO_STD := -std=c++20
-        export CDO_STD
 
         # We might need to add -Wl,-ld_classic to LDFLAGS but only for certain versions of macOS/XCode
 		  # which is 15 and up to 16.2, but not 16.3

@@ -6,6 +6,8 @@
 
 ### Fixed
 
+- Fix for CDO and Clang builds
+
 ### Changed
 
 ### Removed
