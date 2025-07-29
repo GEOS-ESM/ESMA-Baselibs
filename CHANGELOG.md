@@ -10,6 +10,8 @@
 
 ### Changed
 
+- Look for `flang` and not `flang-new` as the latter is now deprecated for LLVM Flang
+
 ### Removed
 
 ### Added
