@@ -628,7 +628,7 @@ hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) libaec.install
 	@(cd hdf4; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib -laec -lsz -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib -lsz -laec -lm $(LIB_EXTRA)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --program-suffix="-hdf4"\
@@ -652,7 +652,7 @@ hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 	echo Configuring hdf5
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
-          export LIBS="-L$(prefix)/lib -laec -lsz -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib -lsz -laec -lm $(LIB_EXTRA)" ;\
           export LDFLAGS="$(CLANG_LD_CLASSIC)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
@@ -687,7 +687,7 @@ netcdf.config : netcdf/configure
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(NC_CPPFLAGS) $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
-          export LIBS="-L$(prefix)/lib -laec -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib -lsz -laec -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/netcdf \
@@ -768,7 +768,7 @@ nco.config : nco/configure
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
           export CXXFLAGS="$(NCO_CXXFLAGS)";\
           export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -laec -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz -laec  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nco \
@@ -847,7 +847,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
 	@(cd cdo; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -laec -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/cdo \
@@ -868,7 +868,7 @@ nccmp.config: nccmp/configure netcdf.install
           chmod +x configure ;\
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -laec -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG)";\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nccmp \
@@ -954,7 +954,7 @@ hdfeos.config: hdfeos.download hdfeos/configure hdf4.install
 	@(cd hdfeos; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -laec -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos \
@@ -977,7 +977,7 @@ hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -laec -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos5 \
@@ -1002,7 +1002,7 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
 	@(cd SDPToolkit; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP_SDP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -laec -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/SDPToolkit \
                       $(WITH_ZLIB) \
@@ -1033,7 +1033,7 @@ netcdf.install : netcdf.config
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(NC_CPPFLAGS) $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF4) -laec -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
@@ -1118,7 +1118,7 @@ nco.install: nco.config
           export NETCDF_INC="$(prefix)/include/netcdf"; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -laec -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -lsz -laec  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
 	  sed -i '' '/^SUBDIRS/s/doc//' Makefile ;\
 	  $(MAKE) install ;\
 	  cd src/nco ;\
@@ -1136,7 +1136,7 @@ nco.install: nco.config
           export NETCDF_INC="$(prefix)/include/netcdf"; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -laec -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz -laec  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
 	  $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 endif
