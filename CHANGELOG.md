@@ -4,6 +4,8 @@
 
 ### Updates
 
+- curl 8.15.0
+
 ### Fixed
 
 ### Changed
