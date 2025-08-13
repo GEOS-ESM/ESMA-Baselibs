@@ -4,6 +4,7 @@
 
 ### Updates
 
+- esmf 8.9.0
 - curl 8.15.0
 - CDO 2.5.3
 
