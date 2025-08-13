@@ -14,7 +14,12 @@
 
 ### Removed
 
+- szip
+  - Moving to use libaec
+
 ### Added
+
+- libaec 1.1.4
 
 ## [8.16.0] - 2025-07-08
 
