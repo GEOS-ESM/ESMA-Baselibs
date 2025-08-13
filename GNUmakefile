@@ -298,7 +298,7 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
      ifneq ($(BREW_OPENSSL_PREFIX),)
          # Use the stable Homebrew prefix path
          CURL_SSL = --with-openssl=$(BREW_OPENSSL_PREFIX)
-         BREW_OPENSSL_LIBDIR := $(BREW_OPENSSL_PREFIX)/lib
+         BREW_OPENSSL_LIBDIR := -L$(BREW_OPENSSL_PREFIX)/lib
      else
          # Fall back to pkg-config or system OpenSSL
          OPENSSL_AVAILABLE := $(shell pkg-config --exists openssl && echo "yes" || echo "no")
@@ -628,7 +628,7 @@ hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) libaec.install
 	@(cd hdf4; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
-          export LDFLAGS="-L$(prefix)/lib -laec -lsz -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib -laec -lsz -lm $(LIB_EXTRA)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --program-suffix="-hdf4"\
@@ -672,7 +672,7 @@ hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 NETCDF_BYTERANGE = --enable-byterange
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
 BUILD_DAP = --enable-dap
-LIB_CURL = -L$(BREW_OPENSSL_LIBDIR) $(shell $(prefix)/bin/curl-config --libs) $(DARWIN_ST_LIBS)
+LIB_CURL = $(BREW_OPENSSL_LIBDIR) $(shell $(prefix)/bin/curl-config --libs) $(DARWIN_ST_LIBS)
 ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
 LIB_CURL := $(filter-out -pthread,$(LIB_CURL))
 endif
