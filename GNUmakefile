@@ -287,24 +287,33 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
   endif
 
   ifeq ($(ARCH),Darwin)
-    # On Darwin, you can't assume an Open SSL exists
-    ifeq ($(CC_IS_CLANG),TRUE)
-      # If we are using Clang we can use SecureTransport
-      CURL_SSL := --with-secure-transport
-      export CURL_SSL
+     # Check if we have Homebrew and OpenSSL formula
+     BREW_OPENSSL_PREFIX := $(shell \
+         if command -v brew >/dev/null 2>&1; then \
+             brew --prefix openssl@3 2>/dev/null || brew --prefix openssl 2>/dev/null || echo ""; \
+         else \
+             echo ""; \
+         fi)
 
-      DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration -framework Security
-      export DARWIN_ST_LIBS
-    else
-      # There is a bug with gcc and Apple Security Framework:
-      # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93082
-      # so we don't do SSL
-      CURL_SSL := --without-ssl
-      export CURL_SSL
+     ifneq ($(BREW_OPENSSL_PREFIX),)
+         # Use the stable Homebrew prefix path
+         CURL_SSL = --with-openssl=$(BREW_OPENSSL_PREFIX)
+         BREW_OPENSSL_LIBDIR := $(BREW_OPENSSL_PREFIX)/lib
+     else
+         # Fall back to pkg-config or system OpenSSL
+         OPENSSL_AVAILABLE := $(shell pkg-config --exists openssl && echo "yes" || echo "no")
+         ifeq ($(OPENSSL_AVAILABLE),yes)
+             CURL_SSL = --with-openssl
+         else
+             CURL_SSL = --without-ssl
+         endif
+         BREW_OPENSSL_LIBDIR := ""
+     endif
+     export CURL_SSL
+     export BREW_OPENSSL_PREFIX BREW_OPENSSL_LIBDIR
 
-      DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration
-      export DARWIN_ST_LIBS
-    endif
+     DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration
+     export DARWIN_ST_LIBS
   endif
 
 #-------------------------------------------------------------------------
@@ -442,6 +451,8 @@ verify:
 	@echo WITH_ZLIB = $(WITH_ZLIB)
 	@echo WITH_ZLIB_SHORT = $(WITH_ZLIB_SHORT)
 	@echo CURL_ZLIB = $(CURL_ZLIB)
+	@echo BREW_OPENSSL_PREFIX = $(BREW_OPENSSL_PREFIX)
+	@echo CURL_SSL = $(CURL_SSL)
 	@echo INC_SUPP = $(INC_SUPP)
 	@echo NAG_FCFLAGS = $(NAG_FCFLAGS)
 	@echo FC_FROM_ENV = $(FC_FROM_ENV)
@@ -617,7 +628,7 @@ hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) libaec.install
 	@(cd hdf4; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
-          export LDFLAGS="-lm $(LIB_EXTRA)" ;\
+          export LDFLAGS="-L$(prefix)/lib -laec -lsz -lm $(LIB_EXTRA)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --program-suffix="-hdf4"\
@@ -641,7 +652,7 @@ hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 	echo Configuring hdf5
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
-          export LIBS="-lm" ;\
+          export LIBS="-L$(prefix)/lib -laec -lsz -lm $(LIB_EXTRA)" ;\
           export LDFLAGS="$(CLANG_LD_CLASSIC)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
@@ -661,7 +672,7 @@ hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 NETCDF_BYTERANGE = --enable-byterange
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
 BUILD_DAP = --enable-dap
-LIB_CURL = $(shell $(prefix)/bin/curl-config --libs) $(DARWIN_ST_LIBS)
+LIB_CURL = -L$(BREW_OPENSSL_LIBDIR) $(shell $(prefix)/bin/curl-config --libs) $(DARWIN_ST_LIBS)
 ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
 LIB_CURL := $(filter-out -pthread,$(LIB_CURL))
 endif
@@ -772,7 +783,7 @@ nco.config : nco/configure
                       CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77)  )
 	@touch $@
 
-libaec.config : libaec/configure
+libaec.config : libaec/configure.ac
 	@echo "Configuring libaec"
 	@(cd libaec; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
