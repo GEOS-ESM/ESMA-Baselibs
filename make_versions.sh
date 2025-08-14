@@ -58,13 +58,6 @@ then
    echo_version zlib "$ZLIB_VERSION" "$ZLIB_VERSION_LOC"
 fi
 
-SZLIB_VERSION_LOC="szlib/src/szlib.h"
-if [[ -e $SZLIB_VERSION_LOC ]]
-then
-   SZLIB_VERSION=$(awk '/#define SZLIB_VERSION/ {print $3}' $SZLIB_VERSION_LOC | sed 's/"//g')
-   echo_version szlib "$SZLIB_VERSION" "$SZLIB_VERSION_LOC"
-fi
-
 CURL_VERSION_LOC="curl/include/curl/curlver.h"
 if [[ -e $CURL_VERSION_LOC ]]
 then

@@ -14,6 +14,8 @@
 
 ### Removed
 
+- Remove szip
+
 ### Added
 
 ## [8.16.0] - 2025-07-08
