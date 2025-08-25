@@ -197,7 +197,7 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
         MMACOS_MIN := -mmacosx-version-min=$(MACOS_VERSION)
         export MMACOS_MIN
 
-        # There is an issue with clang++ and cdo
+        # There is an issue with Apple clang++ and cdo
         CDO_STD := -std=c++20
         export CDO_STD
 
@@ -226,8 +226,14 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
                 export CLANG_LD_CLASSIC
             endif
         endif
-
      endif
+
+     ifeq ($(ARCH),Linux)
+        # There is an issue with LLVM clang++ and cdo
+        CDO_STD := -std=c++20 -stdlib=libc++
+        export CDO_STD
+     endif
+
   endif
 
 # icx also needs the strict C99 flags

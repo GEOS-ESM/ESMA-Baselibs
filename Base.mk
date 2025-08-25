@@ -33,7 +33,7 @@
 # --------------------------
   FC_FROM_ENV := FALSE
   ifneq ($(origin FC),undefined)
-    ifeq ($(findstring flang-new,$(notdir $(FC))),flang-new)
+    ifeq ($(findstring flang,$(notdir $(FC))),flang)
       ES_FC := $(FC)
       ESMF_COMPILER := llvm
       FC_FROM_ENV := TRUE
@@ -76,8 +76,8 @@
     endif
     endif
   else
-  ifneq ($(wildcard $(shell which flang-new 2> /dev/null)),)
-    FC := flang-new
+  ifneq ($(wildcard $(shell which flang 2> /dev/null)),)
+    FC := flang
     ES_FC := $(FC)
     ESMF_COMPILER := llvm
   else
