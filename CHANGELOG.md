@@ -12,6 +12,12 @@
 
 ### Added
 
+## [8.17.1] - 2025-08-25
+
+### Fixed
+
+- Corrected CDO sha512 checksum
+
 ## [8.17.0] - 2025-08-25
 
 ### Updates
