@@ -4,6 +4,18 @@
 
 ### Updates
 
+### Fixed
+
+### Changed
+
+### Removed
+
+### Added
+
+## [8.17.0] - 2025-08-25
+
+### Updates
+
 - esmf 8.9.0
 - curl 8.15.0
 - CDO 2.5.3
