@@ -16,6 +16,30 @@
 
 ### Added
 
+## [8.17.1] - 2025-08-25
+
+### Fixed
+
+- Correct CDO 2.5.3 location and SHA512 checksum (not sure how it changed)
+
+## [8.17.0] - 2025-08-25
+
+### Updates
+
+- esmf 8.9.0
+- curl 8.15.0
+- CDO 2.5.3
+
+### Removed
+
+- szip
+  - Moving to use libaec
+
+### Added
+
+- libaec 1.1.4
+  - NOTE: Users should use ESMA_cmake 3.63.0+ or 4.20.0+ for libaec support
+
 ## [8.16.0] - 2025-07-08
 
 ### Updates

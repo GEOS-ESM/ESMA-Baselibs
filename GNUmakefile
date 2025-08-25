@@ -293,24 +293,33 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
   endif
 
   ifeq ($(ARCH),Darwin)
-    # On Darwin, you can't assume an Open SSL exists
-    ifeq ($(CC_IS_CLANG),TRUE)
-      # If we are using Clang we can use SecureTransport
-      CURL_SSL := --with-secure-transport
-      export CURL_SSL
+     # Check if we have Homebrew and OpenSSL formula
+     BREW_OPENSSL_PREFIX := $(shell \
+         if command -v brew >/dev/null 2>&1; then \
+             brew --prefix openssl@3 2>/dev/null || brew --prefix openssl 2>/dev/null || echo ""; \
+         else \
+             echo ""; \
+         fi)
 
-      DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration -framework Security
-      export DARWIN_ST_LIBS
-    else
-      # There is a bug with gcc and Apple Security Framework:
-      # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93082
-      # so we don't do SSL
-      CURL_SSL := --without-ssl
-      export CURL_SSL
+     ifneq ($(BREW_OPENSSL_PREFIX),)
+         # Use the stable Homebrew prefix path
+         CURL_SSL = --with-openssl=$(BREW_OPENSSL_PREFIX)
+         BREW_OPENSSL_LIBDIR := -L$(BREW_OPENSSL_PREFIX)/lib
+     else
+         # Fall back to pkg-config or system OpenSSL
+         OPENSSL_AVAILABLE := $(shell pkg-config --exists openssl && echo "yes" || echo "no")
+         ifeq ($(OPENSSL_AVAILABLE),yes)
+             CURL_SSL = --with-openssl
+         else
+             CURL_SSL = --without-ssl
+         endif
+         BREW_OPENSSL_LIBDIR := ""
+     endif
+     export CURL_SSL
+     export BREW_OPENSSL_PREFIX BREW_OPENSSL_LIBDIR
 
-      DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration
-      export DARWIN_ST_LIBS
-    endif
+     DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration
+     export DARWIN_ST_LIBS
   endif
 
 #-------------------------------------------------------------------------
@@ -319,15 +328,15 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 #                   Recurse Make in Sub-directories
 #                  --------------------------------
 
-ALLDIRS = antlr2 gsl jpeg zlib szlib curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
+ALLDIRS = antlr2 gsl jpeg zlib libaec curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
           udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
           GFE \
           hdfeos hdfeos5 SDPToolkit
 
-ESSENTIAL_DIRS = jpeg zlib szlib hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
+ESSENTIAL_DIRS = jpeg zlib libaec hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
                  udunits2 nccmp esmf GFE
 
-MAPL_DIRS = jpeg zlib szlib hdf5 netcdf netcdf-fortran \
+MAPL_DIRS = jpeg zlib libaec hdf5 netcdf netcdf-fortran \
             udunits2 nccmp esmf GFE
 
 ifeq ($(ARCH),Darwin)
@@ -360,13 +369,13 @@ endif
 ifeq ('$(BUILD)','ESSENTIALS')
 SUBDIRS = $(ESSENTIAL_DIRS)
 INC_SUPP :=  $(foreach subdir, \
-            / /zlib /szlib /jpeg /hdf5 /hdf /netcdf,\
+            / /zlib /libaec /jpeg /hdf5 /hdf /netcdf,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 else
 ifeq ('$(BUILD)','MAPL')
 SUBDIRS = $(MAPL_DIRS)
 INC_SUPP :=  $(foreach subdir, \
-            / /zlib /szlib /jpeg /hdf5 /netcdf,\
+            / /zlib /libaec /jpeg /hdf5 /netcdf,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 else
 ifeq ('$(BUILD)','GFE')
@@ -374,7 +383,7 @@ SUBDIRS = GFE
 else
 SUBDIRS = $(ALLDIRS)
 INC_SUPP :=  $(foreach subdir, \
-            / /zlib /szlib /jpeg /hdf5 /hdf /netcdf /udunits2 /gsl /antlr2,\
+            / /zlib /libaec /jpeg /hdf5 /hdf /netcdf /udunits2 /gsl /antlr2,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 endif
 endif
@@ -420,7 +429,7 @@ endif
 
 TARGETS = all lib install
 
-download: gsl.download szlib.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download
+download: gsl.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download
 
 dist: download
 	tar -czf $(RELEASE_DIR)/$(RELEASE_FILE).tar.gz -C $(RELEASE_DIR) $(MKFILE_DIRNAME)
@@ -448,6 +457,8 @@ verify:
 	@echo WITH_ZLIB = $(WITH_ZLIB)
 	@echo WITH_ZLIB_SHORT = $(WITH_ZLIB_SHORT)
 	@echo CURL_ZLIB = $(CURL_ZLIB)
+	@echo BREW_OPENSSL_PREFIX = $(BREW_OPENSSL_PREFIX)
+	@echo CURL_SSL = $(CURL_SSL)
 	@echo INC_SUPP = $(INC_SUPP)
 	@echo NAG_FCFLAGS = $(NAG_FCFLAGS)
 	@echo FC_FROM_ENV = $(FC_FROM_ENV)
@@ -618,18 +629,18 @@ jpeg.config: jpeg/configure
 		      CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) szlib.install
+hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) libaec.install
 	@echo Configuring hdf4
 	@(cd hdf4; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
-          export LDFLAGS="-lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib -lsz -laec -lm $(LIB_EXTRA)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --program-suffix="-hdf4"\
                       --includedir=$(prefix)/include/hdf \
                       --with-jpeg=$(prefix)/include/jpeg,$(prefix)/lib \
-                      --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
+                      --with-szlib=$(prefix)/include/libaec,$(prefix)/lib \
                       $(WITH_ZLIB) \
                       --disable-netcdf \
                       --enable-hdf4-xdr \
@@ -639,20 +650,20 @@ hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) szlib.install
 
 # We need to patch HDF5 for gcc15. Based on https://github.com/HDFGroup/hdf5/pull/4924
 # Should be in next HDF5 version (1.14.7)
-hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
+hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 	@echo Patching hdf5
 	patch -f -p1 < ./patches/hdf5/gcc15.patch
 
-hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
+hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 	echo Configuring hdf5
 	(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
-          export LIBS="-lm" ;\
+          export LIBS="-L$(prefix)/lib -lsz -laec -lm $(LIB_EXTRA)" ;\
           export LDFLAGS="$(CLANG_LD_CLASSIC)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdf5 \
-                      --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
+                      --with-szlib=$(prefix)/include/libaec,$(prefix)/lib \
                       $(WITH_ZLIB) \
                       --disable-shared --disable-cxx \
                       --enable-hl --enable-fortran --disable-sharedlib-rpath \
@@ -660,14 +671,14 @@ hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
                       CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	touch $@
 
-hdf5.config :: hdf5/README.md szlib.install $(ZLIB_INSTALL)
+hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 	@echo Unpatching hdf5
 	patch -f -p1 -R < ./patches/hdf5/gcc15.patch
 
 NETCDF_BYTERANGE = --enable-byterange
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
 BUILD_DAP = --enable-dap
-LIB_CURL = $(shell $(prefix)/bin/curl-config --libs) $(DARWIN_ST_LIBS)
+LIB_CURL = $(BREW_OPENSSL_LIBDIR) $(shell $(prefix)/bin/curl-config --libs) $(DARWIN_ST_LIBS)
 ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
 LIB_CURL := $(filter-out -pthread,$(LIB_CURL))
 endif
@@ -682,7 +693,7 @@ netcdf.config : netcdf/configure
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(NC_CPPFLAGS) $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
-          export LIBS="-L$(prefix)/lib -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib -lsz -laec -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/netcdf \
@@ -763,7 +774,7 @@ nco.config : nco/configure
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
           export CXXFLAGS="$(NCO_CXXFLAGS)";\
           export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz -laec  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nco \
@@ -778,40 +789,25 @@ nco.config : nco/configure
                       CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77)  )
 	@touch $@
 
-szlib.download : scripts/download_szlib.bash
-	@echo "Downloading szlib"
-	@./scripts/download_szlib.bash
-	@touch $@
-
-szlib.config : szlib.download szlib/configure
-	@echo "Configuring szlib"
-	@(cd szlib; \
+libaec.config : libaec/configure.ac
+	@echo "Configuring libaec"
+	@(cd libaec; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(INC_SUPP)";\
           export LIBS="-lm";\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
-                      --includedir=$(prefix)/include/szlib \
+                      --includedir=$(prefix)/include/libaec \
                       --disable-shared \
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-# This is a patch for gcc15, but probably safe for all
-# See https://github.com/GEOS-ESM/ESMA-Baselibs/issues/290
-szlib.install :: szlib.config
-	@echo Patching szlib
-	patch -f -p0 < ./patches/szip/rice.patch
-
-szlib.install :: szlib.config
-	@echo "Installing szlib"
-	@(cd szlib; \
+libaec.install :: libaec.config
+	@echo "Installing libaec"
+	@(cd libaec; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install )
 	touch $@
-
-szlib.install :: szlib.config
-	@echo Unpatching szlib
-	patch -f -p0 -R < ./patches/szip/rice.patch
 
 zlib.config : zlib/configure
 	@echo Configuring zlib
@@ -857,7 +853,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
 	@(cd cdo; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/cdo \
@@ -878,7 +874,7 @@ nccmp.config: nccmp/configure netcdf.install
           chmod +x configure ;\
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           export CFLAGS="$(CFLAGS) $(PTHREAD_FLAG)";\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/nccmp \
@@ -964,7 +960,7 @@ hdfeos.config: hdfeos.download hdfeos/configure hdf4.install
 	@(cd hdfeos; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos \
@@ -987,7 +983,7 @@ hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
 	@(cd hdfeos5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos5 \
@@ -997,7 +993,7 @@ hdfeos5.config: hdfeos5.download hdfeos5/configure hdf5.install
 	@touch $@
 
 INC_SUPP_SDP :=  $(foreach subdir, \
-            / /zlib /szlib /jpeg /hdf5 /hdf /hdfeos /hdfeos5,\
+            / /zlib /libaec /jpeg /hdf5 /hdf /hdfeos /hdfeos5,\
             -I$(prefix)/include$(subdir) $(INC_EXTRA) )
 
 SDPToolkit.download : scripts/download_SDPToolkit.bash
@@ -1012,11 +1008,11 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
 	@(cd SDPToolkit; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP_SDP)";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL) -lexpat $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) -ldl -lm" ;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/SDPToolkit \
                       $(WITH_ZLIB) \
-                      --with-szlib=$(prefix)/include/szlib,$(prefix)/lib \
+                      --with-szlib=$(prefix)/include/libaec,$(prefix)/lib \
                       --with-hdf4=$(prefix)/include/hdf,$(prefix)/lib \
                       --with-hdf5=$(prefix)/include/hdf5,$(prefix)/lib \
                       --with-hdfeos2=$(prefix)/include/hdfeos,$(prefix)/lib \
@@ -1043,7 +1039,7 @@ netcdf.install : netcdf.config
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(NC_CPPFLAGS) $(INC_SUPP)";\
           export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF4) -lsz -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_HDF4) -lsz -laec -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm $(LIB_EXTRA)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
 
@@ -1128,7 +1124,7 @@ nco.install: nco.config
           export NETCDF_INC="$(prefix)/include/netcdf"; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
-          export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_HDF5) $(LIB_HDF4) -lsz -laec  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
 	  sed -i '' '/^SUBDIRS/s/doc//' Makefile ;\
 	  $(MAKE) install ;\
 	  cd src/nco ;\
@@ -1146,7 +1142,7 @@ nco.install: nco.config
           export NETCDF_INC="$(prefix)/include/netcdf"; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) $(INC_SUPP) -I$(prefix)/include/netcdf";\
-          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
+          export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_HDF5) $(LIB_HDF4) -lsz -laec  -ljpeg $(LINK_GPFS) $(LIB_CURL) -ldl -lm" ;\
 	  $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 endif
