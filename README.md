@@ -12,7 +12,7 @@ NASA/GSFC.
 
 | Library                                                                  | Version      |
 | ---                                                                      | ---          |
-| [ESMF](https://github.com/esmf-org/esmf)                                 | v8.9.0b09    |
+| [ESMF](https://github.com/esmf-org/esmf)                                 | v8.9.0       |
 | [FMS](https://github.com/NOAA-GFDL/FMS/)                                 | 2024.03      |
 | [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.9.2        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.6.1        |
@@ -26,11 +26,11 @@ NASA/GSFC.
 | [GSL](https://www.gnu.org/software/gsl/)                                 | 2.8          |
 | [jpeg](http://www.ijg.org/)                                              | 9f           |
 | [zlib](http://www.zlib.net/)                                             | 1.3.1        |
-| [szip](https://support.hdfgroup.org/doc_resource/SZIP/)                  | 2.1.1        |
-| [curl](https://curl.haxx.se/)                                            | 8.14.1       |
+| [libaec](https://github.com/MathisRosenhauer/libaec.git)                 | 1.1.4        |
+| [curl](https://curl.haxx.se/)                                            | 8.15.0       |
 | [UDUNITS2](https://github.com/GMAO-SI-Team/UDUNITS-2.git)                | 2.2.28       |
 | [NCO](http://nco.sourceforge.net/)                                       | 5.3.4        |
-| [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.5.2        |
+| [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.5.3        |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.10.0.0     |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                  | 3.0          |
 | [HDF-EOS5](https://wiki.earthdata.nasa.gov/display/DAS)                  | 2.0          |
