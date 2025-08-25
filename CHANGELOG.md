@@ -20,10 +20,6 @@
 - curl 8.15.0
 - CDO 2.5.3
 
-### Fixed
-
-### Changed
-
 ### Removed
 
 - szip
