@@ -16,7 +16,7 @@
 
 ### Fixed
 
-- Corrected CDO sha512 checksum
+- Correct CDO 2.5.3 location and SHA512 checksum (not sure how it changed)
 
 ## [8.17.0] - 2025-08-25
 
