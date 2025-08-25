@@ -32,6 +32,7 @@
 ### Added
 
 - libaec 1.1.4
+  - NOTE: Users should use ESMA_cmake 3.63.0+ or 4.20.0+ for libaec support
 
 ## [8.16.0] - 2025-07-08
 
