@@ -6,21 +6,22 @@
 
 ### Fixed
 
-- Fix for CDO and Clang builds
-
 ### Changed
-
-- Look for `flang` and not `flang-new` as the latter is now deprecated for LLVM Flang
 
 ### Removed
 
 ### Added
 
-## [8.17.1] - 2025-08-25
+## [8.18.0] - 2025-08-25
 
 ### Fixed
 
 - Correct CDO 2.5.3 location and SHA512 checksum (not sure how it changed)
+- Fix for CDO and Clang builds
+
+### Changed
+
+- Look for `flang` and not `flang-new` as the latter is now deprecated for LLVM Flang
 
 ## [8.17.0] - 2025-08-25
 
