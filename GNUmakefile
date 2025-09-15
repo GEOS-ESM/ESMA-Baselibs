@@ -369,6 +369,12 @@ ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif
 
+# flang also seems to have issues with SDPToolkit
+ifeq ($(findstring flang,$(notdir $(FC))),flang)
+   NO_FLANG_DIRS = SDPToolkit
+   ALLDIRS := $(filter-out $(NO_FLANG_DIRS),$(ALLDIRS))
+endif
+
 ifeq ($(MACH),aarch64)
    NO_ARM_DIRS = hdf4 hdfeos hdfeos5 SDPToolkit
    ALLDIRS := $(filter-out $(NO_ARM_DIRS),$(ALLDIRS))
