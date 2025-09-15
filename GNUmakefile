@@ -236,6 +236,15 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 
   endif
 
+# CDO and flang have issues. For now, pass in
+# --disable-fortran to CDO if flang
+# -------------------------------------------
+
+  ifeq ($(findstring flang,$(notdir $(FC))),flang)
+     CDO_DISABLE_FORTRAN := --disable-fortran
+     export CDO_DISABLE_FORTRAN
+  endif
+
 # icx also needs the strict C99 flags
 # -----------------------------------
 
@@ -863,7 +872,7 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
                       --with-netcdf=$(prefix) \
                       --with-udunits2=$(prefix) \
                       --disable-grib --disable-openmp \
-                      --disable-shared --enable-static \
+                      --disable-shared --enable-static $(CDO_DISABLE_FORTRAN) \
                       CXXFLAGS="$(CDO_STD)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
