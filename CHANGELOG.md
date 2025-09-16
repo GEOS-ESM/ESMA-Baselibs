@@ -4,6 +4,7 @@
 
 ### Updates
 
+- esmf 9.0.0b03
 - curl 8.16.0
 
 ### Fixed
