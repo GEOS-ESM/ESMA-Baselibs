@@ -6,6 +6,9 @@
 
 ### Fixed
 
+- Fixed issue with CDO and flang to disable the Fortran interface (see https://code.mpimet.mpg.de/boards/1/topics/16399)
+- Turn off `SDPToolkit` build with flang
+
 ### Changed
 
 ### Removed
