@@ -4,6 +4,8 @@
 
 ### Updates
 
+- curl 8.16.0
+
 ### Fixed
 
 - Fixed issue with CDO and flang to disable the Fortran interface (see https://code.mpimet.mpg.de/boards/1/topics/16399)
