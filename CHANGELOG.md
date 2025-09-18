@@ -6,14 +6,23 @@
 
 ### Fixed
 
-- Fixed issue with CDO and flang to disable the Fortran interface (see https://code.mpimet.mpg.de/boards/1/topics/16399)
-- Turn off `SDPToolkit` build with flang
-
 ### Changed
 
 ### Removed
 
 ### Added
+
+## [8.19.0] - 2025-09-17
+
+### Updates
+
+- esmf 9.0.0b03
+- curl 8.16.0
+
+### Fixed
+
+- Fixed issue with CDO and flang to disable the Fortran interface (see https://code.mpimet.mpg.de/boards/1/topics/16399)
+- Turn off `SDPToolkit` build with flang
 
 ## [8.18.0] - 2025-08-25
 
