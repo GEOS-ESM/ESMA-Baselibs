@@ -4,6 +4,14 @@
 
 ### Updates
 
+- GFE v1.20.0
+  - gFTL v1.16.0
+  - gFTL-shared v1.11.0
+  - fArgParse v1.10.0
+  - pFUnit v4.13.0
+  - yaFyaml v1.6.0
+  - pFlogger v1.17.0
+
 ### Fixed
 
 ### Changed

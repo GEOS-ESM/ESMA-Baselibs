@@ -909,7 +909,7 @@ GFE.config:
 	@mkdir -p ./GFE/build
 	@(cd ./GFE; \
 		export LDFLAGS="$(CLANG_LD_CLASSIC)" ;\
-		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES -DCMAKE_POLICY_VERSION_MINIMUM=3.5 )
+		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DSKIP_OPENMP=YES )
 	@touch $@
 
 libyaml.config:
