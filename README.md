@@ -63,7 +63,7 @@ NASA/GSFC.
 - on Darwin, GNU sed is needed for ESMF Applications. This sed must be
   visible as sed (and not, say, gsed as installed by Brew)
 
-- CMake of a recent vintage
+- CMake v3.24 or higher
 
 ### Obtaining ESMA Baselibs
 
