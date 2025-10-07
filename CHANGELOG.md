@@ -4,14 +4,6 @@
 
 ### Updates
 
-- GFE v1.20.0
-  - gFTL v1.16.0
-  - gFTL-shared v1.11.0
-  - fArgParse v1.10.0
-  - pFUnit v4.13.0
-  - yaFyaml v1.6.0
-  - pFlogger v1.17.0
-
 ### Fixed
 
 ### Changed
@@ -19,6 +11,19 @@
 ### Removed
 
 ### Added
+
+## [8.20.0] - 2025-10-07
+
+### Updates
+
+- GFE v1.20.0
+  - gFTL v1.16.0
+  - gFTL-shared v1.11.0
+  - fArgParse v1.10.0
+  - pFUnit v4.13.0
+  - yaFyaml v1.6.0
+  - pFlogger v1.17.0
+- NCO 5.3.5
 
 ## [8.19.0] - 2025-09-17
 
