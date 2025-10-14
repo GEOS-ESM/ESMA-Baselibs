@@ -1,0 +1,32 @@
+--- a/FMS/mpp/include/mpp_chksum_int.fh
++++ b/FMS/mpp/include/mpp_chksum_int.fh
+@@ -53,8 +53,8 @@ function MPP_CHKSUM_INT_RMASK_( var, pelist, mask_val )
+   integer, optional :: pelist(:)
+   real, intent(in) :: mask_val
+   integer(KIND(var))::imask_val
+-  integer(KIND=i4_kind)::i4tmp(2)=0
+-  real(KIND=r4_kind)::r4tmp(2)=0
++  integer(KIND=i4_kind),allocatable::i4tmp(:)
++  real(KIND=r4_kind),allocatable::r4tmp(:)
+   integer(KIND=i8_kind) :: i8tmp=0
+   !high fidelity error message
+   character(LEN=1) :: tmpStr1,tmpStr2,tmpStr3
+--- a/FMS/CMakeLists.txt
++++ b/FMS/CMakeLists.txt
+@@ -325,6 +325,7 @@ foreach(kind ${kinds})
+                                                  mosaic2/include
+                                                  constants
+                                                  astronomy/include
++                                                 field_manager
+                                                  field_manager/include
+                                                  time_interp/include
+                                                  tracer_manager/include
+@@ -380,6 +381,7 @@ foreach(kind ${kinds})
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/astronomy/include>
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/monin_obukhov/include>
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sat_vapor_pres/include>
++    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/field_manager>
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/field_manager/include>
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/horiz_interp/include>
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/mosaic2/include>
+

@@ -4,7 +4,15 @@
 
 ### Updates
 
+- GFE v1.21.0
+  - pFUnit v4.14.0
+    - Fixes for LLVM Flang among others
+
 ### Fixed
+
+- Added patches for FMS for llvm flang
+  - One for https://github.com/NOAA-GFDL/FMS/issues/1738
+  - One for https://github.com/NOAA-GFDL/FMS/issues/1739
 
 ### Changed
 
