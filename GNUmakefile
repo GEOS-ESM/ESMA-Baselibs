@@ -919,9 +919,8 @@ libyaml.config:
 		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_POLICY_VERSION_MINIMUM=3.5 )
 	@touch $@
 
-# We need to patch FMS for LLVM
-#   https://github.com/NOAA-GFDL/FMS/issues/1738
-# NOTE: Because we patch both source and CMake, we need to patch before
+# We need to patch FMS for LLVM testing support
+# NOTE: Because we patch CMake, we need to patch before
 # configuring and unpatch after installing
 FMS.config :: netcdf.install netcdf-fortran.install libyaml.install
 	@echo Patching FMS
