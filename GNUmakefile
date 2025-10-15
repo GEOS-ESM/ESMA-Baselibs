@@ -919,7 +919,15 @@ libyaml.config:
 		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_POLICY_VERSION_MINIMUM=3.5 )
 	@touch $@
 
-FMS.config: netcdf.install netcdf-fortran.install libyaml.install
+# We need to patch FMS for LLVM
+#   https://github.com/NOAA-GFDL/FMS/issues/1738
+# NOTE: Because we patch both source and CMake, we need to patch before
+# configuring and unpatch after installing
+FMS.config :: netcdf.install netcdf-fortran.install libyaml.install
+	@echo Patching FMS
+	patch -f -p1 < ./patches/FMS/llvm.patch
+
+FMS.config :: netcdf.install netcdf-fortran.install libyaml.install
 	@echo "Configuring FMS"
 	@mkdir -p ./FMS/build
 	@(cd ./FMS; \
@@ -1109,11 +1117,15 @@ libyaml.install: libyaml.config
 		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
-FMS.install: FMS.config
+FMS.install :: FMS.config
 	@echo "Installing FMS"
 	@(cd ./FMS; \
 		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
+
+FMS.install :: FMS.config
+	@echo Unpatching FMS
+	patch -f -p1 -R < ./patches/FMS/llvm.patch
 
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup
 #      in nco. If you just run nco, it never makes the libnco.a library, or at least
