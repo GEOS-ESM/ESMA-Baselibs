@@ -12,6 +12,17 @@
 
 ### Added
 
+## [9.0.0] - 2025-10-15
+
+### Updates
+
+- FMS 2025.04
+  - NOTE 1: FMS is now built in mixed-precision mode. As such, we move the major number since linking to FMS is now different enough we want to note this
+  - NOTE 2: We now do a patch on FMS for (preliminary) LLVM Flang testing. Once LLVM Flang is fully supported, this patch will be removed
+- GFE v1.21.0
+  - pFUnit v4.14.0
+    - This is mainly for LLVM Flang support
+
 ## [8.20.0] - 2025-10-07
 
 ### Updates
