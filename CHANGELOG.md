@@ -12,6 +12,13 @@
 
 ### Added
 
+## [9.0.0] - 2025-10-xx
+
+### Updates
+
+- FMS 2025.04
+  - NOTE: FMS is now built in mixed-precision mode. As such, we move the major number since linking to FMS is now different enough we want to note this
+
 ## [8.20.0] - 2025-10-07
 
 ### Updates
