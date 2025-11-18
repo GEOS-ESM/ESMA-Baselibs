@@ -19,6 +19,7 @@
 - GFE v1.21.0
   - pFUnit v4.14.0
     - This is mainly for LLVM Flang support
+- curl 8.17.0
 
 ## [8.20.0] - 2025-10-07
 
