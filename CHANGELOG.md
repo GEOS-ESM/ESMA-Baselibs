@@ -12,6 +12,14 @@
 
 ### Added
 
+## [8.22.0] - 2025-11-24
+
+### Updates
+
+- GFE v1.22.0
+  - pFUnit v4.15.0
+    - Workarounds for LLVM Flang issues
+
 ## [8.21.0] - 2025-11-18
 
 ### Updates
