@@ -32,6 +32,17 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 
 # System dependent defauls
 # ------------------------
+
+  ifeq ($(origin FC),default)
+    undefine FC
+  endif
+  ifeq ($(origin CC),default)
+    undefine CC
+  endif
+  ifeq ($(origin CXX),default)
+    undefine CXX
+  endif
+
   include Base.mk
   include Arch.mk
   include baselibs-config.mk
@@ -497,6 +508,7 @@ verify:
 	@echo ENABLE_HDF4 = $(ENABLE_HDF4)
 	@echo LIB_HDF4 = $(LIB_HDF4)
 	@echo MAKEJOBS = $(MAKEJOBS)
+	@echo SITE = $(SITE)
 	@ argv="$(SUBDIRS)" ;\
         ( echo "-------+---------+---------+--------------" );  \
         ( echo "Config | Install |  Check  |   Package" );      \
