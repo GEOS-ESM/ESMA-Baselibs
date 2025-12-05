@@ -58,17 +58,11 @@
       ESMF_COMPILER := intel
       FC_FROM_ENV := TRUE
     else
-    ifeq ($(findstring pgfortran,$(notdir $(FC))),pgfortran)
-      ES_FC := $(FC)
-      ESMF_COMPILER := pgi
-      FC_FROM_ENV := TRUE
-    else
     ifeq ($(findstring gfortran,$(notdir $(FC))),gfortran)
       ES_FC := $(FC)
       EXCEPTIONS := -fexceptions
       ESMF_COMPILER := gfortran
       FC_FROM_ENV := TRUE
-    endif
     endif
     endif
     endif
@@ -100,11 +94,6 @@
     ES_FC := $(FC)
     ESMF_COMPILER := intel
   else
-  ifneq ($(wildcard $(shell which pgfortran 2> /dev/null)),)
-    FC := pgfortran
-    ES_FC := $(FC)
-    ESMF_COMPILER := pgi
-  else
   ifneq ($(wildcard $(shell which gfortran 2> /dev/null)),)
     FC := gfortran
     ES_FC := $(FC)
@@ -113,7 +102,6 @@
   else
     FC := UNKNOWN
     ES_FC := $(FC)
-  endif
   endif
   endif
   endif
@@ -130,14 +118,6 @@
   CC_IS_CLANG := FALSE
   CC_FROM_ENV := FALSE
   ifneq ($(origin CC),undefined)
-    ifeq ($(findstring gcc,$(notdir $(CC))),gcc)
-      TEST_FOR_CC_CLANG := $(findstring clang, $(shell $(CC) --version))
-      ifeq ($(TEST_FOR_CC_CLANG),clang)
-         CC_IS_CLANG := TRUE
-      endif
-      ES_CC := $(CC)
-      CC_FROM_ENV := TRUE
-    else
     ifeq ($(findstring nvc,$(notdir $(CC))),nvc)
       ES_CC := $(CC)
       CC_FROM_ENV := TRUE
@@ -155,7 +135,11 @@
       CC_FROM_ENV := TRUE
       CC_IS_CLANG := TRUE
     else
-    ifeq ($(findstring pgcc,$(notdir $(CC))),pgcc)
+    ifeq ($(findstring gcc,$(notdir $(CC))),gcc)
+      TEST_FOR_CC_CLANG := $(findstring clang, $(shell $(CC) --version))
+      ifeq ($(TEST_FOR_CC_CLANG),clang)
+         CC_IS_CLANG := TRUE
+      endif
       ES_CC := $(CC)
       CC_FROM_ENV := TRUE
     endif
@@ -163,19 +147,6 @@
     endif
     endif
     endif
-    endif
-  else
-  ifneq ($(wildcard $(shell which gcc 2> /dev/null)),)
-    CC := gcc
-    TEST_FOR_CC_CLANG := $(findstring clang, $(shell $(CC) --version))
-    ifeq ($(TEST_FOR_CC_CLANG),clang)
-      CC_IS_CLANG := TRUE
-    endif
-    ifneq (,$(findstring clang,$(ESMF_COMPILER)))
-      CC := clang
-      CC_IS_CLANG := TRUE
-    endif
-    ES_CC := $(CC)
   else
   ifneq ($(wildcard $(shell which nvc 2> /dev/null)),)
     CC := nvc
@@ -194,12 +165,18 @@
     ES_CC := $(CC)
     CC_IS_CLANG := TRUE
   else
-  ifneq ($(wildcard $(shell which pgcc 2> /dev/null)),)
-    CC := pgcc
+  ifneq ($(wildcard $(shell which gcc 2> /dev/null)),)
+    CC := gcc
+    TEST_FOR_CC_CLANG := $(findstring clang, $(shell $(CC) --version))
+    ifeq ($(TEST_FOR_CC_CLANG),clang)
+      CC_IS_CLANG := TRUE
+    endif
+    ifneq (,$(findstring clang,$(ESMF_COMPILER)))
+      CC := clang
+      CC_IS_CLANG := TRUE
+    endif
     ES_CC := $(CC)
-  else
     CC := UNKNOWN
-  endif
   endif
   endif
   endif
@@ -212,14 +189,6 @@
   CXX_IS_CLANG := FALSE
   CXX_FROM_ENV := FALSE
   ifneq ($(origin CXX),undefined)
-    ifeq ($(findstring g++,$(notdir $(CXX))),g++)
-      TEST_FOR_CXX_CLANG := $(findstring clang, $(shell $(CXX) --version))
-      ifeq ($(TEST_FOR_CXX_CLANG),clang)
-         CXX_IS_CLANG := TRUE
-      endif
-      ES_CXX := $(CXX)
-      CXX_FROM_ENV := TRUE
-    else
     ifeq ($(findstring nvc++,$(notdir $(CXX))),nvc++)
       ES_CXX := $(CXX)
       CXX_FROM_ENV := TRUE
@@ -237,7 +206,11 @@
       CXX_FROM_ENV := TRUE
       CXX_IS_CLANG := TRUE
     else
-    ifeq ($(findstring pgc++,$(notdir $(CXX))),pgc++)
+    ifeq ($(findstring g++,$(notdir $(CXX))),g++)
+      TEST_FOR_CXX_CLANG := $(findstring clang, $(shell $(CXX) --version))
+      ifeq ($(TEST_FOR_CXX_CLANG),clang)
+         CXX_IS_CLANG := TRUE
+      endif
       ES_CXX := $(CXX)
       CXX_FROM_ENV := TRUE
     endif
@@ -245,19 +218,6 @@
     endif
     endif
     endif
-    endif
-  else
-  ifneq ($(wildcard $(shell which g++ 2> /dev/null)),)
-    CXX := g++
-    TEST_FOR_CXX_CLANG := $(findstring clang, $(shell $(CXX) --version))
-    ifeq ($(TEST_FOR_CXX_CLANG),clang)
-      CXX_IS_CLANG := TRUE
-    endif
-    ifneq (,$(findstring clang,$(ESMF_COMPILER)))
-      CXX := clang++
-      CXX_IS_CLANG := TRUE
-    endif
-    ES_CXX := $(CXX)
   else
   ifneq ($(wildcard $(shell which nvc++ 2> /dev/null)),)
     CXX := nvc++
@@ -271,13 +231,20 @@
     CXX := icpc
     ES_CXX := $(CXX)
   else
-  ifneq ($(wildcard $(shell which pgc++ 2> /dev/null)),)
-    CXX := pgc++
+  ifneq ($(wildcard $(shell which g++ 2> /dev/null)),)
+    CXX := g++
+    TEST_FOR_CXX_CLANG := $(findstring clang, $(shell $(CXX) --version))
+    ifeq ($(TEST_FOR_CXX_CLANG),clang)
+      CXX_IS_CLANG := TRUE
+    endif
+    ifneq (,$(findstring clang,$(ESMF_COMPILER)))
+      CXX := clang++
+      CXX_IS_CLANG := TRUE
+    endif
     ES_CXX := $(CXX)
   else
     CXX := UNKNOWN
     ES_CXX := $(CXX)
-  endif
   endif
   endif
   endif

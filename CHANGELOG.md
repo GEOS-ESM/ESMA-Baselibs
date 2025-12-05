@@ -12,6 +12,12 @@
 
 ### Added
 
+## [8.23.0] - 2025-12-05
+
+### Changed
+
+- Updates for Athena testing at NAS
+
 ## [8.22.0] - 2025-11-24
 
 ### Updates
