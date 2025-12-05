@@ -175,6 +175,7 @@
       CC := clang
       CC_IS_CLANG := TRUE
     endif
+  else
     ES_CC := $(CC)
     CC := UNKNOWN
   endif
