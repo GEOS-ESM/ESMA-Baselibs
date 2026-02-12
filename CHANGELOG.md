@@ -12,6 +12,12 @@
 
 ### Added
 
+## [8.24.1] - 2026-02-12
+
+### Fixed
+
+- Added fixes for building FMS with LLVM Flang
+
 ## [8.24.0] - 2025-12-18
 
 ### Updates

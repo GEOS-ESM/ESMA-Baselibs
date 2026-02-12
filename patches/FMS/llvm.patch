@@ -1,0 +1,65 @@
+diff --git a/FMS/CMakeLists.txt b/FMS/CMakeLists.txt
+index aa2b9c01..bdb2ca53 100644
+--- a/FMS/CMakeLists.txt
++++ b/FMS/CMakeLists.txt
+@@ -325,6 +325,7 @@ foreach(kind ${kinds})
+                                                  mosaic2/include
+                                                  constants
+                                                  astronomy/include
++                                                 field_manager
+                                                  field_manager/include
+                                                  time_interp/include
+                                                  tracer_manager/include
+@@ -380,6 +381,7 @@ foreach(kind ${kinds})
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/astronomy/include>
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/monin_obukhov/include>
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sat_vapor_pres/include>
++    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/field_manager>
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/field_manager/include>
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/horiz_interp/include>
+     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/mosaic2/include>
+diff --git a/FMS/cmake/fms_compiler_flags.cmake b/FMS/cmake/fms_compiler_flags.cmake
+index cc7a2fee..23954a9c 100644
+--- a/FMS/cmake/fms_compiler_flags.cmake
++++ b/FMS/cmake/fms_compiler_flags.cmake
+@@ -8,6 +8,8 @@ elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
+   include(compiler_flags_Intel_Fortran)
+ elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM")
+   include(compiler_flags_IntelLLVM_Fortran)
++elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang")
++  include(compiler_flags_LLVMFlang_Fortran)
+ else()
+   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
+ endif()
+diff --git a/FMS/mpp/include/mpp_chksum_int.fh b/FMS/mpp/include/mpp_chksum_int.fh
+index 1d511a23..301bdeec 100644
+--- a/FMS/mpp/include/mpp_chksum_int.fh
++++ b/FMS/mpp/include/mpp_chksum_int.fh
+@@ -53,8 +53,8 @@ function MPP_CHKSUM_INT_RMASK_( var, pelist, mask_val )
+   integer, optional :: pelist(:)
+   real, intent(in) :: mask_val
+   integer(KIND(var))::imask_val
+-  integer(KIND=i4_kind)::i4tmp(2)=0
+-  real(KIND=r4_kind)::r4tmp(2)=0
++  integer(KIND=i4_kind),allocatable::i4tmp(:)
++  real(KIND=r4_kind),allocatable::r4tmp(:)
+   integer(KIND=i8_kind) :: i8tmp=0
+   !high fidelity error message
+   character(LEN=1) :: tmpStr1,tmpStr2,tmpStr3
+--- /dev/null
++++ b/FMS/cmake/compiler_flags_LLVMFlang_Fortran.cmake
+@@ -0,0 +1,13 @@
++# Precision-based Fortran compiler flags
++set(r8_flags "-fdefault-real-8 -fdefault-double-8") # Fortran flags for 64BIT precision
++set(r4_flags "-fdefault-real-4") # Fortran flags for 32BIT precision
++
++# LLVM Flang Fortran
++set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
++
++set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
++set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g")
++
++set(CMAKE_Fortran_LINK_FLAGS "" )
++
++#ufs flags -- Not known
+
