@@ -12,6 +12,12 @@
 
 ### Added
 
+## [9.5.1] - 2026-02-13
+
+### Fixed
+
+- Added build time fix for `ifx` and FMS (https://github.com/NOAA-GFDL/FMS/issues/1809)
+
 ## [9.5.0] - 2026-02-13
 
 ### Updates

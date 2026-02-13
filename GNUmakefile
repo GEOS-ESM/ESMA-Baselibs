@@ -283,6 +283,16 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
      export HDF4_ENABLE_FORTRAN
   endif
 
+# For FMS and ifx, we need to "unset" CMAKE_Fortran_LINK_FLAGS
+# as they have it set to lld and that seems to cause issues for
+# ifx 2025.3 at least. https://github.com/NOAA-GFDL/FMS/issues/1809
+# ------------------------------------------------------------
+
+  ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
+     FMS_UNSET_FORTRAN_LINK_FLAGS := -DCMAKE_Fortran_LINK_FLAGS=""
+     export FMS_UNSET_FORTRAN_LINK_FLAGS
+  endif
+
 # HDF5 and MPT at NCCS have an "issue" that needs an extra flag
 # -------------------------------------------------------------
 
@@ -942,7 +952,7 @@ FMS.config :: netcdf.install netcdf-fortran.install libyaml.install
 	@echo "Configuring FMS"
 	@mkdir -p ./FMS/build
 	@(cd ./FMS; \
-		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf )
+		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf $(FMS_EXTRA_CMAKE_FLAGS) )
 	@touch $@
 
 antlr2.config : antlr2/configure
