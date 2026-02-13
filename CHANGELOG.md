@@ -12,6 +12,13 @@
 
 ### Added
 
+## [9.6.0] - 2026-02-13
+
+### Updates
+
+- Revert to curl 8.17.0
+  - curl 8.18.0 needs OpenSSL 3.0.0 or higher, which is not available on all platforms (e.g., bucy, NAS TOSS4)
+
 ## [9.5.1] - 2026-02-13
 
 ### Fixed
