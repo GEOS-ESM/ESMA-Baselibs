@@ -12,6 +12,16 @@
 
 ### Added
 
+## [9.7.0] - 2026-02-23
+
+### Updates
+
+- GFE v1.23.0
+  - gFTL v1.17.0
+  - gFTL-shared v1.12.0
+  - fArgParse v1.11.0
+  - pFUnit v4.16.0
+
 ## [9.6.0] - 2026-02-13
 
 ### Updates
