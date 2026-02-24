@@ -12,6 +12,13 @@
 
 ### Added
 
+## [9.7.1] - 2026-02-24
+
+### Fixed
+
+- Added better build time fix for `ifx` and FMS (https://github.com/NOAA-GFDL/FMS/issues/1809)
+  - The older one seems to not work on all platforms, so we move to a patch based fix
+
 ## [9.7.0] - 2026-02-23
 
 ### Updates
