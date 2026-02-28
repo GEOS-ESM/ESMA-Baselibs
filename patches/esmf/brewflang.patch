@@ -1,0 +1,363 @@
+diff --git before/esmf/.gitignore after/esmf/.gitignore
+index 673241656d..700711f1aa 100644
+--- before/esmf/.gitignore
++++ after/esmf/.gitignore
+@@ -146,3 +146,5 @@ src/Infrastructure/Trace/preload/wrappers_mpi.o
+ ###############################################################################
+
+ *.idea
++
++a.out.dSYM/
+diff --git before/esmf/build_config/Darwin.llvm.default/ESMC_Conf.h after/esmf/build_config/Darwin.llvm.default/ESMC_Conf.h
+new file mode 100644
+index 0000000000..83f72ec6c2
+--- /dev/null
++++ after/esmf/build_config/Darwin.llvm.default/ESMC_Conf.h
+@@ -0,0 +1,39 @@
++#ifdef ESMC_RCS_HEADER
++"$Id$"
++"Defines the configuration for this machine"
++#endif
++
++#if 0
++Earth System Modeling Framework
++Copyright (c) 2002-2026, University Corporation for Atmospheric Research,
++Massachusetts Institute of Technology, Geophysical Fluid Dynamics
++Laboratory, University of Michigan, National Centers for Environmental
++Prediction, Los Alamos National Laboratory, Argonne National Laboratory,
++NASA Goddard Space Flight Center.
++Licensed under the University of Illinois-NCSA License.
++#endif
++
++#if !defined(INCLUDED_CONF_H)
++#define INCLUDED_CONF_H
++
++#define PARCH_darwin
++
++#ifdef ESMF_LOWERCASE_SINGLEUNDERSCORE
++#define FTN_X(func) func##_
++#define FTNX(func) func##_
++#endif
++#ifdef ESMF_LOWERCASE_DOUBLEUNDERSCORE
++#define FTN_X(func) func##__
++#define FTNX(func) func##_
++#endif
++
++#if defined (__cplusplus)
++// Typedef to match the data type of the 'hidden' string length
++// argument that Fortran uses when passing CHARACTER strings.
++#include <cstddef>
++typedef size_t ESMCI_FortranStrLenArg;
++#endif
++
++#define ESMC_PRESENT(arg) ( (arg) != 0 )
++
++#endif
+diff --git before/esmf/build_config/Darwin.llvm.default/ESMF_Conf.inc after/esmf/build_config/Darwin.llvm.default/ESMF_Conf.inc
+new file mode 100644
+index 0000000000..836a326532
+--- /dev/null
++++ after/esmf/build_config/Darwin.llvm.default/ESMF_Conf.inc
+@@ -0,0 +1,11 @@
++#if 0
++$Id$
++
++Earth System Modeling Framework
++Copyright (c) 2002-2026, University Corporation for Atmospheric Research,
++Massachusetts Institute of Technology, Geophysical Fluid Dynamics
++Laboratory, University of Michigan, National Centers for Environmental
++Prediction, Los Alamos National Laboratory, Argonne National Laboratory,
++NASA Goddard Space Flight Center.
++Licensed under the University of Illinois-NCSA License.
++#endif
+diff --git before/esmf/build_config/Darwin.llvm.default/README.md after/esmf/build_config/Darwin.llvm.default/README.md
+new file mode 100644
+index 0000000000..44ed64f794
+--- /dev/null
++++ after/esmf/build_config/Darwin.llvm.default/README.md
+@@ -0,0 +1,20 @@
++## Darwin, using the LLVM flang compiler with LLVM Clang C/C++ compiler
++
++Activated by setting: `ESMF_COMPILER=llvm`
++
++Settings for Darwin (Mac OS X), using the llvm flang compiler and the
++clang C++ compiler (clang++). Note that, on Mac OS X, the system-level
++g++ invokes clang++, so unless you ensure that you have a true g++ early
++in your path (or build the MPI compiler wrappers to ensure that they
++wrap the true g++), you will end up using clang++ even if you think you
++are using the GNU C++ compiler, and so you should use this
++configuration.
++
++CAUTION:
++For ESMF regression testing we set ESMF_F90LINKERDEFAULT to the C++
++compiler in build_rules.mk because this is needed for clean handling of
++exceptions for this compiler combination. For applications with main
++programs in Fortran we have found that this is not always necessary.
++However, if your application aborts with a message like "libc++abi:
++terminating with uncaught exception", that is a sign that you may need
++to link with a C++ compiler rather than a Fortran compiler.
+diff --git before/esmf/build_config/Darwin.llvm.default/build_rules.mk after/esmf/build_config/Darwin.llvm.default/build_rules.mk
+new file mode 100644
+index 0000000000..a64ed401fa
+--- /dev/null
++++ after/esmf/build_config/Darwin.llvm.default/build_rules.mk
+@@ -0,0 +1,259 @@
++# $Id$
++#
++# Darwin.llvm.default
++#
++
++############################################################
++# Default compiler setting.
++#
++ESMF_F90DEFAULT         = flang
++ESMF_F90LINKERDEFAULT   = $(ESMF_CXXLINKER)
++ESMF_CXXDEFAULT         = clang++
++ESMF_CDEFAULT           = clang
++ESMF_CLINKERDEFAULT     = clang++
++ESMF_CPPDEFAULT         = clang -E -P -x c
++
++ESMF_CXXCOMPILEOPTS    += -x c++ -mmacosx-version-min=10.7 -stdlib=libc++
++
++############################################################
++# Default MPI setting.
++#
++ifeq ($(ESMF_COMM),default)
++export ESMF_COMM := mpiuni
++endif
++
++############################################################
++# MPI dependent settings.
++#
++ifeq ($(ESMF_COMM),mpiuni)
++# MPI stub library -----------------------------------------
++ESMF_CPPFLAGS          += -DESMF_MPIUNI -I$(ESMF_DIR)/src/Infrastructure/stubs/mpiuni
++ESMF_MPIRUNDEFAULT      = $(ESMF_DIR)/src/Infrastructure/stubs/mpiuni/mpirun
++else
++ifeq ($(ESMF_COMM),mpich1)
++# Mpich1 ---------------------------------------------------
++ESMF_F90COMPILECPPFLAGS+= -DESMF_MPICH1
++ESMF_CXXCOMPILECPPFLAGS+= -DESMF_MPICH1
++ESMF_F90DEFAULT         = mpif90
++ESMF_CXXDEFAULT         = mpiCC
++ESMF_CDEFAULT           = mpicc
++ESMF_CLINKERDEFAULT     = mpiCC
++ESMF_MPIRUNDEFAULT      = mpirun $(ESMF_MPILAUNCHOPTIONS)
++else
++ifeq ($(ESMF_COMM),mpich2)
++# Mpich2 ---------------------------------------------------
++ESMF_F90DEFAULT         = mpif90
++ESMF_CXXDEFAULT         = mpicxx
++ESMF_CDEFAULT           = mpicc
++ESMF_CLINKERDEFAULT     = mpicxx
++ESMF_MPIRUNDEFAULT      = mpirun $(ESMF_MPILAUNCHOPTIONS)
++ESMF_MPIMPMDRUNDEFAULT  = mpiexec $(ESMF_MPILAUNCHOPTIONS)
++else
++ifeq ($(ESMF_COMM),mpich)
++# Mpich3 and up --------------------------------------------
++ESMF_F90DEFAULT         = mpif90
++ESMF_CXXDEFAULT         = mpicxx
++ESMF_CDEFAULT           = mpicc
++ESMF_CLINKERDEFAULT     = mpicxx
++ESMF_CXXLINKLIBS       += $(shell $(ESMF_DIR)/scripts/libs.mpich3f90)
++ESMF_F90LINKLIBS       += $(shell $(ESMF_DIR)/scripts/libs.mpich3f90)
++ESMF_MPIRUNDEFAULT      = mpirun $(ESMF_MPILAUNCHOPTIONS)
++ESMF_MPIMPMDRUNDEFAULT  = mpiexec $(ESMF_MPILAUNCHOPTIONS)
++else
++ifeq ($(ESMF_COMM),mvapich)
++# Mvapich any version --------------------------------------
++ESMF_F90DEFAULT         = mpif90
++ESMF_CXXDEFAULT         = mpicxx
++ESMF_CDEFAULT           = mpicc
++ESMF_CLINKERDEFAULT     = mpicxx
++ESMF_MPIRUNDEFAULT      = mpirun $(ESMF_MPILAUNCHOPTIONS)
++ESMF_MPIMPMDRUNDEFAULT  = mpiexec $(ESMF_MPILAUNCHOPTIONS)
++else
++ifeq ($(ESMF_COMM),openmpi)
++# OpenMPI --------------------------------------------------
++ifeq ($(shell $(ESMF_DIR)/scripts/available mpifort),mpifort)
++ESMF_F90DEFAULT         = mpifort
++else
++ESMF_F90DEFAULT         = mpif90
++endif
++ESMF_CXXCOMPILECPPFLAGS+= -DESMF_NO_SIGUSR2
++ESMF_F90LINKLIBS       += $(shell $(ESMF_DIR)/scripts/libs.openmpif90_forcxx $(ESMF_F90DEFAULT))
++ESMF_CXXDEFAULT         = mpicxx
++ESMF_CDEFAULT           = mpicc
++ESMF_CLINKERDEFAULT     = mpicxx
++ESMF_MPIRUNDEFAULT      = mpirun $(ESMF_MPILAUNCHOPTIONS)
++ESMF_MPIMPMDRUNDEFAULT  = mpiexec $(ESMF_MPILAUNCHOPTIONS)
++else
++ifeq ($(ESMF_COMM),user)
++# User specified flags -------------------------------------
++else
++$(error Invalid ESMF_COMM setting: $(ESMF_COMM))
++endif
++endif
++endif
++endif
++endif
++endif
++endif
++
++############################################################
++# Print compiler version string
++#
++ESMF_F90COMPILER_VERSION    = ${ESMF_F90COMPILER} -v --version
++ESMF_CXXCOMPILER_VERSION    = ${ESMF_CXXCOMPILER} -v --version
++ESMF_CCOMPILER_VERSION      = ${ESMF_CCOMPILER} -v --version
++
++############################################################
++# Special debug flags
++#
++ESMF_F90OPTFLAG_G       +=
++ESMF_CXXOPTFLAG_G       += -Wall -Wextra -Wno-unused
++
++############################################################
++# Fortran symbol convention
++#
++ifeq ($(ESMF_FORTRANSYMBOLS),default)
++ESMF_F90COMPILEOPTS       +=
++ESMF_F90LINKOPTS          +=
++ESMF_CPPFLAGS             += -DESMF_LOWERCASE_SINGLEUNDERSCORE
++else
++ifeq ($(ESMF_FORTRANSYMBOLS),lowercase_singleunderscore)
++ESMF_F90COMPILEOPTS       += -fno-second-underscore
++ESMF_F90LINKOPTS          += -fno-second-underscore
++ESMF_CPPFLAGS             += -DESMF_LOWERCASE_SINGLEUNDERSCORE
++else
++ifeq ($(ESMF_FORTRANSYMBOLS),lowercase_doubleunderscore)
++ESMF_F90COMPILEOPTS       += -fsecond-underscore
++ESMF_F90LINKOPTS          += -fsecond-underscore
++ESMF_CPPFLAGS             += -DESMF_LOWERCASE_DOUBLEUNDERSCORE
++else
++$(error "ESMF_FORTRANSYMBOLS = $(ESMF_FORTRANSYMBOLS)" not supported by ESMF and/or this platform)
++endif
++endif
++endif
++
++############################################################
++# Construct the ABISTRING
++#
++ifeq ($(ESMF_MACHINE),x86_64)
++ifeq ($(ESMF_ABI),32)
++ESMF_ABISTRING := $(ESMF_MACHINE)_32
++endif
++ifeq ($(ESMF_ABI),64)
++ESMF_ABISTRING := x86_64_small
++endif
++endif
++
++############################################################
++# Set memory model compiler flags according to ABISTRING
++#
++ifeq ($(ESMF_ABISTRING),x86_64_32)
++ESMF_CXXCOMPILEOPTS       += -m32
++ESMF_CXXLINKOPTS          += -m32
++ESMF_CCOMPILEOPTS         += -m32
++ESMF_CLINKOPTS            += -m32
++ESMF_F90COMPILEOPTS       +=
++ESMF_F90LINKOPTS          +=
++endif
++ifeq ($(ESMF_ABISTRING),x86_64_small)
++ESMF_CXXCOMPILEOPTS       += -m64 -mcmodel=small
++ESMF_CXXLINKOPTS          += -m64 -mcmodel=small
++ESMF_CCOMPILEOPTS         += -m64 -mcmodel=small
++ESMF_CLINKOPTS            += -m64 -mcmodel=small
++ESMF_F90COMPILEOPTS       +=
++ESMF_F90LINKOPTS          +=
++endif
++ifeq ($(ESMF_ABISTRING),x86_64_medium)
++ESMF_CXXCOMPILEOPTS       += -m64 -mcmodel=medium
++ESMF_CXXLINKOPTS          += -m64 -mcmodel=medium
++ESMF_CCOMPILEOPTS         += -m64 -mcmodel=medium
++ESMF_CLINKOPTS            += -m64 -mcmodel=medium
++ESMF_F90COMPILEOPTS       +=
++ESMF_F90LINKOPTS          +=
++endif
++
++############################################################
++# Conditionally add pthread compiler and linker flags
++#
++ifeq ($(ESMF_PTHREADS),ON)
++ESMF_F90COMPILEOPTS +=
++ESMF_CXXCOMPILEOPTS += -pthread
++ESMF_CCOMPILEOPTS   += -pthread
++ESMF_F90LINKOPTS    += -pthread
++ESMF_CXXLINKOPTS    += -pthread
++ESMF_CLINKOPTS      += -pthread
++endif
++
++############################################################
++# OpenMP compiler and linker flags
++#
++ESMF_OPENMPDEFAULT=OFF
++ESMF_OPENMP_F90COMPILEOPTS += -fopenmp
++# As of 2022-12-05, Apple's clang doesn't support -fopenmp directly; instead, it requires
++# -Xpreprocessor -fopenmp. In addition, you will need to install libomp and explicitly add
++# the appropriate include and link directories and libraries to pull it in (this is not
++# done here yet).
++ESMF_OPENMP_CXXCOMPILEOPTS += -Xpreprocessor -fopenmp
++ESMF_OPENMP_F90LINKOPTS    += -fopenmp
++ESMF_OPENMP_CXXLINKOPTS    += -Xpreprocessor -fopenmp
++
++############################################################
++# Explicit flags for handling specific format and cpp combos
++#
++ESMF_F90COMPILEFREENOCPP = -ffree-form
++ESMF_F90COMPILEFIXCPP    = -cpp -ffixed-form
++
++############################################################
++# Set unlimited line length limit for free format files
++#
++ESMF_F90COMPILEOPTS +=
++
++############################################################
++# Trying to produce a backtrace can lead programs to hang without any useful information
++# rather than aborting cleanly, so disable backtraces.
++#
++ESMF_F90COMPILEOPTS +=
++
++############################################################
++# Set rpath syntax
++#
++ESMF_F90RPATHPREFIX         = -Wl,-rpath,
++ESMF_CXXRPATHPREFIX         = -Wl,-rpath,
++ESMF_CRPATHPREFIX           = -Wl,-rpath,
++
++# Dynamically find Flang's lib dir to bypass broken libs.llvm script
++FLANG_PREFIX := $(shell brew --prefix flang 2>/dev/null || echo /opt/homebrew/opt/flang)
++
++############################################################
++# Link against libesmf.a using the F90 linker front-end
++#
++ESMF_F90LINKLIBS += -L$(FLANG_PREFIX)/lib -lflang_rt.runtime -lc++
++
++############################################################
++# Link against libesmf.a using the C++ linker front-end
++#
++ESMF_CXXLINKLIBS += -L$(FLANG_PREFIX)/lib -lflang_rt.runtime -lc++ -lm
++
++############################################################
++# Shared library options
++ESMF_SL_LIBOPTS  += -dynamiclib
++ESMF_SL_LIBLIBS  += $(ESMF_F90LINKPATHS) $(ESMF_F90LINKLIBS) $(ESMF_CXXLINKPATHS) $(ESMF_CXXLINKLIBS)
++
++############################################################
++# Static builds on Darwin do not support trace lib due to missing linker option
++ifeq ($(ESMF_SHARED_LIB_BUILD),OFF)
++ESMF_TRACE_LIB_BUILD = OFF
++endif
++
++############################################################
++# Preloading the dynamic trace library is generally not supported on Darwin
++# when System Integrity Protection (SIP) is enabled. Link directly instead.
++ESMF_TRACE_PRELOAD_LINKED=ON
++
++############################################################
++# Shared object options
++#
++ESMF_SO_F90COMPILEOPTS  = -fPIC
++ESMF_SO_F90LINKOPTS     = -shared
++ESMF_SO_CXXCOMPILEOPTS  = -fPIC
++ESMF_SO_CXXLINKOPTS     = -shared

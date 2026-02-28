@@ -338,9 +338,37 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
      export CURL_SSL
      export BREW_OPENSSL_PREFIX BREW_OPENSSL_LIBDIR
 
-     DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration
+     ifeq ($(ARCH)-$(findstring flang,$(notdir $(FC))),Darwin-flang)
+        # Pass frameworks directly to the Apple linker to prevent Flang from choking
+        DARWIN_ST_LIBS := -Wl,-framework,CoreFoundation -Wl,-framework,SystemConfiguration
+     else
+        DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration
+     endif
      export DARWIN_ST_LIBS
+
   endif
+
+# Dynamically discover Homebrew's flang prefix, regardless of install location
+# HDF4 and HDF5 configure script trips over flang's LTO flags on macOS
+ifeq ($(ARCH)-$(findstring flang,$(notdir $(FC))),Darwin-flang)
+   # Force the Fortran library paths to bypass the broken auto-detection
+   FLANG_BREW_PREFIX := $(shell command -v brew >/dev/null 2>&1 && brew --prefix flang)
+
+   ifneq ($(FLANG_BREW_PREFIX),)
+      FLANG_LTO_LIBS = FCLIBS="-L$(FLANG_BREW_PREFIX)/lib -lflang_rt.runtime" FLIBS="-L$(FLANG_BREW_PREFIX)/lib -lflang_rt.runtime"
+   endif
+   export FLANG_LTO_LIBS
+endif
+
+# Flang via homebrew does not support quad precision, so we need to disable for FMS
+# This is done via CMake as -DENABLE_QUAD_PRECISION=OFF
+ifeq ($(ARCH)-$(findstring flang,$(notdir $(FC))),Darwin-flang)
+   FMS_QUAD_PRECISION := OFF
+else
+   FMS_QUAD_PRECISION := ON
+endif
+export FMS_QUAD_PRECISION
+
 
 #-------------------------------------------------------------------------
 
@@ -672,7 +700,7 @@ hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) libaec.install
                       --disable-netcdf \
                       --enable-hdf4-xdr \
                       $(HDF4_ENABLE_FORTRAN) \
-                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) $(FLANG_LTO_LIBS) )
 	touch $@
 
 # We need to patch HDF5 for gcc15. Based on https://github.com/HDFGroup/hdf5/pull/4924
@@ -695,7 +723,7 @@ hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
                       --disable-shared --disable-cxx \
                       --enable-hl --enable-fortran --disable-sharedlib-rpath \
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
-                      CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) $(FLANG_LTO_LIBS) )
 	touch $@
 
 hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
@@ -942,7 +970,7 @@ FMS.config :: netcdf.install netcdf-fortran.install libyaml.install
 	@echo "Configuring FMS"
 	@mkdir -p ./FMS/build
 	@(cd ./FMS; \
-		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf )
+		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf -DENABLE_QUAD_PRECISION=$(FMS_QUAD_PRECISION) )
 	@touch $@
 
 antlr2.config : antlr2/configure
@@ -981,7 +1009,14 @@ gsl.config : gsl.download gsl/configure
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-esmf.config : esmf_rules.mk netcdf-fortran.install
+# We need to patch esmf for LLVM testing support
+# NOTE: Because we patch CMake, we need to patch before
+# configuring and unpatch after installing
+esmf.config :: esmf_rules.mk netcdf-fortran.install
+	@echo Patching esmf
+	patch -f -p1 < ./patches/esmf/brewflang.patch
+
+esmf.config :: esmf_rules.mk netcdf-fortran.install
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
 
 hdfeos.download : scripts/download_hdfeos.bash
@@ -1248,8 +1283,12 @@ SDPToolkit.install: SDPToolkit.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	touch $@
 
-esmf.install : esmf_rules.mk
+esmf.install :: esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) install
+
+esmf.install :: esmf_rules.mk
+	@echo Unptching esmf
+	patch -f -p1 -R < ./patches/esmf/brewflang.patch
 
 esmf.info : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) info
