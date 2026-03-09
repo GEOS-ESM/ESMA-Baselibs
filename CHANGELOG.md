@@ -8,6 +8,8 @@
 
 ### Changed
 
+- `autoreconf` version 2.72 or higher is now required. The build will error out early if the system `autoreconf` does not meet this requirement.
+
 ### Removed
 
 ### Added
