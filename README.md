@@ -65,6 +65,8 @@ NASA/GSFC.
 
 - CMake v3.24 or higher
 
+- `autoreconf` (GNU Autoconf) v2.72 or higher
+
 ### Obtaining ESMA Baselibs
 
 ESMA Baselibs can be obtained in two ways via a tarball or through git.
