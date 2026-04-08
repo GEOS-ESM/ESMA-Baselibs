@@ -43,6 +43,12 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
     undefine CXX
   endif
 
+  AUTORECONF_VERSION := $(shell autoreconf --version 2>/dev/null | head -1 | sed 's/[^0-9.]//g' | cut -d. -f1-2)
+  AUTORECONF_VERSION_OK := $(shell awk 'BEGIN { exit ($(AUTORECONF_VERSION) >= 2.72) ? 0 : 1 }' && echo yes || echo no)
+  ifneq ($(AUTORECONF_VERSION_OK),yes)
+    $(error autoreconf version $(AUTORECONF_VERSION) is too old. Version 2.72 or higher is required.)
+  endif
+
   include Base.mk
   include Arch.mk
   include baselibs-config.mk
@@ -507,6 +513,7 @@ verify:
 	@echo ESMF_COMPILER = $(ESMF_COMPILER)
 	@echo ENABLE_HDF4 = $(ENABLE_HDF4)
 	@echo LIB_HDF4 = $(LIB_HDF4)
+	@echo AUTORECONF_VERSION = $(AUTORECONF_VERSION)
 	@echo MAKEJOBS = $(MAKEJOBS)
 	@echo SITE = $(SITE)
 	@ argv="$(SUBDIRS)" ;\
