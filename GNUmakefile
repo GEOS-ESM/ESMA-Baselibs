@@ -219,8 +219,8 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
         export CDO_STD
 
         # There is an issue with netcdf-fortran and clang it seems we need
-		  # to pass in -std=gnu17 to the CFLAGS to get it to compile.
-		  # and udunits2
+        # to pass in -std=gnu17 to the CFLAGS to get it to compile.
+        # and udunits2
         CLANG_STD_CFLAGS := -std=gnu17
         export CLANG_STD_CFLAGS
 
