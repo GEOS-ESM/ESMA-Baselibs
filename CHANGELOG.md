@@ -20,6 +20,10 @@
   - pFlogger v1.18.0
   - pFUnit v4.17.0
 
+### Fixed
+
+- Clang on macOS seems to now need to pass in `-std=gnu17` to both `netcdf-fortran` and `udunits2`. Autotools seems to be detecting `-std=gnu23` support but the `configure` scripts are not updated for that standard.
+
 ### Changed
 
 - `autoreconf` version 2.72 or higher is now required. The build will error out early if the system `autoreconf` does not meet this requirement.
