@@ -8,11 +8,21 @@
 
 ### Changed
 
-- `autoreconf` version 2.72 or higher is now required. The build will error out early if the system `autoreconf` does not meet this requirement.
-
 ### Removed
 
 ### Added
+
+## [8.28.0] - 2026-04-08
+
+### Updates
+
+- GFE v1.24.0
+  - pFlogger v1.18.0
+  - pFUnit v4.17.0
+
+### Changed
+
+- `autoreconf` version 2.72 or higher is now required. The build will error out early if the system `autoreconf` does not meet this requirement.
 
 ## [8.27.0] - 2026-02-23
 
