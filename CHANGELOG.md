@@ -6,11 +6,15 @@
 
 ### Fixed
 
+- Fixed `release-tarfile.yml` GitHub Actions workflow which was failing due to `autoreconf` on `ubuntu-latest` being too old (2.71). The workflow now builds and installs `autoconf 2.72` from source before running `make download`.
+
 ### Changed
 
 ### Removed
 
 ### Added
+
+- Added `workflow_dispatch` trigger to `release-tarfile.yml` with a `tag` input, allowing the tarball creation workflow to be run manually against any existing release tag.
 
 ## [8.29.0] - 2026-04-09
 
