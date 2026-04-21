@@ -3,30 +3,50 @@ name: Create Release Tarballs
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to build tarball for (e.g. v9.8.0)'
+        required: true
+        type: string
 
 jobs:
   release:
     runs-on: ubuntu-latest
 
+    env:
+      TAG_NAME: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.event.release.tag_name }}
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
-          path: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+          ref: ${{ env.TAG_NAME }}
+          path: ${{ github.event.repository.name }}-${{ env.TAG_NAME }}
           submodules: recursive
+
+      - name: Install autoconf 2.72
+        run: |
+          wget -q https://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.gz
+          tar xzf autoconf-2.72.tar.gz
+          cd autoconf-2.72
+          ./configure --prefix=/usr/local
+          make -j$(nproc)
+          sudo make install
+          autoreconf --version
 
       - name: Download non-git libraries
         run : |
-          cd ${GITHUB_WORKSPACE}/${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+          cd ${GITHUB_WORKSPACE}/${{ github.event.repository.name }}-${{ env.TAG_NAME }}
           make download
 
       - name: Create tarball
         run: |
-          tar --exclude-vcs --exclude=.mepo -cf ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.COMPLETE.tar ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
-          xz -T6 ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.COMPLETE.tar
+          tar --exclude-vcs --exclude=.mepo -cf ${{ github.event.repository.name }}-${{ env.TAG_NAME }}.COMPLETE.tar ${{ github.event.repository.name }}-${{ env.TAG_NAME }}
+          xz -T6 ${{ github.event.repository.name }}-${{ env.TAG_NAME }}.COMPLETE.tar
 
       - name: Upload tarball
         run: |
-          gh release upload ${{ github.event.release.tag_name }} ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.COMPLETE.tar.xz -R ${{ github.repository_owner }}/${{ github.event.repository.name }}
+          gh release upload ${{ env.TAG_NAME }} ${{ github.event.repository.name }}-${{ env.TAG_NAME }}.COMPLETE.tar.xz -R ${{ github.repository_owner }}/${{ github.event.repository.name }}
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
