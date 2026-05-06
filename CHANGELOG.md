@@ -6,11 +6,23 @@
 
 ### Fixed
 
-- Fixed `release-tarfile.yml` GitHub Actions workflow which was failing due to `autoreconf` on `ubuntu-latest` being too old (2.71). The workflow now builds and installs `autoconf 2.72` from source before running `make download`.
-
 ### Changed
 
 ### Removed
+
+### Added
+
+## [8.30.0] - 2026-05-06
+
+### Updates
+
+- GFE v1.27.0
+  - pFUnit v4.18.1
+  - pFlogger v1.18.1
+
+### Fixed
+
+- Fixed `release-tarfile.yml` GitHub Actions workflow which was failing due to `autoreconf` on `ubuntu-latest` being too old (2.71). The workflow now builds and installs `autoconf 2.72` from source before running `make download`.
 
 ### Added
 
