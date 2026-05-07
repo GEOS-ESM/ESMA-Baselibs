@@ -32,6 +32,7 @@ NASA/GSFC.
 | [NCO](http://nco.sourceforge.net/)                                       | 5.3.6        |
 | [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.5.4        |
 | [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.10.0.0     |
+| [fftw](https://www.fftw.org/)                                            | 3.3.11       |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                  | 3.0          |
 | [HDF-EOS5](https://wiki.earthdata.nasa.gov/display/DAS)                  | 2.0          |
 | [SDP Toolkit](https://wiki.earthdata.nasa.gov/display/DAS)               | 5.2.20       |
