@@ -5,7 +5,7 @@
 # --------------
 
 package_name='fftw'
-tarball='fftw-3.3.10.tar.gz'
+tarball='fftw-3.3.11.tar.gz'
 base_url='https://www.fftw.org/'
 
 export LMOD_SH_DBG_ON=0
