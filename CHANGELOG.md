@@ -6,17 +6,22 @@
 
 ### Fixed
 
-- Updates needed for building with Homebrew flang on Darwin
-  - Route Apple framework flags through `-Wl,-framework,...` so flang can link against CoreFoundation/SystemConfiguration
-  - Discover the Homebrew flang prefix and pass `FLANG_LTO_LIBS` into HDF4/HDF5 config to bypass the broken LTO auto-detection
-  - Disabled FMS quad precision via `-DENABLE_QUAD_PRECISION=OFF` because Homebrew flang does not support quad precision on macOS
-  - Patch for ESMF to create a `Darwin.llvm.default` build_config. Currently *very* unportable.
-
 ### Changed
 
 ### Removed
 
 ### Added
+
+## [9.11.0] - 2026-05-20
+
+### Fixed
+
+- Updates needed for building with Homebrew flang on Darwin
+  - Route Apple framework flags through `-Wl,-framework,...` so flang can link against CoreFoundation/SystemConfiguration
+  - Discover the Homebrew flang prefix and pass `FLANG_LTO_LIBS` into HDF4/HDF5 config to bypass the broken LTO auto-detection
+  - Disabled FMS quad precision via `-DENABLE_QUAD_PRECISION=OFF` because Homebrew flang does not support quad precision on macOS
+  - Patch for ESMF to create a `Darwin.llvm.default` build_config. Currently *very* unportable.
+- Various updates needed for testing with Flang-based NVHPC
 
 ## [9.10.0] - 2026-05-06
 
