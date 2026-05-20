@@ -19,7 +19,7 @@ NASA/GSFC.
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.14.5       |
 | [HDF4](https://portal.hdfgroup.org/display/support)                      | 4.2.16-2     |
-| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                  | v1.23.0      |
+| [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                  | v1.27.0      |
 | [xgboost](https://github.com/dmlc/xgboost)                               | v1.6.0       |
 | [libyaml](https://github.com/yaml/libyaml.git)                           | 0.2.5        |
 | [antlr2](https://www.antlr2.org/)                                        | 2.7.7        |
@@ -64,6 +64,8 @@ NASA/GSFC.
   visible as sed (and not, say, gsed as installed by Brew)
 
 - CMake v3.24 or higher
+
+- `autoreconf` (GNU Autoconf) v2.72 or higher
 
 ### Obtaining ESMA Baselibs
 

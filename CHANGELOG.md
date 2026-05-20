@@ -18,6 +18,45 @@
 
 ### Added
 
+## [9.10.0] - 2026-05-06
+
+### Updates
+
+- GFE v1.27.0
+  - pFUnit v4.18.1
+  - pFlogger v1.18.1
+
+### Fixed
+
+- Fixed `release-tarfile.yml` GitHub Actions workflow which was failing due to `autoreconf` on `ubuntu-latest` being too old (2.71). The workflow now builds and installs `autoconf 2.72` from source before running `make download`.
+
+### Added
+
+- Added `workflow_dispatch` trigger to `release-tarfile.yml` with a `tag` input, allowing the tarball creation workflow to be run manually against any existing release tag.
+
+## [9.9.0] - 2026-04-09
+
+### Updates
+
+- GFE v1.25.0
+  - pFUnit v4.17.1
+
+## [9.8.0] - 2026-04-08
+
+### Updates
+
+- GFE v1.24.0
+  - pFlogger v1.18.0
+  - pFUnit v4.17.0
+
+### Fixed
+
+- Clang on macOS seems to now need to pass in `-std=gnu17` to both `netcdf-fortran` and `udunits2`. Autotools seems to be detecting `-std=gnu23` support but the `configure` scripts are not updated for that standard.
+
+### Changed
+
+- `autoreconf` version 2.72 or higher is now required. The build will error out early if the system `autoreconf` does not meet this requirement.
+
 ## [9.7.1] - 2026-02-24
 
 ### Fixed

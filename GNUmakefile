@@ -43,6 +43,12 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
     undefine CXX
   endif
 
+  AUTORECONF_VERSION := $(shell autoreconf --version 2>/dev/null | head -1 | sed 's/[^0-9.]//g' | cut -d. -f1-2)
+  AUTORECONF_VERSION_OK := $(shell awk 'BEGIN { exit ($(AUTORECONF_VERSION) >= 2.72) ? 0 : 1 }' && echo yes || echo no)
+  ifneq ($(AUTORECONF_VERSION_OK),yes)
+    $(error autoreconf version $(AUTORECONF_VERSION) is too old. Version 2.72 or higher is required.)
+  endif
+
   include Base.mk
   include Arch.mk
   include baselibs-config.mk
@@ -211,6 +217,12 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
         # There is an issue with Apple clang++ and cdo
         CDO_STD := -std=c++20
         export CDO_STD
+
+        # There is an issue with netcdf-fortran and clang it seems we need
+        # to pass in -std=gnu17 to the CFLAGS to get it to compile.
+        # and udunits2
+        CLANG_STD_CFLAGS := -std=gnu17
+        export CLANG_STD_CFLAGS
 
         # We might need to add -Wl,-ld_classic to LDFLAGS but only for certain versions of macOS/XCode
 		  # which is 15 and up to 16.2, but not 16.3
@@ -535,6 +547,7 @@ verify:
 	@echo ESMF_COMPILER = $(ESMF_COMPILER)
 	@echo ENABLE_HDF4 = $(ENABLE_HDF4)
 	@echo LIB_HDF4 = $(LIB_HDF4)
+	@echo AUTORECONF_VERSION = $(AUTORECONF_VERSION)
 	@echo MAKEJOBS = $(MAKEJOBS)
 	@echo SITE = $(SITE)
 	@ argv="$(SUBDIRS)" ;\
@@ -771,7 +784,7 @@ netcdf-fortran.config : netcdf-fortran/configure netcdf.install
 	@(cd netcdf-fortran; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
-          export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
+          export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG) $(CLANG_STD_CFLAGS)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
           autoreconf -f -v -i;\
           ./configure --prefix=$(prefix) \
@@ -807,7 +820,7 @@ udunits2.config : udunits2/configure.ac
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/udunits2 \
                       --disable-shared \
-                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR) $(CLANG_STD_CFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
 INC_HDF5 = $(prefix)/include/hdf5
@@ -1117,7 +1130,7 @@ netcdf-fortran.install : netcdf-fortran.config
 	@(cd netcdf-fortran; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
           export CPPFLAGS="$(CPPFLAGS) -I$(prefix)/include/netcdf $(INC_SUPP)";\
-          export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG)";\
+          export CFLAGS="$(CFLAGS) $(NC_CFLAGS) $(PTHREAD_FLAG) $(CLANG_STD_CFLAGS)";\
           export LIBS="-L$(prefix)/lib $(LIB_NETCDF) $(LIB_CURL)" ;\
           make -j1 install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
