@@ -386,9 +386,9 @@ ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
    MAPL_DIRS := $(filter-out $(NO_NAG_DIRS),$(MAPL_DIRS))
 endif
 
-# NVHPC seems to have issues with SDPToolkit
+# NVHPC seems to have issues with SDPToolkit and cdo
 ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
-   NO_NVHPC_DIRS = SDPToolkit
+   NO_NVHPC_DIRS = cdo SDPToolkit
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif
 
@@ -693,6 +693,7 @@ hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) libaec.install
 hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 	@echo Patching hdf5
 	patch -f -p1 < ./patches/hdf5/gcc15.patch
+	patch -f -p1 < ./patches/hdf5/nvhpc_Mnoframe.patch
 
 hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 	echo Configuring hdf5
@@ -714,6 +715,7 @@ hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 	@echo Unpatching hdf5
 	patch -f -p1 -R < ./patches/hdf5/gcc15.patch
+	patch -f -p1 -R < ./patches/hdf5/nvhpc_Mnoframe.patch
 
 NETCDF_BYTERANGE = --enable-byterange
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
@@ -858,7 +860,6 @@ zlib.config : zlib/configure
                       --libdir=$(prefix)/lib )
 	touch $@
 
-
 curl.config : curl/configure.ac $(ZLIB_INSTALL)
 	@echo "Configuring curl"
 	@(cd curl; \
@@ -869,7 +870,7 @@ curl.config : curl/configure.ac $(ZLIB_INSTALL)
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/ \
                       --libdir=$(prefix)/lib \
-                      $(WITH_ZLIB_SHORT) \
+                      $(CURL_ZLIB) \
                       --disable-ldap \
                       --enable-manual \
                       --disable-shared \
@@ -1072,6 +1073,21 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
 
 #                         Install
 #                         .......
+
+
+curl.install :: curl.config
+	@echo Patching curl
+	patch -f -p1 < ./patches/curl/nvhpc_unconst.patch
+
+curl.install :: curl.config
+	@(cd curl; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          $(MAKE) install)
+	@touch $@
+
+curl.install :: curl.config
+	@echo Unpatching curl
+	patch -f -p1 -R < ./patches/curl/nvhpc_unconst.patch
 
 hdf5.install :: hdf5.config
 	@(cd hdf5; \
