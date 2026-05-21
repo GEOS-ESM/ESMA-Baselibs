@@ -14,6 +14,10 @@
 
 ## [9.11.0] - 2026-05-20
 
+### Added
+
+- fftw 3.3.11
+
 ### Fixed
 
 - Updates needed for building with Homebrew flang on Darwin
@@ -24,10 +28,6 @@
 - Various updates needed for testing with Flang-based NVHPC
 
 ## [9.10.0] - 2026-05-06
-
-### Added
-
-- fftw 3.3.11
 
 ### Updates
 
