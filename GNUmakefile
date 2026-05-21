@@ -390,11 +390,11 @@ export FMS_QUAD_PRECISION
 
 ALLDIRS = antlr2 gsl jpeg zlib libaec curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
           udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
-          GFE \
+          GFE fftw \
           hdfeos hdfeos5 SDPToolkit
 
 ESSENTIAL_DIRS = jpeg zlib libaec hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
-                 udunits2 nccmp esmf GFE
+                 udunits2 nccmp esmf GFE fftw
 
 MAPL_DIRS = jpeg zlib libaec hdf5 netcdf netcdf-fortran \
             udunits2 nccmp esmf GFE
@@ -495,7 +495,7 @@ endif
 
 TARGETS = all lib install
 
-download: gsl.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download
+download: gsl.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download fftw.download
 
 dist: download
 	tar -czf $(RELEASE_DIR)/$(RELEASE_FILE).tar.gz -C $(RELEASE_DIR) $(MKFILE_DIRNAME)
@@ -936,6 +936,22 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
                       CXXFLAGS="$(CDO_STD)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
 	@touch $@
 
+fftw.download : scripts/download_fftw.bash
+	@echo "Downloading fftw"
+	@./scripts/download_fftw.bash
+	@touch $@
+
+fftw.config : fftw.download fftw/configure
+	@echo "Configuring fftw"
+	@(cd fftw; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          autoreconf -f -v -i;\
+          ./configure --prefix=$(prefix) \
+                      --includedir=$(prefix)/include/fftw \
+                      --enable-mpi --enable-float --enable-shared \
+                      CFLAGS="$(CFLAGS)" CC=$(NC_CC) CXX=$(NC_CXX) FC=$(NC_FC) F77=$(NC_F77) )
+	@touch $@
+
 nccmp.config: nccmp/configure netcdf.install
 	@echo "Configuring nccmp $*"
 	@(cd nccmp; \
@@ -1166,6 +1182,14 @@ cdo.install: cdo.config
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
+
+fftw.install: fftw.config
+	@echo "Installing fftw $*"
+	@(cd fftw; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
+	@touch $@
+
 
 nccmp.install :: nccmp.config
 	@echo "Installing nccmp $*"
