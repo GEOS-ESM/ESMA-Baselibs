@@ -1,0 +1,14 @@
+diff --git before/hdf5/config/nvidia-fflags after/hdf5/config/nvidia-fflags
+--- before/hdf5/config/nvidia-fflags
++++ after/hdf5/config/nvidia-fflags
+@@ -75,9 +75,9 @@
+     #if test "X-" == "X-$is_mpi"; then
+     #    PROD_FCFLAGS="-fast -s -Mnoframe"
+     #else
+     #    PROD_FCFLAGS="-O2 -s"
+     #fi
+-    PROD_FCFLAGS="-fast -Mnoframe -fPIC"
++    PROD_FCFLAGS="-fast -fPIC"
+ 
+     #########
+     # Debug #

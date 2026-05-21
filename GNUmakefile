@@ -350,9 +350,37 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
      export CURL_SSL
      export BREW_OPENSSL_PREFIX BREW_OPENSSL_LIBDIR
 
-     DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration
+     ifeq ($(ARCH)-$(findstring flang,$(notdir $(FC))),Darwin-flang)
+        # Pass frameworks directly to the Apple linker to prevent Flang from choking
+        DARWIN_ST_LIBS := -Wl,-framework,CoreFoundation -Wl,-framework,SystemConfiguration
+     else
+        DARWIN_ST_LIBS := -framework CoreFoundation -framework SystemConfiguration
+     endif
      export DARWIN_ST_LIBS
+
   endif
+
+# Dynamically discover Homebrew's flang prefix, regardless of install location
+# HDF4 and HDF5 configure script trips over flang's LTO flags on macOS
+ifeq ($(ARCH)-$(findstring flang,$(notdir $(FC))),Darwin-flang)
+   # Force the Fortran library paths to bypass the broken auto-detection
+   FLANG_BREW_PREFIX := $(shell command -v brew >/dev/null 2>&1 && brew --prefix flang)
+
+   ifneq ($(FLANG_BREW_PREFIX),)
+      FLANG_LTO_LIBS = FCLIBS="-L$(FLANG_BREW_PREFIX)/lib -lflang_rt.runtime" FLIBS="-L$(FLANG_BREW_PREFIX)/lib -lflang_rt.runtime"
+   endif
+   export FLANG_LTO_LIBS
+endif
+
+# Flang via homebrew does not support quad precision, so we need to disable for FMS
+# This is done via CMake as -DENABLE_QUAD_PRECISION=OFF
+ifeq ($(ARCH)-$(findstring flang,$(notdir $(FC))),Darwin-flang)
+   FMS_QUAD_PRECISION := OFF
+else
+   FMS_QUAD_PRECISION := ON
+endif
+export FMS_QUAD_PRECISION
+
 
 #-------------------------------------------------------------------------
 
@@ -362,11 +390,11 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 
 ALLDIRS = antlr2 gsl jpeg zlib libaec curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
           udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
-          GFE \
+          GFE fftw \
           hdfeos hdfeos5 SDPToolkit
 
 ESSENTIAL_DIRS = jpeg zlib libaec hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
-                 udunits2 nccmp esmf GFE
+                 udunits2 nccmp esmf GFE fftw
 
 MAPL_DIRS = jpeg zlib libaec hdf5 netcdf netcdf-fortran \
             udunits2 nccmp esmf GFE
@@ -386,9 +414,9 @@ ifeq ($(findstring nagfor,$(notdir $(FC))),nagfor)
    MAPL_DIRS := $(filter-out $(NO_NAG_DIRS),$(MAPL_DIRS))
 endif
 
-# NVHPC seems to have issues with SDPToolkit
+# NVHPC seems to have issues with SDPToolkit and cdo
 ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
-   NO_NVHPC_DIRS = SDPToolkit
+   NO_NVHPC_DIRS = cdo SDPToolkit
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif
 
@@ -467,7 +495,7 @@ endif
 
 TARGETS = all lib install
 
-download: gsl.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download
+download: gsl.download cdo.download hdfeos.download hdfeos5.download SDPToolkit.download fftw.download
 
 dist: download
 	tar -czf $(RELEASE_DIR)/$(RELEASE_FILE).tar.gz -C $(RELEASE_DIR) $(MKFILE_DIRNAME)
@@ -685,7 +713,7 @@ hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) libaec.install
                       --disable-netcdf \
                       --enable-hdf4-xdr \
                       $(HDF4_ENABLE_FORTRAN) \
-                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) )
+                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) $(FLANG_LTO_LIBS) )
 	touch $@
 
 # We need to patch HDF5 for gcc15. Based on https://github.com/HDFGroup/hdf5/pull/4924
@@ -693,6 +721,7 @@ hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) libaec.install
 hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 	@echo Patching hdf5
 	patch -f -p1 < ./patches/hdf5/gcc15.patch
+	patch -f -p1 < ./patches/hdf5/nvhpc_Mnoframe.patch
 
 hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 	echo Configuring hdf5
@@ -708,12 +737,13 @@ hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
                       --disable-shared --disable-cxx \
                       --enable-hl --enable-fortran --disable-sharedlib-rpath \
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
-                      CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+                      CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) $(FLANG_LTO_LIBS) )
 	touch $@
 
 hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
 	@echo Unpatching hdf5
 	patch -f -p1 -R < ./patches/hdf5/gcc15.patch
+	patch -f -p1 -R < ./patches/hdf5/nvhpc_Mnoframe.patch
 
 NETCDF_BYTERANGE = --enable-byterange
 ifneq ("$(wildcard $(prefix)/bin/curl-config)","")
@@ -858,7 +888,6 @@ zlib.config : zlib/configure
                       --libdir=$(prefix)/lib )
 	touch $@
 
-
 curl.config : curl/configure.ac $(ZLIB_INSTALL)
 	@echo "Configuring curl"
 	@(cd curl; \
@@ -869,7 +898,7 @@ curl.config : curl/configure.ac $(ZLIB_INSTALL)
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/ \
                       --libdir=$(prefix)/lib \
-                      $(WITH_ZLIB_SHORT) \
+                      $(CURL_ZLIB) \
                       --disable-ldap \
                       --enable-manual \
                       --disable-shared \
@@ -905,6 +934,22 @@ cdo.config: cdo.download cdo/configure netcdf.install udunits2.install
                       --disable-grib --disable-openmp \
                       --disable-shared --enable-static $(CDO_DISABLE_FORTRAN) \
                       CXXFLAGS="$(CDO_STD)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) )
+	@touch $@
+
+fftw.download : scripts/download_fftw.bash
+	@echo "Downloading fftw"
+	@./scripts/download_fftw.bash
+	@touch $@
+
+fftw.config : fftw.download fftw/configure
+	@echo "Configuring fftw"
+	@(cd fftw; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          autoreconf -f -v -i;\
+          ./configure --prefix=$(prefix) \
+                      --includedir=$(prefix)/include/fftw \
+                      --enable-mpi --enable-float --enable-shared \
+                      CFLAGS="$(CFLAGS)" CC=$(NC_CC) CXX=$(NC_CXX) FC=$(NC_FC) F77=$(NC_F77) )
 	@touch $@
 
 nccmp.config: nccmp/configure netcdf.install
@@ -994,7 +1039,14 @@ gsl.config : gsl.download gsl/configure
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-esmf.config : esmf_rules.mk netcdf-fortran.install
+# We need to patch esmf for LLVM testing support
+# NOTE: Because we patch CMake, we need to patch before
+# configuring and unpatch after installing
+esmf.config :: esmf_rules.mk netcdf-fortran.install
+	@echo Patching esmf
+	patch -f -p1 < ./patches/esmf/brewflang.patch
+
+esmf.config :: esmf_rules.mk netcdf-fortran.install
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
 
 hdfeos.download : scripts/download_hdfeos.bash
@@ -1073,6 +1125,21 @@ SDPToolkit.config: SDPToolkit.download SDPToolkit/configure hdfeos5.install
 #                         Install
 #                         .......
 
+
+curl.install :: curl.config
+	@echo Patching curl
+	patch -f -p1 < ./patches/curl/nvhpc_unconst.patch
+
+curl.install :: curl.config
+	@(cd curl; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          $(MAKE) install)
+	@touch $@
+
+curl.install :: curl.config
+	@echo Unpatching curl
+	patch -f -p1 -R < ./patches/curl/nvhpc_unconst.patch
+
 hdf5.install :: hdf5.config
 	@(cd hdf5; \
           export PATH="$(prefix)/bin:$(PATH)" ;\
@@ -1115,6 +1182,14 @@ cdo.install: cdo.config
           export PATH="$(prefix)/bin:$(PATH)" ;\
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	@touch $@
+
+fftw.install: fftw.config
+	@echo "Installing fftw $*"
+	@(cd fftw; \
+          export PATH="$(prefix)/bin:$(PATH)" ;\
+          $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
+	@touch $@
+
 
 nccmp.install :: nccmp.config
 	@echo "Installing nccmp $*"
@@ -1261,8 +1336,12 @@ SDPToolkit.install: SDPToolkit.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	touch $@
 
-esmf.install : esmf_rules.mk
+esmf.install :: esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) install
+
+esmf.install :: esmf_rules.mk
+	@echo Unptching esmf
+	patch -f -p1 -R < ./patches/esmf/brewflang.patch
 
 esmf.info : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) info
