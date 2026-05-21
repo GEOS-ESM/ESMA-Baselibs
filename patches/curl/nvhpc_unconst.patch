@@ -1,0 +1,17 @@
+diff --git a/curl/lib/curl_setup_once.h b/curl/lib/curl_setup_once.h
+index 7a54760e16..953abc937e 100644
+--- a/curl/lib/curl_setup_once.h
++++ b/curl/lib/curl_setup_once.h
+@@ -65,7 +65,11 @@
+
+ /* Macro to strip 'const' without triggering a compiler warning.
+    Use it for APIs that do not or cannot support the const qualifier. */
+-#ifdef HAVE_STDINT_H
++#if defined(__NVCOMPILER) || defined(__PGI)
++/* NVIDIA HPC (nvhpc/pgcc) cannot handle the uintptr_t cast chain on string
++   literals; fall back to a simple void* cast which is sufficient here. */
++#  define CURL_UNCONST(p) ((void *)(p))
++#elif defined(HAVE_STDINT_H)
+ #  define CURL_UNCONST(p) ((void *)(uintptr_t)(const void *)(p))
+ #elif defined(_WIN32)  /* for VS2008 */
+ #  define CURL_UNCONST(p) ((void *)(ULONG_PTR)(const void *)(p))
