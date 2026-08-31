@@ -8,6 +8,9 @@
 
 ### Changed
 
+- Pass `--with-pic` to HDF5 configure to build static libraries with position-independent code.
+- Allow `hdfeos` to build with Intel `ifx` by configuring with `--disable-fortran` (C interfaces only) and avoiding reliance on `h4fc-hdf4` rather than excluding `hdfeos` entirely.
+
 ### Removed
 
 ### Added

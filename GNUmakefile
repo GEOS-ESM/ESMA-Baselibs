@@ -284,15 +284,18 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
      export CDO_STD
   endif
 
-# HDF4 plus ifx does not work with Fortran bindings
-# -------------------------------------------------
+# HDF4 and HDFEOS plus ifx does not work with Fortran bindings
+# -----------------------------------------------------------
 
   ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
      HDF4_ENABLE_FORTRAN := --disable-fortran
-     export HDF4_ENABLE_FORTRAN
+     HDFEOS_ENABLE_FORTRAN := --disable-fortran
+     H4_FC := $(FC)
+     export HDF4_ENABLE_FORTRAN HDFEOS_ENABLE_FORTRAN
   else
      HDF4_ENABLE_FORTRAN := --enable-fortran
-     export HDF4_ENABLE_FORTRAN
+     HDFEOS_ENABLE_FORTRAN := --enable-fortran
+     export HDF4_ENABLE_FORTRAN HDFEOS_ENABLE_FORTRAN
   endif
 
 # HDF5 and MPT at NCCS have an "issue" that needs an extra flag
@@ -468,10 +471,8 @@ else
 endif
 
 # Since we do not build the Fortran interface
-# to HDF4 with ifx, we cannot build hdf-eos2
-# or SDPToolkit
+# to HDF4 with ifx, we cannot build SDPToolkit
 ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
-   SUBDIRS := $(filter-out hdfeos,$(SUBDIRS))
    SUBDIRS := $(filter-out SDPToolkit,$(SUBDIRS))
 endif
 
@@ -736,6 +737,7 @@ hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
                       $(WITH_ZLIB) \
                       --disable-shared --disable-cxx \
                       --enable-hl --enable-fortran --disable-sharedlib-rpath \
+                      --with-pic \
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
                       CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) $(FLANG_LTO_LIBS) )
 	touch $@
@@ -1064,8 +1066,8 @@ hdfeos.config: hdfeos.download hdfeos/configure hdf4.install
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos \
                       --disable-shared --enable-static \
-                      --enable-fortran \
-                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS)" CC="$(H4_CC)" FC=$(H4_FC) F77=$(H4_FC) )
+                      $(HDFEOS_ENABLE_FORTRAN) \
+                      CFLAGS="$(CFLAGS)" FCFLAGS="$(NAG_FCFLAGS)" CC="$(H4_CC)" FC=$(H4_FC) F77=$(H4_FC) )
 	@touch $@
 
 hdfeos5.download : scripts/download_hdfeos5.bash
