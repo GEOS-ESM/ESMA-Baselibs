@@ -4,6 +4,18 @@
 
 ### Updates
 
+### Fixed
+
+### Changed
+
+### Removed
+
+### Added
+
+## [8.33.0] - 2026-09-03
+
+### Updates
+
 - ESMF 9.0.0b17
   - Remove patches needed for Darwin and Flang
 - nccmp 1.11.0.0
@@ -11,17 +23,10 @@
 - NCO 5.3.9
 - zlib 1.3.2
 
-### Fixed
-
 ### Changed
 
 - Update both `hdf4` and `hdf5` builds to pass in `-fPIC`
 - Allow `hdfeos` to build with Intel `ifx` by configuring with `--disable-fortran` (C interfaces only) and avoiding reliance on `h4fc-hdf4` rather than excluding `hdfeos` entirely.
-
-### Removed
-
-### Added
-
 ## [8.32.0] - 2026-05-28
 
 ### Updates
