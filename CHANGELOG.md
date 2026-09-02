@@ -28,6 +28,8 @@
 
 - Update both `hdf4` and `hdf5` builds to pass in `-fPIC`
 - Allow `hdfeos` to build with Intel `ifx` by configuring with `--disable-fortran` (C interfaces only) and avoiding reliance on `h4fc-hdf4` rather than excluding `hdfeos` entirely.
+- Build `libyaml` with Autotools so it installs the `yaml-0.1.pc` pkg-config file required by FMS 2026.01.01.
+- Enable FMS YAML support with `-DWITH_YAML=ON`.
 
 ## [9.12.0] - 2026-05-28
 
