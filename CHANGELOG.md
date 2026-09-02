@@ -10,6 +10,7 @@
 - nccmp 1.11.0.0
 - CDO 2.6.3
 - NCO 5.3.9
+- zlib 1.3.2
 
 ### Fixed
 
