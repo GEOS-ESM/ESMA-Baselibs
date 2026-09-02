@@ -8,6 +8,9 @@
 
 ### Changed
 
+- Update both `hdf4` and `hdf5` builds to pass in `-fPIC`
+- Allow `hdfeos` to build with Intel `ifx` by configuring with `--disable-fortran` (C interfaces only) and avoiding reliance on `h4fc-hdf4` rather than excluding `hdfeos` entirely.
+
 ### Removed
 
 ### Added
