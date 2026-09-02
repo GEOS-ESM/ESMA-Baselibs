@@ -8,6 +8,7 @@
   - Remove patches needed for Darwin and Flang
 - FMS 2026.01.01
 - nccmp 1.11.0.0
+- CDO 2.6.3
 
 ### Fixed
 
