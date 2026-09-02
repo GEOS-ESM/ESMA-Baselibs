@@ -362,6 +362,14 @@ ifeq ($(ESMF_COMPILER),gfortran)
   endif
 endif
 
+ifeq ($(ESMF_COMPILER),nag)
+  ifeq ($(ARCH),Darwin)
+    ifeq ($(CXX_IS_CLANG),TRUE)
+      ESMF_COMPILER := nagclang
+    endif
+  endif
+endif
+
 # MPT CC and CXX fixup
 # --------------------
 
@@ -415,4 +423,3 @@ endif
   ifneq ($(findstring $(ARCH),$(LAST_NODE_IN_PREFIX)),$(ARCH))
      $(error The last directory of the installation prefix $(prefix) must be $(ARCH) due to limitations in GEOS)
   endif
-
