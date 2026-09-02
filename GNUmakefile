@@ -151,6 +151,7 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 # flag. It also needs extra flags to compile code that is not as string
 # as it would like.
 # ---------------------------------------------------------------------
+  C_FPIC := -fPIC
   FORTRAN_FPIC := -fPIC
   FORTRAN_VERSION := --version
   HDF5_ENABLE_F2003 := --enable-fortran2003
@@ -713,8 +714,10 @@ hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) libaec.install
                       $(WITH_ZLIB) \
                       --disable-netcdf \
                       --enable-hdf4-xdr \
+                      --with-pic \
                       $(HDF4_ENABLE_FORTRAN) \
-                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) $(FLANG_LTO_LIBS) )
+                      CFLAGS="$(CFLAGS) $(C_FPIC) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" \
+                      FFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) $(FLANG_LTO_LIBS) )
 	touch $@
 
 # We need to patch HDF5 for gcc15. Based on https://github.com/HDFGroup/hdf5/pull/4924
@@ -739,7 +742,9 @@ hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
                       --enable-hl --enable-fortran --disable-sharedlib-rpath \
                       --with-pic \
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
-                      CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) $(FLANG_LTO_LIBS) )
+                      CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" \
+                      FFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS)" FCFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS)" \
+                      CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) $(FLANG_LTO_LIBS) )
 	touch $@
 
 hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
@@ -1511,4 +1516,3 @@ antlr2.check: antlr2.install
 #                        ------------
 
 #------------------------------------------------------------------------
-
