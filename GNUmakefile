@@ -1003,9 +1003,13 @@ libyaml.config:
 # We need to patch FMS for LLVM testing support
 # NOTE: Because we patch CMake, we need to patch before
 # configuring and unpatch after installing
+#
+# We also have to patch the CMake for libyaml.
+# NOTE: This can be removed when 2026.02 is released
 FMS.config :: netcdf.install netcdf-fortran.install libyaml.install
 	@echo Patching FMS
 	patch -f -p1 < ./patches/FMS/llvm.patch
+	patch -f -p1 < ./patches/FMS/libyaml.patch
 
 FMS.config :: netcdf.install netcdf-fortran.install libyaml.install
 	@echo "Configuring FMS"
@@ -1227,6 +1231,7 @@ FMS.install :: FMS.config
 
 FMS.install :: FMS.config
 	@echo Unpatching FMS
+	patch -f -p1 -R < ./patches/FMS/libyaml.patch
 	patch -f -p1 -R < ./patches/FMS/llvm.patch
 
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup

@@ -19,6 +19,7 @@
 - ESMF 9.0.0b17
   - Remove patches needed for Darwin and Flang
 - FMS 2026.01.01
+  - Requires new patch for CMake (fixed in 2026.02)
 - nccmp 1.11.0.0
 - CDO 2.6.3
 - NCO 5.3.9

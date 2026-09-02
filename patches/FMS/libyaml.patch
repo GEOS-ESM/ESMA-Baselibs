@@ -1,0 +1,24 @@
+--- a/FMS/CMakeLists.txt
++++ b/FMS/CMakeLists.txt
+@@ -307,6 +307,10 @@ foreach(kind ${kinds})
+   target_link_libraries(${libTgt}_c PRIVATE NetCDF::NetCDF_C
+                                             MPI::MPI_C)
+ 
++  if(YAML_FOUND)
++    target_link_libraries(${libTgt}_c PRIVATE PkgConfig::YAML)
++  endif()
++
+   if(OpenMP_C_FOUND)
+     target_link_libraries(${libTgt}_c PRIVATE OpenMP::OpenMP_C)
+   endif()
+@@ -451,6 +455,10 @@ if(NOT kinds)
+     target_link_libraries(${libTgt}_c PRIVATE NetCDF::NetCDF_C
+                                               MPI::MPI_C)
+ 
++    if(YAML_FOUND)
++      target_link_libraries(${libTgt}_c PRIVATE PkgConfig::YAML)
++    endif()
++
+     if(OpenMP_C_FOUND)
+       target_link_libraries(${libTgt}_c PRIVATE OpenMP::OpenMP_C)
+     endif()
