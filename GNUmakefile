@@ -1046,13 +1046,6 @@ gsl.config : gsl.download gsl/configure
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
 
-# We need to patch esmf for LLVM testing support
-# NOTE: Because we patch CMake, we need to patch before
-# configuring and unpatch after installing
-esmf.config :: esmf_rules.mk netcdf-fortran.install
-	@echo Patching esmf
-	patch -f -p1 < ./patches/esmf/brewflang.patch
-
 esmf.config :: esmf_rules.mk netcdf-fortran.install
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
 
@@ -1345,10 +1338,6 @@ SDPToolkit.install: SDPToolkit.config
 
 esmf.install :: esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) install
-
-esmf.install :: esmf_rules.mk
-	@echo Unptching esmf
-	patch -f -p1 -R < ./patches/esmf/brewflang.patch
 
 esmf.info : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) info
