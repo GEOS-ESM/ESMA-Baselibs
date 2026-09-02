@@ -151,6 +151,7 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
 # flag. It also needs extra flags to compile code that is not as string
 # as it would like.
 # ---------------------------------------------------------------------
+  C_FPIC := -fPIC
   FORTRAN_FPIC := -fPIC
   FORTRAN_VERSION := --version
   HDF5_ENABLE_F2003 := --enable-fortran2003
@@ -284,15 +285,18 @@ MAKEJOBS := $(if $(MAKEJOBS),$(MAKEJOBS),1)
      export CDO_STD
   endif
 
-# HDF4 plus ifx does not work with Fortran bindings
-# -------------------------------------------------
+# HDF4 and HDFEOS plus ifx does not work with Fortran bindings
+# -----------------------------------------------------------
 
   ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
      HDF4_ENABLE_FORTRAN := --disable-fortran
-     export HDF4_ENABLE_FORTRAN
+     HDFEOS_ENABLE_FORTRAN := --disable-fortran
+     H4_FC := $(FC)
+     export HDF4_ENABLE_FORTRAN HDFEOS_ENABLE_FORTRAN
   else
      HDF4_ENABLE_FORTRAN := --enable-fortran
-     export HDF4_ENABLE_FORTRAN
+     HDFEOS_ENABLE_FORTRAN := --enable-fortran
+     export HDF4_ENABLE_FORTRAN HDFEOS_ENABLE_FORTRAN
   endif
 
 # HDF5 and MPT at NCCS have an "issue" that needs an extra flag
@@ -468,10 +472,8 @@ else
 endif
 
 # Since we do not build the Fortran interface
-# to HDF4 with ifx, we cannot build hdf-eos2
-# or SDPToolkit
+# to HDF4 with ifx, we cannot build SDPToolkit
 ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
-   SUBDIRS := $(filter-out hdfeos,$(SUBDIRS))
    SUBDIRS := $(filter-out SDPToolkit,$(SUBDIRS))
 endif
 
@@ -712,8 +714,10 @@ hdf4.config: hdf4/README.md jpeg.install $(ZLIB_INSTALL) libaec.install
                       $(WITH_ZLIB) \
                       --disable-netcdf \
                       --enable-hdf4-xdr \
+                      --with-pic \
                       $(HDF4_ENABLE_FORTRAN) \
-                      CFLAGS="$(CFLAGS) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" FFLAGS="$(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) $(FLANG_LTO_LIBS) )
+                      CFLAGS="$(CFLAGS) $(C_FPIC) $(NO_IMPLICIT_FUNCTION_ERROR) $(NO_IMPLICIT_INT_ERROR)" \
+                      FFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS) $(NAG_DUSTY) $(ALLOW_ARGUMENT_MISMATCH)" CC=$(CC) FC=$(FC) CXX=$(CXX) $(FLANG_LTO_LIBS) )
 	touch $@
 
 # We need to patch HDF5 for gcc15. Based on https://github.com/HDFGroup/hdf5/pull/4924
@@ -736,8 +740,11 @@ hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
                       $(WITH_ZLIB) \
                       --disable-shared --disable-cxx \
                       --enable-hl --enable-fortran --disable-sharedlib-rpath \
+                      --with-pic \
                       $(ENABLE_GPFS) $(H5_PARALLEL) $(HDF5_ENABLE_F2003) \
-                      CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" FCFLAGS="$(NAG_FCFLAGS)" CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) $(FLANG_LTO_LIBS) )
+                      CFLAGS="$(CFLAGS) $(HDF5_NCCS_MPT_CFLAG)" \
+                      FFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS)" FCFLAGS="$(FORTRAN_FPIC) $(NAG_FCFLAGS)" \
+                      CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77) $(FLANG_LTO_LIBS) )
 	touch $@
 
 hdf5.config :: hdf5/README.md libaec.install $(ZLIB_INSTALL)
@@ -1064,8 +1071,8 @@ hdfeos.config: hdfeos.download hdfeos/configure hdf4.install
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/hdfeos \
                       --disable-shared --enable-static \
-                      --enable-fortran \
-                      CFLAGS=$(CFLAGS) FCFLAGS="$(NAG_FCFLAGS)" CC="$(H4_CC)" FC=$(H4_FC) F77=$(H4_FC) )
+                      $(HDFEOS_ENABLE_FORTRAN) \
+                      CFLAGS="$(CFLAGS)" FCFLAGS="$(NAG_FCFLAGS)" CC="$(H4_CC)" FC=$(H4_FC) F77=$(H4_FC) )
 	@touch $@
 
 hdfeos5.download : scripts/download_hdfeos5.bash
@@ -1509,4 +1516,3 @@ antlr2.check: antlr2.install
 #                        ------------
 
 #------------------------------------------------------------------------
-
