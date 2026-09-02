@@ -7,6 +7,7 @@
 - ESMF 9.0.0b17
   - Remove patches needed for Darwin and Flang
 - FMS 2026.01.01
+- nccmp 1.11.0.0
 
 ### Fixed
 
