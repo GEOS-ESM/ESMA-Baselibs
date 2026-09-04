@@ -12,7 +12,7 @@ NASA/GSFC.
 
 | Library                                                                  | Version      |
 | ---                                                                      | ---          |
-| [ESMF](https://github.com/esmf-org/esmf)                                 | v9.0.0b10    |
+| [ESMF](https://github.com/esmf-org/esmf)                                 | v9.0.0b17    |
 | [FMS](https://github.com/NOAA-GFDL/FMS/)                                 | 2024.03      |
 | [netCDF](https://github.com/Unidata/netcdf-c)                            | 4.9.2        |
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.6.1        |
@@ -25,13 +25,13 @@ NASA/GSFC.
 | [antlr2](https://www.antlr2.org/)                                        | 2.7.7        |
 | [GSL](https://www.gnu.org/software/gsl/)                                 | 2.8          |
 | [jpeg](http://www.ijg.org/)                                              | 9f           |
-| [zlib](http://www.zlib.net/)                                             | 1.3.1        |
+| [zlib](http://www.zlib.net/)                                             | 1.3.2        |
 | [libaec](https://github.com/MathisRosenhauer/libaec.git)                 | 1.1.4        |
 | [curl](https://curl.haxx.se/)                                            | 8.17.0       |
 | [UDUNITS2](https://github.com/GMAO-SI-Team/UDUNITS-2.git)                | 2.2.28       |
-| [NCO](http://nco.sourceforge.net/)                                       | 5.3.6        |
-| [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.5.4        |
-| [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.10.0.0     |
+| [NCO](http://nco.sourceforge.net/)                                       | 5.3.9        |
+| [CDO](https://code.mpimet.mpg.de/projects/cdo)                           | 2.6.3        |
+| [nccmp](https://gitlab.com/remikz/nccmp)                                 | 1.11.0.0     |
 | [fftw](https://www.fftw.org/)                                            | 3.3.11       |
 | [HDF-EOS2](https://wiki.earthdata.nasa.gov/display/DAS)                  | 3.0          |
 | [HDF-EOS5](https://wiki.earthdata.nasa.gov/display/DAS)                  | 2.0          |
