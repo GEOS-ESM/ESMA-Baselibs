@@ -993,21 +993,29 @@ libyaml.config:
 	@echo "Configuring libyaml"
 	@mkdir -p ./libyaml/build
 	@(cd ./libyaml; \
-		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix) -DCMAKE_PREFIX_PATH=$(prefix) -DCMAKE_POLICY_VERSION_MINIMUM=3.5 )
+		export PATH="$(prefix)/bin:$(PATH)" ;\
+		autoreconf -f -v -i ;\
+		(cd build; \
+			../configure --prefix=$(prefix) \
+				CFLAGS="$(CFLAGS) $(C_FPIC)" CC=$(CC) CXX=$(CXX) FC=$(FC) ) )
 	@touch $@
 
 # We need to patch FMS for LLVM testing support
 # NOTE: Because we patch CMake, we need to patch before
 # configuring and unpatch after installing
+#
+# We also have to patch the CMake for libyaml.
+# NOTE: This can be removed when 2026.02 is released
 FMS.config :: netcdf.install netcdf-fortran.install libyaml.install
 	@echo Patching FMS
 	patch -f -p1 < ./patches/FMS/llvm.patch
+	patch -f -p1 < ./patches/FMS/libyaml.patch
 
 FMS.config :: netcdf.install netcdf-fortran.install libyaml.install
 	@echo "Configuring FMS"
 	@mkdir -p ./FMS/build
 	@(cd ./FMS; \
-		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf -DENABLE_QUAD_PRECISION=$(FMS_QUAD_PRECISION) )
+		cmake -B build -S . -DCMAKE_INSTALL_PREFIX=$(prefix)/FMS -DCMAKE_PREFIX_PATH=$(prefix) -DFPIC=ON -DCONSTANTS=GEOS -DNetCDF_ROOT=$(prefix) -DNetCDF_INCLUDE_DIR=$(prefix)/include/netcdf -DWITH_YAML=ON -DENABLE_QUAD_PRECISION=$(FMS_QUAD_PRECISION) )
 	@touch $@
 
 antlr2.config : antlr2/configure
@@ -1045,13 +1053,6 @@ gsl.config : gsl.download gsl/configure
                       --disable-shared \
                       CFLAGS="$(CFLAGS)" CC=$(CC) CXX=$(CXX) FC=$(FC) )
 	@touch $@
-
-# We need to patch esmf for LLVM testing support
-# NOTE: Because we patch CMake, we need to patch before
-# configuring and unpatch after installing
-esmf.config :: esmf_rules.mk netcdf-fortran.install
-	@echo Patching esmf
-	patch -f -p1 < ./patches/esmf/brewflang.patch
 
 esmf.config :: esmf_rules.mk netcdf-fortran.install
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
@@ -1219,8 +1220,7 @@ GFE.install: GFE.config
 
 libyaml.install: libyaml.config
 	@echo "Installing libyaml"
-	@(cd ./libyaml; \
-		cmake --build build --target install -j $(MAKEJOBS))
+	@$(MAKE) -C ./libyaml/build install -j $(MAKEJOBS)
 	@touch $@
 
 FMS.install :: FMS.config
@@ -1231,6 +1231,7 @@ FMS.install :: FMS.config
 
 FMS.install :: FMS.config
 	@echo Unpatching FMS
+	patch -f -p1 -R < ./patches/FMS/libyaml.patch
 	patch -f -p1 -R < ./patches/FMS/llvm.patch
 
 # MAT: Note that on Mac machines there seems to be an issue with the libtool setup
@@ -1346,10 +1347,6 @@ SDPToolkit.install: SDPToolkit.config
 esmf.install :: esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) install
 
-esmf.install :: esmf_rules.mk
-	@echo Unptching esmf
-	patch -f -p1 -R < ./patches/esmf/brewflang.patch
-
 esmf.info : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) info
 
@@ -1398,10 +1395,12 @@ GFE.distclean:
 
 libyaml.clean:
 	@echo "Cleaning libyaml"
+	@if [ -d ./libyaml/build ]; then $(MAKE) -C ./libyaml/build clean; fi
 	@rm -rf ./libyaml/build
 
 libyaml.distclean:
 	@echo "Cleaning libyaml"
+	@if [ -d ./libyaml/build ]; then $(MAKE) -C ./libyaml/build distclean; fi
 	@rm -rf ./libyaml/build
 
 FMS.clean:
@@ -1516,4 +1515,3 @@ antlr2.check: antlr2.install
 #                        ------------
 
 #------------------------------------------------------------------------
-

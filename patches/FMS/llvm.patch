@@ -18,27 +18,41 @@
 +++ b/FMS/cmake/compiler_flags_NVHPC_Fortran.cmake
 @@ -0,0 +1,13 @@
 +# Precision-based Fortran compiler flags
-+set(r8_flags "-fdefault-real-8 -fdefault-double-8") # Fortran flags for 64BIT precision
-+set(r4_flags "-fdefault-real-4") # Fortran flags for 32BIT precision
++set(r8_flags "-r8") # Fortran flags for 64BIT precision
 +
 +# NVHPC Fortran
-+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
++set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ")
 +
-+set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
-+set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g")
++set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
++
++set(CMAKE_Fortran_FLAGS_DEBUG "-O0" )
++# -g can cause bugs, see: https://forums.developer.nvidia.com/t/bug-compiling-with-g-o0-produces-a-compute-sanitizer-error-removing-g-removes-the-error/341478
++# not sure if this is only on GPUs
 +
 +set(CMAKE_Fortran_LINK_FLAGS "" )
-+
-+#ufs flags -- Not known
 --- /dev/null
 +++ b/FMS/cmake/compiler_flags_NVHPC_C.cmake
 @@ -0,0 +1,6 @@
-+# Clang C
++# NVHPC C
 +set(CMAKE_C_FLAGS_RELEASE "-O3")
 +
-+set(CMAKE_C_FLAGS_DEBUGUFS "-O0 -g")
++set(CMAKE_C_FLAGS_DEBUG "-O0 -g")
 +
 +set(CMAKE_C_LINK_FLAGS "" )
+--- a/FMS/CMakeLists.txt
++++ b/FMS/CMakeLists.txt
+@@ -65,6 +65,11 @@ option(PORTABLE_KINDS        "Enable compiler definition -DPORTABLE_KINDS"
+ option(GFS_PHYS              "Enable compiler definition -DGFS_PHYS"              OFF)
+ option(LARGEFILE             "Enable compiler definition -Duse_LARGEFILE"         OFF)
+ option(WITH_YAML             "Enable compiler definition -Duse_yaml"              OFF)
++
++if(CMAKE_Fortran_COMPILER_ID MATCHES "NVHPC")
++  set(ENABLE_QUAD_PRECISION OFF)
++  message(WARNING "NVHPC does not support building FMS with QUAD_PRECISION!")
++endif()
+ 
+ if(32BIT)
+   list(APPEND kinds "r4")
 --- a/FMS/cmake/fms_compiler_flags.cmake
 +++ b/FMS/cmake/fms_compiler_flags.cmake
 @@ -8,6 +8,10 @@ elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
@@ -72,4 +86,3 @@
 
  # ufs flags to repoduce old behavior
  set(CMAKE_Fortran_SHARED_FLAGS "-fpp -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -align array64byte -nowarn -traceback")
-
