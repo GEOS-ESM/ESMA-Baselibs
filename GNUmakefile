@@ -1055,6 +1055,8 @@ gsl.config : gsl.download gsl/configure
 	@touch $@
 
 esmf.config :: esmf_rules.mk netcdf-fortran.install
+	@echo Patching esmf
+	patch -f -p1 < ./patches/esmf/nvhpc_assumed_type.patch
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) config
 
 hdfeos.download : scripts/download_hdfeos.bash
@@ -1344,8 +1346,10 @@ SDPToolkit.install: SDPToolkit.config
           $(MAKE) install CC=$(NC_CC) FC=$(NC_FC) CXX=$(NC_CXX) F77=$(NC_F77))
 	touch $@
 
-esmf.install :: esmf_rules.mk
+esmf.install :: esmf.config esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) install
+	@echo Unpatching esmf
+	patch -f -p1 -R < ./patches/esmf/nvhpc_assumed_type.patch
 
 esmf.info : esmf_rules.mk
 	@$(MAKE) -e -f esmf_rules.mk ESMF_COMPILER=$(ESMF_COMPILER) CFLAGS="$(CFLAGS)" CC=$(ES_CC) CXX=$(ES_CXX) FC=$(ES_FC) PYTHON=$(PYTHON) ESMF_INSTALL_PREFIX=$(prefix) info
