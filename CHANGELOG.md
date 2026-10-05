@@ -6,6 +6,8 @@
 
 ### Fixed
 
+- Patch ESMF for NVHPC ng compiler which does now support F2018 (needed for MAPL3)
+
 ### Changed
 
 ### Removed
