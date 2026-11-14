@@ -6,13 +6,25 @@
 
 ### Fixed
 
-- Patch ESMF for NVHPC ng compiler which does now support F2018 (needed for MAPL3)
-
 ### Changed
 
 ### Removed
 
 ### Added
+
+## [9.14.0] - 2026-11-14
+
+### Updates
+
+- GFE v1.31.0
+  - fArgParse v1.12.0
+  - pFUnit v4.22.0
+  - yaFyaml v1.7.3
+  - pFlogger v1.19.1
+
+### Fixed
+
+- Patch ESMF for NVHPC ng compiler which does now support F2018 (needed for MAPL3)
 
 ## [9.13.0] - 2026-09-03
 
