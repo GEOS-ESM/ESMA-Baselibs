@@ -895,6 +895,7 @@ zlib.config : zlib/configure
                       --libdir=$(prefix)/lib )
 	touch $@
 
+# The macOS 27 SDK exposes pipe2 even when targeting older macOS versions.
 curl.config : curl/configure.ac $(ZLIB_INSTALL)
 	@echo "Configuring curl"
 	@(cd curl; \
@@ -902,6 +903,11 @@ curl.config : curl/configure.ac $(ZLIB_INSTALL)
           export CPPFLAGS="$(INC_SUPP)";\
           export LIBS="-lm";\
           autoreconf -f -v -i;\
+          macos_min="$(patsubst -mmacosx-version-min=%,%,$(MMACOS_MIN))";\
+          if [ "$(ARCH)" = Darwin ] && [ -n "$$macos_min" ] && \
+             [ "$${macos_min%%.*}" -lt 27 ]; then \
+            export ac_cv_func_pipe2=no; \
+          fi;\
           ./configure --prefix=$(prefix) \
                       --includedir=$(prefix)/include/ \
                       --libdir=$(prefix)/lib \

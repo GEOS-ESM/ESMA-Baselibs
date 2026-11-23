@@ -12,6 +12,12 @@
 
 ### Added
 
+## [9.14.1] - 2026-11-23
+
+### Fixed
+
+- Fix curl builds targeting macOS versions below 27 with the macOS 27 SDK by using the `pipe()` fallback instead of `pipe2()`.
+
 ## [9.14.0] - 2026-11-14
 
 ### Updates
