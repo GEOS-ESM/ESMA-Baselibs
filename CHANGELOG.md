@@ -8,11 +8,14 @@
 
 ### Changed
 
+- Skip SDPToolkit in the default build when using GCC 15 or newer.
 - Set `SYSTEM_ZLIB=YES` by default for nvhpc builds
 
 ### Removed
 
 ### Added
+
+- ADIOS2 2.12.1 with Baselibs HDF5, MPI, and Fortran bindings.
 
 ## [8.34.1] - 2026-11-23
 

@@ -86,6 +86,13 @@ then
    echo_version hdf5 "$HDF5_VERSION" "$HDF5_VERSION_LOC"
 fi
 
+ADIOS2_VERSION_LOC="$PREFIX/include/adios2/common/ADIOSConfig.h"
+if [[ -e $ADIOS2_VERSION_LOC ]]
+then
+   ADIOS2_VERSION=$(awk '/^#define ADIOS2_VERSION_STR / {gsub(/"/, "", $3); print $3}' "$ADIOS2_VERSION_LOC")
+   echo_version adios2 "$ADIOS2_VERSION" "$ADIOS2_VERSION_LOC"
+fi
+
 NETCDF_VERSION_LOC="netcdf/configure"
 if [[ -e $NETCDF_VERSION_LOC ]]
 then

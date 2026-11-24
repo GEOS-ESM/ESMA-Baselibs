@@ -18,6 +18,7 @@ NASA/GSFC.
 | [netCDF Fortran](https://github.com/Unidata/netcdf-fortran)              | 4.6.1        |
 | [netCDF C++](https://github.com/Unidata/netcdf-cxx4)                     | 4.3.1        |
 | [HDF5](https://portal.hdfgroup.org/display/support)                      | 1.14.5       |
+| [ADIOS2](https://github.com/ornladios/ADIOS2)                            | 2.12.1       |
 | [HDF4](https://portal.hdfgroup.org/display/support)                      | 4.2.16-2     |
 | [GFE](https://github.com/Goddard-Fortran-Ecosystem/GFE)                  | v1.31.0      |
 | [xgboost](https://github.com/dmlc/xgboost)                               | v1.6.0       |
@@ -177,6 +178,30 @@ compiler under Linux, just enter this
 
   Bypass the definition above and install at this directory. It is no
   recommended that you specify this - specify ROOTDIR instead
+
+#### Trying ADIOS2
+
+ADIOS2 is included in the full, `ESSENTIALS`, and `MAPL` builds, but not the
+GFE-only build. To build just ADIOS2 and its
+dependencies and check the installed features (with your MPI compiler wrappers
+on `PATH`), run:
+
+```sh
+git submodule update --init adios2  # Skip when building from the complete tarball.
+make -j4 adios2.check ESMF_COMM=openmpi
+```
+
+Use the same compiler, MPI, and `prefix` settings as for the rest of Baselibs.
+On macOS, use `gmake` if `make` is the system GNU Make 3.81.
+
+The static ADIOS2 build includes the HDF5 engine and Fortran bindings. It uses
+parallel HDF5 and MPI unless `ESMF_COMM=mpiuni`, which builds both in serial
+mode. Python bindings, SST, and optional compression plugins are not included.
+For CMake consumers, set `CMAKE_PREFIX_PATH` and `HDF5_ROOT` to the Baselibs
+install prefix and use `find_package(ADIOS2 CONFIG REQUIRED)` with targets such as
+`adios2::cxx_mpi` or `adios2::fortran_mpi` (`adios2::cxx` or `adios2::fortran`
+for serial use). If CMake finds another HDF5 installation, set
+`HDF5_C_COMPILER_EXECUTABLE` to Baselibs' `bin/h5pcc` (`bin/h5cc` for serial).
 
 ### Using Baselibs in GEOS
 
