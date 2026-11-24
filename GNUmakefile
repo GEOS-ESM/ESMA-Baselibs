@@ -394,11 +394,11 @@ export FMS_QUAD_PRECISION
 
 ALLDIRS = antlr2 gsl jpeg zlib libaec curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
           udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
-          GFE fftw \
-          hdfeos hdfeos5 SDPToolkit adios2
+          GFE adios2 fftw \
+          hdfeos hdfeos5 SDPToolkit
 
 ESSENTIAL_DIRS = jpeg zlib libaec hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
-                 udunits2 nccmp esmf GFE fftw adios2
+                 udunits2 nccmp esmf GFE adios2 fftw
 
 MAPL_DIRS = jpeg zlib libaec hdf5 netcdf netcdf-fortran \
             udunits2 nccmp esmf GFE adios2
