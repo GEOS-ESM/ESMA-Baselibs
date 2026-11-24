@@ -8,9 +8,13 @@
 
 ### Changed
 
+- Skip SDPToolkit in the default build when using GCC 15 or newer.
+
 ### Removed
 
 ### Added
+
+- ADIOS2 2.12.1 with Baselibs HDF5, MPI, and Fortran bindings.
 
 ## [9.14.1] - 2026-11-23
 

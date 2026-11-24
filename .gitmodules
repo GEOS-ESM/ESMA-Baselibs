@@ -53,3 +53,6 @@
 [submodule "libaec"]
 	path = libaec
 	url = https://github.com/MathisRosenhauer/libaec.git
+[submodule "adios2"]
+	path = adios2
+	url = https://github.com/ornladios/ADIOS2.git

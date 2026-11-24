@@ -394,14 +394,14 @@ export FMS_QUAD_PRECISION
 
 ALLDIRS = antlr2 gsl jpeg zlib libaec curl hdf4 hdf5 netcdf netcdf-fortran netcdf-cxx4 \
           udunits2 nco cdo nccmp libyaml FMS esmf xgboost \
-          GFE fftw \
+          GFE adios2 fftw \
           hdfeos hdfeos5 SDPToolkit
 
 ESSENTIAL_DIRS = jpeg zlib libaec hdf4 hdf5 netcdf netcdf-fortran libyaml FMS \
-                 udunits2 nccmp esmf GFE fftw
+                 udunits2 nccmp esmf GFE adios2 fftw
 
 MAPL_DIRS = jpeg zlib libaec hdf5 netcdf netcdf-fortran \
-            udunits2 nccmp esmf GFE
+            udunits2 nccmp esmf GFE adios2
 
 ifeq ($(ARCH),Darwin)
    NO_DARWIN_DIRS = netcdf-cxx4 hdfeos hdfeos5 SDPToolkit
@@ -475,6 +475,13 @@ endif
 # to HDF4 with ifx, we cannot build SDPToolkit
 ifeq ($(findstring ifx,$(notdir $(FC))),ifx)
    SUBDIRS := $(filter-out SDPToolkit,$(SUBDIRS))
+endif
+
+# SDPToolkit does not build with GCC 15 or newer.
+ifneq ($(filter SDPToolkit,$(SUBDIRS)),)
+   ifeq ($(shell $(NC_CC) -dumpfullversion 2>/dev/null | awk -F. '$$1 ~ /^[0-9]+$$/ && $$1 >= 15 {print 1; exit}'),1)
+      SUBDIRS := $(filter-out SDPToolkit,$(SUBDIRS))
+   endif
 endif
 
 # NVHPC and ESMF seem to have issues with zlib in Baselibs
@@ -987,6 +994,30 @@ xgboost.config:
 		cmake -B build -S . --install-prefix=$(prefix) -DCMAKE_POLICY_VERSION_MINIMUM=3.5 )
 	@touch $@
 
+ADIOS2_MPI = OFF
+ifeq ($(H5_PARALLEL),--enable-parallel)
+   ADIOS2_MPI = ON
+   ADIOS2_MPI_FLAGS = -DMPI_C_COMPILER="$(MPICC)" -DMPI_CXX_COMPILER="$(MPICXX)" \
+                      -DMPI_Fortran_COMPILER="$(MPIFC)" -DHDF5_PREFER_PARALLEL=ON
+endif
+
+# Keep the trial build independent of optional dependencies found on the host.
+ADIOS2_DISABLED = BigWhoop Blosc2 BZip2 Caliper ZFP SZ SZ3 LIBPRESSIO MGARD PRODM PNG \
+                  DAOS DataMan DataSpaces MHS SST ZeroMQ HDF5_VOL IME Python Sodium Catalyst Campaign \
+                  OpenSSL XRootD CURL
+
+# FindHDF5 learns the include/hdf5 layout from Baselibs' compiler wrapper.
+adios2.config: adios2/CMakeLists.txt hdf5.install
+	@echo "Configuring ADIOS2"
+	cmake -S adios2 -B adios2/build --install-prefix="$(prefix)" -DCMAKE_INSTALL_LIBDIR=lib \
+	    -DCMAKE_C_COMPILER="$(CC)" -DCMAKE_CXX_COMPILER="$(CXX)" -DCMAKE_Fortran_COMPILER="$(FC)" \
+	    -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF \
+	    -DHDF5_ROOT="$(prefix)" -DHDF5_C_COMPILER_EXECUTABLE="$(H5_CC)" \
+	    -DHDF5_NO_FIND_PACKAGE_CONFIG_FILE=ON -DHDF5_USE_STATIC_LIBRARIES=ON \
+	    -DADIOS2_USE_HDF5=ON -DADIOS2_USE_Fortran=ON -DADIOS2_USE_MPI=$(ADIOS2_MPI) $(ADIOS2_MPI_FLAGS) \
+	    $(foreach feature,$(ADIOS2_DISABLED),-DADIOS2_USE_$(feature)=OFF)
+	@touch $@
+
 GFE.config:
 	@echo "Configuring GFE"
 	@mkdir -p ./GFE/build
@@ -1220,6 +1251,15 @@ xgboost.install: xgboost.config
 		cmake --build build --target install -j $(MAKEJOBS))
 	@touch $@
 
+.PHONY: adios2.all adios2.lib
+adios2.all adios2.lib: adios2.config
+	cmake --build adios2/build -j $(MAKEJOBS)
+
+adios2.install: adios2.config
+	# ADIOS2 configures a fresh CMake project at install time to generate adios2-config.
+	HDF5_ROOT="$(prefix)" cmake --build adios2/build --target install -j $(MAKEJOBS)
+	@touch $@
+
 GFE.install: GFE.config
 	@echo "Installing GFE"
 	@(cd ./GFE; \
@@ -1395,6 +1435,11 @@ xgboost.distclean:
 	@echo "Cleaning xgboost"
 	@rm -rf ./xgboost/build
 
+.PHONY: adios2.clean adios2.distclean
+adios2.clean adios2.distclean:
+	@rm -rf adios2/build
+	@rm -f adios2.config adios2.install adios2.check
+
 GFE.clean:
 	@echo "Cleaning GFE"
 	@rm -rf ./GFE/build
@@ -1451,6 +1496,13 @@ curl.check: curl.install
 
 xgboost.check: xgboost.install
 	@echo "Not sure how to check xgboost"
+
+adios2.check: adios2.install
+	@features=$$("$(prefix)/bin/bpls" -Vv) && printf '%s\n' "$$features" | awk -v mpi=$(ADIOS2_MPI) '\
+	    /^Available engines/ { hdf5 = / HDF5(,|$$)/ } \
+	    /^Available features/ { features = / FORTRAN(,|$$)/ && ((mpi == "ON") == / MPI(,|$$)/) } \
+	    { print } END { exit !(hdf5 && features) }'
+	@touch $@
 
 libyaml.check: libyaml.install
 	@echo "Checking libyaml"
