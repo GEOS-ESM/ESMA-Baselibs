@@ -8,6 +8,8 @@
 
 ### Changed
 
+- Set `SYSTEM_ZLIB=YES` by default for nvhpc builds
+
 ### Removed
 
 ### Added
