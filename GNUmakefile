@@ -420,6 +420,7 @@ endif
 
 # NVHPC seems to have issues with SDPToolkit and cdo
 ifeq ($(findstring nvfortran,$(notdir $(FC))),nvfortran)
+   SYSTEM_ZLIB ?= YES
    NO_NVHPC_DIRS = cdo SDPToolkit
    ALLDIRS := $(filter-out $(NO_NVHPC_DIRS),$(ALLDIRS))
 endif

@@ -9,6 +9,7 @@
 ### Changed
 
 - Skip SDPToolkit in the default build when using GCC 15 or newer.
+- Set `SYSTEM_ZLIB=YES` by default for nvhpc builds
 
 ### Removed
 
